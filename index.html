@@ -21,90 +21,45 @@
             --text-muted: #a8a8b0;
             --ink: #0a0a0f;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
         body {
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-            font-weight: 500;
-            -webkit-font-smoothing: antialiased;
-            letter-spacing: -0.01em;
+            background: var(--bg); color: var(--text);
+            display: flex; height: 100vh; overflow: hidden;
+            font-weight: 500; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em;
         }
 
-        /* ── SIDEBAR ────────────────────────── */
+        /* ── SIDEBAR ───────────────────────────── */
         .sidebar {
-            width: 316px;
-            min-width: 316px;
+            width: 316px; min-width: 316px;
             background: var(--surface);
             border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            display: flex; flex-direction: column; overflow: hidden;
         }
-
-        .sidebar-header {
-            padding: 24px 22px 16px;
-            flex-shrink: 0;
-        }
-
+        .sidebar-header { padding: 24px 22px 16px; flex-shrink: 0; }
         .logo {
-            font-family: 'Instrument Serif', serif;
-            font-style: italic;
-            font-size: 25px;
-            font-weight: 400;
-            letter-spacing: -0.5px;
-            color: var(--ink);
-            line-height: 1;
-            margin-bottom: 4px;
+            font-family: 'Instrument Serif', serif; font-style: italic;
+            font-size: 25px; font-weight: 400; letter-spacing: -0.5px;
+            color: var(--ink); line-height: 1; margin-bottom: 4px;
         }
-
         .tagline { font-size: 11px; color: var(--text-muted); font-weight: 500; }
 
-        .tab-nav {
-            display: flex;
-            padding: 0 22px;
-            border-bottom: 1px solid var(--border);
-            flex-shrink: 0;
-        }
-
+        .tab-nav { display: flex; padding: 0 22px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
         .tab-btn {
-            padding: 11px 4px;
-            margin-right: 20px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-family: inherit;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            position: relative;
-            transition: color 0.2s;
-            letter-spacing: -0.01em;
+            padding: 11px 4px; margin-right: 20px;
+            background: none; border: none; color: var(--text-muted);
+            font-family: inherit; font-size: 12px; font-weight: 700;
+            cursor: pointer; position: relative; transition: color 0.2s;
         }
-
         .tab-btn:hover { color: var(--text-sub); }
         .tab-btn.active { color: var(--ink); }
-
         .tab-btn.active::after {
-            content: '';
-            position: absolute;
+            content: ''; position: absolute;
             bottom: -1px; left: 0; right: 0;
-            height: 2px;
-            background: var(--ink);
-            border-radius: 2px 2px 0 0;
+            height: 2px; background: var(--ink); border-radius: 2px 2px 0 0;
         }
 
-        .sidebar-scroll {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px 22px 18px;
-        }
-
+        .sidebar-scroll { flex: 1; overflow-y: auto; padding: 20px 22px 18px; }
         .sidebar-scroll::-webkit-scrollbar { width: 4px; }
         .sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
         .sidebar-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
@@ -115,458 +70,291 @@
         .group { display: flex; flex-direction: column; gap: 9px; }
         .group-label { font-size: 10px; font-weight: 700; letter-spacing: 0.4px; color: var(--text-muted); }
 
-        /* ── UPLOAD ──────────────────────────── */
+        /* ── UPLOAD ────────────────────────────── */
         .upload-zone {
-            border: 1.5px dashed var(--border-hover);
-            border-radius: 11px;
-            padding: 20px 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: var(--bg);
-            display: block;
+            border: 1.5px dashed var(--border-hover); border-radius: 11px;
+            padding: 20px 16px; text-align: center; cursor: pointer;
+            transition: all 0.2s; background: var(--bg); display: block;
         }
-
         .upload-zone:hover { border-color: var(--ink); background: var(--surface-alt); }
         .upload-zone.has-image { border-style: solid; border-color: var(--ink); background: var(--surface-alt); }
-
         .upload-icon {
-            width: 36px; height: 36px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 10px;
+            width: 36px; height: 36px; background: var(--surface);
+            border: 1px solid var(--border); border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 9px;
-            font-size: 15px;
+            margin: 0 auto 9px; font-size: 15px;
         }
-
         .upload-zone.has-image .upload-icon { background: white; }
         .upload-text { font-size: 12.5px; color: var(--text); font-weight: 600; margin-bottom: 2px; }
         .upload-sub { font-size: 10.5px; color: var(--text-muted); }
         input[type="file"] { display: none; }
 
-        /* ── MODE GRID ───────────────────────── */
+        /* ── MODE GRID ─────────────────────────── */
         .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
-
         .mode-btn {
-            background: var(--surface);
-            border: 1.5px solid var(--border);
-            border-radius: 10px;
-            padding: 13px 8px;
-            cursor: pointer;
-            transition: all 0.18s;
-            text-align: center;
-            font-family: inherit;
+            background: var(--surface); border: 1.5px solid var(--border);
+            border-radius: 10px; padding: 13px 8px; cursor: pointer;
+            transition: all 0.18s; text-align: center; font-family: inherit;
         }
-
         .mode-btn:hover { border-color: var(--border-hover); background: var(--surface-alt); transform: translateY(-1px); }
         .mode-btn.active { border-color: var(--ink); background: var(--ink); }
         .mode-btn .mi { font-size: 18px; margin-bottom: 4px; }
         .mode-btn .ml { font-size: 11px; font-weight: 600; color: var(--text); }
         .mode-btn.active .ml { color: white; }
 
-        /* ── PILLS ───────────────────────────── */
+        /* ── PILLS ─────────────────────────────── */
         .pill-row { display: flex; flex-wrap: wrap; gap: 5px; }
-
         .pill {
-            padding: 6px 11px;
-            border-radius: 100px;
-            background: var(--surface);
-            border: 1.5px solid var(--border);
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-sub);
-            cursor: pointer;
-            transition: all 0.18s;
-            white-space: nowrap;
-            font-family: inherit;
+            padding: 6px 11px; border-radius: 100px;
+            background: var(--surface); border: 1.5px solid var(--border);
+            font-size: 11px; font-weight: 600; color: var(--text-sub);
+            cursor: pointer; transition: all 0.18s; white-space: nowrap; font-family: inherit;
         }
-
         .pill:hover { border-color: var(--border-hover); color: var(--text); }
         .pill.active { background: var(--ink); border-color: var(--ink); color: white; }
 
-        /* ── SWATCHES ────────────────────────── */
+        /* ── SWATCHES ──────────────────────────── */
         .swatch-row { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; }
-
         .swatch {
-            width: 26px; height: 26px;
-            border-radius: 7px;
-            cursor: pointer;
-            position: relative;
-            transition: transform 0.15s;
-            border: 1.5px solid var(--border);
-            flex-shrink: 0;
+            width: 26px; height: 26px; border-radius: 7px; cursor: pointer;
+            position: relative; transition: transform 0.15s;
+            border: 1.5px solid var(--border); flex-shrink: 0;
         }
-
         .swatch:hover { transform: scale(1.1); }
         .swatch.active { transform: scale(1.1); }
         .swatch.active::after {
-            content: '';
-            position: absolute;
-            inset: -3px;
-            border: 2px solid var(--ink);
-            border-radius: 10px;
+            content: ''; position: absolute; inset: -3px;
+            border: 2px solid var(--ink); border-radius: 10px;
         }
-
         .swatch-custom {
-            width: 26px; height: 26px;
-            border-radius: 7px;
-            border: 1.5px dashed var(--border-hover);
-            cursor: pointer;
-            position: relative;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 13px; color: var(--text-muted);
-            background: var(--surface);
-            transition: all 0.15s;
-            flex-shrink: 0;
+            width: 26px; height: 26px; border-radius: 7px;
+            border: 1.5px dashed var(--border-hover); cursor: pointer;
+            position: relative; display: flex; align-items: center; justify-content: center;
+            font-size: 13px; color: var(--text-muted); background: var(--surface);
+            transition: all 0.15s; flex-shrink: 0;
         }
-
         .swatch-custom:hover { border-color: var(--ink); color: var(--ink); }
         .swatch-custom input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
 
-        /* ── TEXT INPUT ──────────────────────── */
-        .text-input {
-            width: 100%;
-            background: var(--surface);
-            border: 1.5px solid var(--border);
-            border-radius: 9px;
-            padding: 10px 12px;
-            color: var(--text);
-            font-family: inherit;
-            font-size: 12.5px;
-            font-weight: 500;
-            outline: none;
-            transition: border-color 0.18s;
+        /* ── GRADIENT SECTION ──────────────────── */
+        .gradient-colors {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            padding: 12px 14px;
+            background: var(--surface-alt);
+            border-radius: 10px;
+            border: 1px solid var(--border);
         }
+        .gradient-colors.show { display: flex; }
+        .grad-row { display: flex; align-items: center; gap: 10px; }
+        .grad-row-label { font-size: 10px; font-weight: 700; color: var(--text-muted); min-width: 36px; letter-spacing: 0.3px; }
 
+        /* ── TEXT INPUT ────────────────────────── */
+        .text-input {
+            width: 100%; background: var(--surface);
+            border: 1.5px solid var(--border); border-radius: 9px;
+            padding: 10px 12px; color: var(--text);
+            font-family: inherit; font-size: 12.5px; font-weight: 500;
+            outline: none; transition: border-color 0.18s;
+        }
         .text-input:focus { border-color: var(--ink); }
         .text-input::placeholder { color: var(--text-muted); }
-
         select.text-input {
-            cursor: pointer;
-            -webkit-appearance: none;
+            cursor: pointer; -webkit-appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236a6a75' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 30px;
+            background-repeat: no-repeat; background-position: right 12px center; padding-right: 30px;
         }
 
-        /* ── SLIDER ──────────────────────────── */
+        /* ── SLIDER ────────────────────────────── */
         .slider-wrap { display: flex; align-items: center; gap: 11px; }
-
         input[type="range"] {
-            flex: 1;
-            -webkit-appearance: none;
-            height: 3px;
-            background: var(--border);
-            border-radius: 3px;
-            outline: none;
+            flex: 1; -webkit-appearance: none;
+            height: 3px; background: var(--border); border-radius: 3px; outline: none;
         }
-
         input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 15px; height: 15px;
-            background: var(--ink);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: transform 0.15s;
+            -webkit-appearance: none; width: 15px; height: 15px;
+            background: var(--ink); border-radius: 50%; cursor: pointer; transition: transform 0.15s;
         }
-
         input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+        .slider-val { font-size: 11.5px; color: var(--text); font-weight: 600; min-width: 38px; text-align: right; }
 
-        .slider-val {
-            font-size: 11.5px;
-            color: var(--text);
-            font-weight: 600;
-            min-width: 38px;
-            text-align: right;
-            font-variant-numeric: tabular-nums;
-        }
-
-        /* ── TOGGLE ──────────────────────────── */
+        /* ── TOGGLE ────────────────────────────── */
         .toggle-list { display: flex; flex-direction: column; gap: 11px; }
-
-        .toggle-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            padding: 1px 0;
-        }
-
+        .toggle-row { display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 1px 0; }
         .toggle-name { font-size: 12px; color: var(--text); font-weight: 500; }
-
         .toggle {
-            width: 34px; height: 20px;
-            background: var(--border);
-            border-radius: 10px;
-            position: relative;
-            cursor: pointer;
-            transition: background 0.2s;
-            flex-shrink: 0;
+            width: 34px; height: 20px; background: var(--border);
+            border-radius: 10px; position: relative; cursor: pointer;
+            transition: background 0.2s; flex-shrink: 0;
         }
-
         .toggle.on { background: var(--ink); }
-
         .toggle::after {
-            content: '';
-            position: absolute;
-            top: 2.5px; left: 2.5px;
-            width: 15px; height: 15px;
-            background: white;
-            border-radius: 50%;
-            transition: transform 0.2s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+            content: ''; position: absolute; top: 2.5px; left: 2.5px;
+            width: 15px; height: 15px; background: white; border-radius: 50%;
+            transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.15);
         }
-
         .toggle.on::after { transform: translateX(14px); }
 
-        /* ── FOOTER ──────────────────────────── */
-        .sidebar-footer {
-            padding: 14px 22px 20px;
-            border-top: 1px solid var(--border);
-            flex-shrink: 0;
-        }
-
+        /* ── FOOTER ────────────────────────────── */
+        .sidebar-footer { padding: 14px 22px 20px; border-top: 1px solid var(--border); flex-shrink: 0; }
         .save-btn {
-            width: 100%;
-            padding: 13px;
-            background: var(--ink);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-family: inherit;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
+            width: 100%; padding: 13px; background: var(--ink);
+            border: none; border-radius: 10px; color: white;
+            font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
             transition: opacity 0.18s, transform 0.1s;
         }
-
         .save-btn:hover:not(:disabled) { opacity: 0.88; }
         .save-btn:active:not(:disabled) { transform: scale(0.98); }
         .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        /* ── MAIN VIEW ───────────────────────── */
+        /* ── MAIN VIEW ─────────────────────────── */
         .main-view {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
             background: radial-gradient(ellipse 60% 70% at 50% 50%, #ffffff 0%, #f0f0f3 100%);
         }
-
         .main-view::before {
-            content: '';
-            position: absolute;
-            inset: 0;
+            content: ''; position: absolute; inset: 0;
             background-image: radial-gradient(circle, rgba(0,0,0,0.05) 1px, transparent 1px);
-            background-size: 24px 24px;
-            opacity: 0.5;
-            pointer-events: none;
+            background-size: 24px 24px; opacity: 0.5; pointer-events: none;
         }
 
-        /* ── CAPTURE AREA ────────────────────── */
+        /* ── CAPTURE AREA ──────────────────────── */
         #capture-area {
-            position: relative;
-            width: 860px;
-            height: 540px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: relative; width: 860px; height: 540px;
+            display: flex; align-items: center; justify-content: center;
             overflow: hidden;
             transition: background-color 0.4s, transform 0.15s ease-out;
-            transform-style: preserve-3d;
-            border-radius: 4px;
+            transform-style: preserve-3d; border-radius: 4px;
             box-shadow: 0 30px 80px rgba(0,0,0,0.12), 0 10px 30px rgba(0,0,0,0.06);
         }
 
-        /* Particles are NOW INSIDE capture-area so they get captured */
+        /* Particles INSIDE capture-area so they are exported */
         #particles {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            pointer-events: none;
-            z-index: 0;
-            display: none;
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; display: none;
         }
 
-        /* ── COVER PLACEHOLDER ────────────────── */
+        /* ── COVER PLACEHOLDER ─────────────────── */
         .cover-placeholder {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 9px;
-            color: rgba(255,255,255,0.45);
-            text-align: center;
-            z-index: 2;
-            pointer-events: none;
-            transition: opacity 0.3s;
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 9px; color: rgba(255,255,255,0.45); text-align: center;
+            z-index: 2; pointer-events: none; transition: opacity 0.3s;
         }
-
         .has-image .cover-placeholder { opacity: 0; }
-
         .ph-icon { font-size: 24px; opacity: 0.7; }
         .ph-text { font-size: 11.5px; font-weight: 500; line-height: 1.4; }
-
-        .cassette-label .cover-placeholder { gap: 5px; }
         .cassette-label .ph-icon { font-size: 18px; }
         .cassette-label .ph-text { font-size: 10.5px; }
-
-        .stream-card .cover-placeholder { gap: 7px; }
         .stream-card .ph-icon { font-size: 20px; }
         .stream-card .ph-text { font-size: 10.5px; }
 
-        /* ── DRAGGABLE COVERS ────────────────── */
+        /* ── DRAGGABLE ─────────────────────────── */
         .draggable-cover { cursor: default; user-select: none; -webkit-user-select: none; }
         .draggable-cover.has-image { cursor: grab; }
         .draggable-cover.dragging { cursor: grabbing !important; }
 
-        /* ── BARCODE ─────────────────────────── */
+        /* ── BARCODE ───────────────────────────── */
         .cover-barcode {
-            position: absolute;
-            bottom: 14px; right: 14px;
-            width: 60px; height: 30px;
-            background: white;
-            padding: 2px;
-            border-radius: 1px;
-            z-index: 6;
-            opacity: 0;
-            transition: opacity 0.3s;
+            position: absolute; bottom: 14px; right: 14px;
+            width: 60px; height: 30px; background: white;
+            padding: 2px; border-radius: 1px; z-index: 6;
+            opacity: 0; transition: opacity 0.3s;
             box-shadow: 0 1px 4px rgba(0,0,0,0.25);
         }
-
         .cover-barcode.visible { opacity: 1; }
         .cover-barcode svg { width: 100%; height: 100%; display: block; }
 
-        /* ── GLOW HALO (div-based, captured by html2canvas) ── */
+        /* ── GLOW HALO ─────────────────────────── */
         .glow-halo {
-            position: absolute;
-            border-radius: 8px;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.4s;
-            z-index: 3;
+            position: absolute; border-radius: 8px;
+            pointer-events: none; opacity: 0; transition: opacity 0.4s; z-index: 3;
         }
+        #glowHalo         { left: -55px; top: -55px; width: 520px; height: 520px; }
+        #glowHaloCd       { left: -55px; top: -55px; width: 500px; height: 500px; }
+        #glowHaloCassette { left: -55px; top: -55px; width: 550px; height: 380px; }
+        #glowHaloCard     { left: -55px; top: -55px; width: 365px; height: 465px; }
 
-        /* ── VINYL MOCKUP ────────────────────── */
-        .mockup-vinyl {
-            position: relative;
-            display: flex;
-            align-items: center;
-            width: 610px; height: 410px;
-        }
-
-        /* Vinyl glow halo: slightly bigger than the 410x410 cover, centered on it */
-        #glowHalo {
-            left: -55px; top: -55px;
-            width: 520px; height: 520px;
-        }
+        /* ── VINYL MOCKUP ──────────────────────── */
+        .mockup-vinyl { position: relative; display: flex; align-items: center; width: 610px; height: 410px; }
 
         .album-cover {
-            position: absolute;
-            left: 0; top: 0;
+            position: absolute; left: 0; top: 0;
             width: 410px; height: 410px;
             background: #222 50% 50%/cover no-repeat;
-            border-radius: 3px;
-            z-index: 5;
-            box-shadow: 30px 0 80px rgba(0,0,0,0.9), 6px 0 20px rgba(0,0,0,0.6);
-            overflow: hidden;
+            border-radius: 3px; z-index: 5; overflow: hidden;
+            /* FIX: single clean shadow, no extreme offset that causes banding in html2canvas */
+            box-shadow: 15px 0 50px rgba(0,0,0,0.95), 2px 0 10px rgba(0,0,0,0.8);
             transition: box-shadow 0.4s;
         }
 
         .cover-text-overlay {
-            position: absolute; inset: 0; z-index: 3;
-            padding: 22px;
+            position: absolute; inset: 0; z-index: 3; padding: 22px;
             display: flex; flex-direction: column; justify-content: flex-end;
-            pointer-events: none;
-            transition: background 0.3s;
+            pointer-events: none; transition: background 0.3s;
         }
-
         .cover-artist {
             font-size: 13px; font-weight: 600; color: white;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.85);
-            letter-spacing: 0.2px;
-            opacity: 0; transition: opacity 0.3s;
-            margin-bottom: 4px;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.85); letter-spacing: 0.2px;
+            opacity: 0; transition: opacity 0.3s; margin-bottom: 4px;
         }
-
         .cover-title {
             font-size: 22px; font-weight: 700; color: white;
-            text-shadow: 0 2px 20px rgba(0,0,0,0.9);
-            line-height: 1.15;
-            opacity: 0; transition: opacity 0.3s;
-            letter-spacing: -0.02em;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.9); line-height: 1.15;
+            opacity: 0; transition: opacity 0.3s; letter-spacing: -0.02em;
         }
-
         .cover-text-overlay.visible .cover-artist,
         .cover-text-overlay.visible .cover-title { opacity: 1; }
 
         .vinyl-record {
-            position: absolute;
-            left: 225px;
-            width: 385px; height: 385px;
-            border-radius: 50%;
-            z-index: 1;
+            position: absolute; left: 225px;
+            width: 385px; height: 385px; border-radius: 50%; z-index: 1;
             display: flex; align-items: center; justify-content: center;
             animation: spinVinyl 8s linear infinite;
         }
 
         .vinyl-disc {
-            width: 100%; height: 100%;
-            border-radius: 50%;
+            width: 100%; height: 100%; border-radius: 50%;
             background: #0e0e0e;
-            background-image: repeating-radial-gradient(
-                rgba(0,0,0,0) 0%, rgba(0,0,0,0) 3.5px,
-                rgba(255,255,255,0.025) 4px, rgba(0,0,0,0) 4.5px
-            );
-            box-shadow: 0 10px 60px rgba(0,0,0,0.7);
-            position: relative;
-            overflow: hidden;
+            /* FIX: removed repeating-radial-gradient — it caused black banding lines in html2canvas export */
+            box-shadow: 0 8px 40px rgba(0,0,0,0.8);
+            position: relative; overflow: hidden;
         }
 
+        /* Sheen stays — this is a simple conic gradient, renders cleanly */
         .vinyl-disc::before {
-            content: '';
-            position: absolute; inset: 0; border-radius: 50%;
+            content: ''; position: absolute; inset: 0; border-radius: 50%;
             background: conic-gradient(
                 from 0deg,
                 transparent 0deg 80deg,
-                rgba(255,255,255,0.05) 80deg 120deg,
+                rgba(255,255,255,0.06) 80deg 120deg,
                 transparent 120deg 200deg,
                 rgba(255,255,255,0.04) 200deg 240deg,
                 transparent 240deg 360deg
             );
             opacity: 1; transition: opacity 0.3s;
         }
-
         .vinyl-disc.no-sheen::before { opacity: 0; }
 
         .vinyl-label {
-            position: absolute;
-            top: 50%; left: 50%;
+            position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 145px; height: 145px;
-            border-radius: 50%;
+            width: 145px; height: 145px; border-radius: 50%;
             background: #333 50% 50%/cover no-repeat;
             box-shadow: 0 0 0 1px rgba(255,255,255,0.05), inset 0 0 20px rgba(0,0,0,0.3);
             overflow: hidden;
         }
-
         .vinyl-label .cover-placeholder { color: rgba(255,255,255,0.3); gap: 3px; }
         .vinyl-label .ph-icon { font-size: 14px; }
         .vinyl-label .ph-text { display: none; }
 
         .vinyl-hole {
-            position: absolute;
-            top: 50%; left: 50%;
+            position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 12px; height: 12px;
-            background: #060606;
-            border-radius: 50%;
-            z-index: 2;
+            width: 12px; height: 12px; background: #060606; border-radius: 50%; z-index: 2;
         }
 
         @keyframes spinVinyl {
@@ -574,179 +362,65 @@
             to   { transform: rotate(360deg); }
         }
 
-        /* ── CD ──────────────────────────────── */
+        /* ── CD ────────────────────────────────── */
         .mockup-cd { display: none; align-items: center; justify-content: center; }
         .cd-case { position: relative; width: 390px; height: 390px; }
-
-        #glowHaloCd {
-            left: -55px; top: -55px;
-            width: 500px; height: 500px;
-        }
-
-        .cd-back {
-            position: absolute; top: 7px; left: 7px;
-            width: 390px; height: 390px;
-            background: #161616; border-radius: 4px;
-            box-shadow: 4px 4px 20px rgba(0,0,0,0.7);
-        }
-
+        .cd-back { position: absolute; top: 7px; left: 7px; width: 390px; height: 390px; background: #161616; border-radius: 4px; box-shadow: 4px 4px 20px rgba(0,0,0,0.7); }
         .cd-front {
             position: absolute; inset: 0;
             background: #222 50% 50%/cover no-repeat;
             border-radius: 4px; overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.85);
             transition: box-shadow 0.4s;
         }
-
-        .cd-spine {
-            position: absolute;
-            left: -11px; top: 0; bottom: 0;
-            width: 11px;
-            background: linear-gradient(90deg, #090909, #1a1a1a);
-            border-radius: 2px 0 0 2px;
-        }
-
+        .cd-spine { position: absolute; left: -11px; top: 0; bottom: 0; width: 11px; background: linear-gradient(90deg, #090909, #1a1a1a); border-radius: 2px 0 0 2px; }
         .cd-disc {
-            position: absolute;
-            right: -100px; top: 50%;
-            transform: translateY(-50%);
-            width: 210px; height: 210px;
-            border-radius: 50%;
+            position: absolute; right: -100px; top: 50%; transform: translateY(-50%);
+            width: 210px; height: 210px; border-radius: 50%;
             background: conic-gradient(
-                #aaaabc 0deg 15deg, #8888a8 15deg 30deg, #c0c0d0 30deg 45deg,
-                #7878a0 45deg 60deg, #c8c8d8 60deg 75deg, #9090b0 75deg 90deg,
-                #aaaabc 90deg 105deg, #9898b8 105deg 120deg, #b8b8c8 120deg 135deg,
-                #8080a0 135deg 150deg, #aaaabc 150deg 165deg, #9494b2 165deg 180deg,
-                #c0c0d0 180deg 195deg, #8888a8 195deg 210deg, #a8a8c0 210deg 225deg,
-                #9898b8 225deg 240deg, #c0c0d0 240deg 255deg, #8888b0 255deg 270deg,
-                #aaaabc 270deg 285deg, #9090b0 285deg 300deg, #c8c8d8 300deg 315deg,
-                #8080a0 315deg 330deg, #aaaabc 330deg 345deg, #9898b0 345deg 360deg
+                #aaaabc 0deg 15deg,#8888a8 15deg 30deg,#c0c0d0 30deg 45deg,#7878a0 45deg 60deg,
+                #c8c8d8 60deg 75deg,#9090b0 75deg 90deg,#aaaabc 90deg 105deg,#9898b8 105deg 120deg,
+                #b8b8c8 120deg 135deg,#8080a0 135deg 150deg,#aaaabc 150deg 165deg,#9494b2 165deg 180deg,
+                #c0c0d0 180deg 195deg,#8888a8 195deg 210deg,#a8a8c0 210deg 225deg,#9898b8 225deg 240deg,
+                #c0c0d0 240deg 255deg,#8888b0 255deg 270deg,#aaaabc 270deg 285deg,#9090b0 285deg 300deg,
+                #c8c8d8 300deg 315deg,#8080a0 315deg 330deg,#aaaabc 330deg 345deg,#9898b0 345deg 360deg
             );
             box-shadow: 0 10px 40px rgba(0,0,0,0.6);
             display: flex; align-items: center; justify-content: center;
-            animation: spinVinyl 4s linear infinite;
-            z-index: 5;
+            animation: spinVinyl 4s linear infinite; z-index: 5;
         }
-
         .cd-hole { width: 38px; height: 38px; background: #1a1a1a; border-radius: 50%; }
 
-        /* ── CASSETTE ────────────────────────── */
+        /* ── CASSETTE ──────────────────────────── */
         .mockup-cassette { display: none; align-items: center; justify-content: center; }
-
-        #glowHaloCassette {
-            left: -55px; top: -55px;
-            width: 550px; height: 380px;
-        }
-
         .cassette-body {
-            position: relative;
-            width: 440px; height: 270px;
+            position: relative; width: 440px; height: 270px;
             background: #181818; border-radius: 10px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06);
-            overflow: hidden;
-            transition: box-shadow 0.4s;
+            overflow: hidden; transition: box-shadow 0.4s;
         }
-
-        .cassette-label {
-            position: absolute;
-            top: 18px; left: 18px; right: 18px; height: 130px;
-            background: #222 50% 50%/cover no-repeat;
-            border-radius: 5px; overflow: hidden;
-        }
-
-        .cassette-window {
-            position: absolute;
-            bottom: 22px; left: 50%; transform: translateX(-50%);
-            width: 200px; height: 68px;
-            background: rgba(0,0,0,0.55);
-            border-radius: 5px;
-            border: 1px solid rgba(255,255,255,0.07);
-            display: flex; align-items: center; justify-content: space-around;
-            padding: 8px;
-        }
-
-        .cassette-reel {
-            width: 46px; height: 46px; border-radius: 50%;
-            background: conic-gradient(
-                #2a2a2a 0deg 60deg, #181818 60deg 120deg,
-                #2a2a2a 120deg 180deg, #181818 180deg 240deg,
-                #2a2a2a 240deg 300deg, #181818 300deg 360deg
-            );
-            display: flex; align-items: center; justify-content: center;
-            animation: spinVinyl 2s linear infinite;
-            box-shadow: inset 0 0 8px rgba(0,0,0,0.6);
-        }
-
+        .cassette-label { position: absolute; top: 18px; left: 18px; right: 18px; height: 130px; background: #222 50% 50%/cover no-repeat; border-radius: 5px; overflow: hidden; }
+        .cassette-window { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); width: 200px; height: 68px; background: rgba(0,0,0,0.55); border-radius: 5px; border: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: space-around; padding: 8px; }
+        .cassette-reel { width: 46px; height: 46px; border-radius: 50%; background: conic-gradient(#2a2a2a 0deg 60deg,#181818 60deg 120deg,#2a2a2a 120deg 180deg,#181818 180deg 240deg,#2a2a2a 240deg 300deg,#181818 300deg 360deg); display: flex; align-items: center; justify-content: center; animation: spinVinyl 2s linear infinite; }
         .cassette-reel::after { content: ''; width: 14px; height: 14px; background: #0d0d0d; border-radius: 50%; }
         .cassette-screw { position: absolute; width: 7px; height: 7px; background: #252525; border-radius: 50%; border: 1px solid rgba(255,255,255,0.08); }
 
-        /* ── STREAM CARD ─────────────────────── */
+        /* ── STREAM CARD ───────────────────────── */
         .mockup-card { display: none; align-items: center; justify-content: center; gap: 24px; }
-
-        #glowHaloCard {
-            left: -55px; top: -55px;
-            width: 365px; height: 465px;
-        }
-
-        .stream-card {
-            position: relative;
-            width: 255px; height: 355px;
-            border-radius: 18px;
-            background: #222 50% 50%/cover no-repeat;
-            overflow: hidden;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.8);
-            transition: box-shadow 0.4s;
-        }
-
-        .stream-card-overlay {
-            position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 55%);
-            z-index: 3;
-        }
-
-        .stream-card-info {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            padding: 18px 16px; z-index: 4;
-        }
-
+        .stream-card { position: relative; width: 255px; height: 355px; border-radius: 18px; background: #222 50% 50%/cover no-repeat; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.8); transition: box-shadow 0.4s; }
+        .stream-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 55%); z-index: 3; }
+        .stream-card-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 18px 16px; z-index: 4; }
         .stream-card-title { font-size: 17px; font-weight: 700; line-height: 1.2; margin-bottom: 4px; color: white; letter-spacing: -0.02em; }
         .stream-card-artist { font-size: 11.5px; color: rgba(255,255,255,0.55); font-weight: 500; }
-
-        .stream-card-controls {
-            display: flex; align-items: center; justify-content: center;
-            gap: 16px; margin-top: 14px; color: white;
-        }
-
+        .stream-card-controls { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 14px; color: white; }
         .sc-btn { font-size: 16px; opacity: 0.8; }
-        .sc-btn.play {
-            width: 36px; height: 36px; background: white; color: black;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 11px; opacity: 1;
-        }
-
+        .sc-btn.play { width: 36px; height: 36px; background: white; color: black; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; opacity: 1; }
         .stream-card-bar { height: 3px; background: rgba(255,255,255,0.15); border-radius: 3px; margin-top: 12px; }
         .stream-card-progress { height: 100%; width: 55%; background: white; border-radius: 3px; }
+        .stream-card-bg { width: 200px; height: 300px; border-radius: 14px; background: #222 50% 50%/cover no-repeat; opacity: 0.5; filter: blur(2px); box-shadow: 0 20px 50px rgba(0,0,0,0.6); overflow: hidden; }
 
-        .stream-card-bg {
-            width: 200px; height: 300px; border-radius: 14px;
-            background: #222 50% 50%/cover no-repeat;
-            opacity: 0.5; filter: blur(2px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6); overflow: hidden;
-        }
-
-        /* ── TOAST ───────────────────────────── */
-        .toast {
-            position: fixed; bottom: 22px; right: 22px;
-            background: var(--ink); color: white;
-            border-radius: 10px; padding: 11px 17px;
-            font-size: 12px; font-weight: 600;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
-            transform: translateY(20px); opacity: 0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 100;
-        }
-
+        /* ── TOAST ─────────────────────────────── */
+        .toast { position: fixed; bottom: 22px; right: 22px; background: var(--ink); color: white; border-radius: 10px; padding: 11px 17px; font-size: 12px; font-weight: 600; box-shadow: 0 12px 40px rgba(0,0,0,0.2); transform: translateY(20px); opacity: 0; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); z-index: 100; }
         .toast.show { transform: translateY(0); opacity: 1; }
     </style>
 </head>
@@ -758,7 +432,6 @@
         <div class="logo">Album Studio</div>
         <p class="tagline">나만의 앨범 목업 만들기</p>
     </div>
-
     <div class="tab-nav">
         <button class="tab-btn active" data-tab="artwork">아트워크</button>
         <button class="tab-btn" data-tab="style">스타일</button>
@@ -767,7 +440,7 @@
 
     <div class="sidebar-scroll">
 
-        <!-- ── 아트워크 탭 ─── -->
+        <!-- ── 아트워크 탭 ── -->
         <div class="tab-panel active" id="tab-artwork">
 
             <div class="group">
@@ -790,21 +463,6 @@
             </div>
 
             <div class="group">
-                <span class="group-label">배경색</span>
-                <div class="swatch-row" id="bgSwatches">
-                    <div class="swatch active" style="background:#0d0d0d" data-color="#0d0d0d"></div>
-                    <div class="swatch" style="background:#f0f0f0" data-color="#f0f0f0"></div>
-                    <div class="swatch" style="background:#1a0d2e" data-color="#1a0d2e"></div>
-                    <div class="swatch" style="background:#0d1a2e" data-color="#0d1a2e"></div>
-                    <div class="swatch" style="background:#2e0d0d" data-color="#2e0d0d"></div>
-                    <div class="swatch" style="background:#0d2e22" data-color="#0d2e22"></div>
-                    <div class="swatch-custom" title="직접 선택">
-                        <span>+</span><input type="color" id="bgColorCustom" value="#0d0d0d">
-                    </div>
-                </div>
-            </div>
-
-            <div class="group">
                 <span class="group-label">배경 효과</span>
                 <div class="pill-row" id="bgEffects">
                     <div class="pill active" data-bg-effect="solid">기본</div>
@@ -814,24 +472,51 @@
                 </div>
             </div>
 
-            <div class="group">
-                <span class="group-label">배경 강조색 <span style="color:var(--text-muted);font-weight:500">(그라디언트·글로우)</span></span>
-                <div class="swatch-row" id="bgAccentSwatches">
-                    <div class="swatch active" style="background:#ffffff" data-accent="#ffffff"></div>
-                    <div class="swatch" style="background:#c0b0ff" data-accent="#c0b0ff"></div>
-                    <div class="swatch" style="background:#ffb0d0" data-accent="#ffb0d0"></div>
-                    <div class="swatch" style="background:#b0d4ff" data-accent="#b0d4ff"></div>
-                    <div class="swatch" style="background:#ffd080" data-accent="#ffd080"></div>
-                    <div class="swatch" style="background:#80ffcc" data-accent="#80ffcc"></div>
-                    <div class="swatch-custom" title="직접 선택">
-                        <span>+</span><input type="color" id="bgAccentCustom" value="#ffffff">
+            <!-- 기본/글로우/파티클 배경색 -->
+            <div class="group" id="solidColorGroup">
+                <span class="group-label">배경색</span>
+                <div class="swatch-row" id="bgSwatches">
+                    <div class="swatch active" style="background:#0d0d0d" data-color="#0d0d0d"></div>
+                    <div class="swatch" style="background:#f0f0f0" data-color="#f0f0f0"></div>
+                    <div class="swatch" style="background:#1a0d2e" data-color="#1a0d2e"></div>
+                    <div class="swatch" style="background:#0d1a2e" data-color="#0d1a2e"></div>
+                    <div class="swatch" style="background:#2e0d0d" data-color="#2e0d0d"></div>
+                    <div class="swatch" style="background:#0d2e22" data-color="#0d2e22"></div>
+                    <div class="swatch-custom"><span>+</span><input type="color" id="bgColorCustom" value="#0d0d0d"></div>
+                </div>
+            </div>
+
+            <!-- 그라디언트 전용 색상 패널 -->
+            <div class="gradient-colors" id="gradientColorPanel">
+                <div class="grad-row">
+                    <span class="grad-row-label">시작색</span>
+                    <div class="swatch-row" id="gradStartSwatches">
+                        <div class="swatch active" style="background:#ff69b4" data-gs="#ff69b4"></div>
+                        <div class="swatch" style="background:#ffffff" data-gs="#ffffff"></div>
+                        <div class="swatch" style="background:#c0b0ff" data-gs="#c0b0ff"></div>
+                        <div class="swatch" style="background:#b0d4ff" data-gs="#b0d4ff"></div>
+                        <div class="swatch" style="background:#ffd080" data-gs="#ffd080"></div>
+                        <div class="swatch" style="background:#80ffcc" data-gs="#80ffcc"></div>
+                        <div class="swatch-custom"><span>+</span><input type="color" id="gradStartCustom" value="#ff69b4"></div>
+                    </div>
+                </div>
+                <div class="grad-row">
+                    <span class="grad-row-label">끝색</span>
+                    <div class="swatch-row" id="gradEndSwatches">
+                        <div class="swatch active" style="background:#0d0d0d" data-ge="#0d0d0d"></div>
+                        <div class="swatch" style="background:#1a0d2e" data-ge="#1a0d2e"></div>
+                        <div class="swatch" style="background:#0d1a2e" data-ge="#0d1a2e"></div>
+                        <div class="swatch" style="background:#2e0d0d" data-ge="#2e0d0d"></div>
+                        <div class="swatch" style="background:#0d2e22" data-ge="#0d2e22"></div>
+                        <div class="swatch" style="background:#2a2a2a" data-ge="#2a2a2a"></div>
+                        <div class="swatch-custom"><span>+</span><input type="color" id="gradEndCustom" value="#0d0d0d"></div>
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <!-- ── 스타일 탭 ─── -->
+        <!-- ── 스타일 탭 ── -->
         <div class="tab-panel" id="tab-style">
 
             <div class="group">
@@ -857,22 +542,10 @@
             <div class="group">
                 <span class="group-label">효과</span>
                 <div class="toggle-list">
-                    <div class="toggle-row" data-toggle="toggleGlow">
-                        <span class="toggle-name">커버 글로우</span>
-                        <div class="toggle" id="toggleGlow"></div>
-                    </div>
-                    <div class="toggle-row" data-toggle="toggleSheen">
-                        <span class="toggle-name">바이닐 광택</span>
-                        <div class="toggle on" id="toggleSheen"></div>
-                    </div>
-                    <div class="toggle-row" data-toggle="toggleTilt">
-                        <span class="toggle-name">3D 틸트</span>
-                        <div class="toggle on" id="toggleTilt"></div>
-                    </div>
-                    <div class="toggle-row" data-toggle="toggleBarcode">
-                        <span class="toggle-name">바코드 표시</span>
-                        <div class="toggle" id="toggleBarcode"></div>
-                    </div>
+                    <div class="toggle-row" data-toggle="toggleGlow"><span class="toggle-name">커버 글로우</span><div class="toggle" id="toggleGlow"></div></div>
+                    <div class="toggle-row" data-toggle="toggleSheen"><span class="toggle-name">바이닐 광택</span><div class="toggle on" id="toggleSheen"></div></div>
+                    <div class="toggle-row" data-toggle="toggleTilt"><span class="toggle-name">3D 틸트</span><div class="toggle on" id="toggleTilt"></div></div>
+                    <div class="toggle-row" data-toggle="toggleBarcode"><span class="toggle-name">바코드 표시</span><div class="toggle" id="toggleBarcode"></div></div>
                 </div>
             </div>
 
@@ -885,22 +558,19 @@
                     <div class="swatch" style="background:#60c0ff" data-glow="#60c0ff"></div>
                     <div class="swatch" style="background:#ffd060" data-glow="#ffd060"></div>
                     <div class="swatch" style="background:#60ffb0" data-glow="#60ffb0"></div>
-                    <div class="swatch-custom" title="직접 선택">
-                        <span>+</span><input type="color" id="glowColorCustom" value="#ffffff">
-                    </div>
+                    <div class="swatch-custom"><span>+</span><input type="color" id="glowColorCustom" value="#ffffff"></div>
                 </div>
             </div>
 
         </div>
 
-        <!-- ── 텍스트 탭 ─── -->
+        <!-- ── 텍스트 탭 ── -->
         <div class="tab-panel" id="tab-text">
 
             <div class="group">
                 <span class="group-label">아티스트</span>
                 <input type="text" class="text-input" id="artistInput">
             </div>
-
             <div class="group">
                 <span class="group-label">앨범 제목</span>
                 <input type="text" class="text-input" id="titleInput">
@@ -951,9 +621,7 @@
                     <div class="swatch" style="background:#ffdd77" data-tc="#ffdd77"></div>
                     <div class="swatch" style="background:#ff6ab0" data-tc="#ff6ab0"></div>
                     <div class="swatch" style="background:#66ffcc" data-tc="#66ffcc"></div>
-                    <div class="swatch-custom" title="직접 선택">
-                        <span>+</span><input type="color" id="tcColorCustom" value="#ffffff">
-                    </div>
+                    <div class="swatch-custom"><span>+</span><input type="color" id="tcColorCustom" value="#ffffff"></div>
                 </div>
             </div>
 
@@ -965,26 +633,15 @@
                     <div class="swatch" style="background:#400010" data-sc="#400010"></div>
                     <div class="swatch" style="background:#003028" data-sc="#003028"></div>
                     <div class="swatch" style="background:#002040" data-sc="#002040"></div>
-                    <div class="swatch-custom" title="직접 선택">
-                        <span>+</span><input type="color" id="scColorCustom" value="#000000">
-                    </div>
+                    <div class="swatch-custom"><span>+</span><input type="color" id="scColorCustom" value="#000000"></div>
                 </div>
             </div>
 
             <div class="group">
                 <div class="toggle-list">
-                    <div class="toggle-row" data-toggle="toggleText">
-                        <span class="toggle-name">커버에 텍스트 표시</span>
-                        <div class="toggle on" id="toggleText"></div>
-                    </div>
-                    <div class="toggle-row" data-toggle="toggleShadow">
-                        <span class="toggle-name">텍스트 그림자</span>
-                        <div class="toggle on" id="toggleShadow"></div>
-                    </div>
-                    <div class="toggle-row" data-toggle="toggleGradBg">
-                        <span class="toggle-name">그라디언트 배경</span>
-                        <div class="toggle" id="toggleGradBg"></div>
-                    </div>
+                    <div class="toggle-row" data-toggle="toggleText"><span class="toggle-name">커버에 텍스트 표시</span><div class="toggle on" id="toggleText"></div></div>
+                    <div class="toggle-row" data-toggle="toggleShadow"><span class="toggle-name">텍스트 그림자</span><div class="toggle on" id="toggleShadow"></div></div>
+                    <div class="toggle-row" data-toggle="toggleGradBg"><span class="toggle-name">그라디언트 배경</span><div class="toggle" id="toggleGradBg"></div></div>
                 </div>
             </div>
 
@@ -998,37 +655,24 @@
 
 <!-- ── MAIN VIEW ─────────────────────────────────────────── -->
 <div class="main-view" id="mainView">
-
     <div id="capture-area" style="background:#0d0d0d">
 
-        <!-- Particles INSIDE capture-area so they appear in the export -->
+        <!-- Particles are inside capture-area → exported correctly -->
         <canvas id="particles"></canvas>
 
         <!-- VINYL -->
         <div class="mockup-vinyl" id="mockupVinyl">
-            <!-- Glow halo: a div-based gradient, more reliable in html2canvas than box-shadow alone -->
             <div class="glow-halo" id="glowHalo"></div>
-
             <div class="album-cover draggable-cover" id="cover">
-                <div class="cover-placeholder">
-                    <div class="ph-icon">🎵</div>
-                    <div class="ph-text">이미지를 업로드하세요</div>
-                </div>
+                <div class="cover-placeholder"><div class="ph-icon">🎵</div><div class="ph-text">이미지를 업로드하세요</div></div>
                 <div class="cover-text-overlay visible" id="textOverlay">
                     <div class="cover-artist" id="coverArtist"></div>
                     <div class="cover-title" id="coverTitle"></div>
                 </div>
                 <div class="cover-barcode" id="coverBarcode">
-                    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30' preserveAspectRatio='none'>
-                        <rect width='60' height='30' fill='white'/>
-                        <g fill='black'>
-                            <rect x='3' y='2' width='1' height='22'/><rect x='5' y='2' width='2' height='22'/><rect x='8' y='2' width='1' height='22'/><rect x='10' y='2' width='1' height='22'/><rect x='12' y='2' width='3' height='22'/><rect x='16' y='2' width='1' height='22'/><rect x='18' y='2' width='2' height='22'/><rect x='22' y='2' width='1' height='22'/><rect x='24' y='2' width='1' height='22'/><rect x='26' y='2' width='3' height='22'/><rect x='30' y='2' width='1' height='22'/><rect x='32' y='2' width='2' height='22'/><rect x='35' y='2' width='1' height='22'/><rect x='37' y='2' width='1' height='22'/><rect x='39' y='2' width='2' height='22'/><rect x='42' y='2' width='1' height='22'/><rect x='44' y='2' width='3' height='22'/><rect x='48' y='2' width='1' height='22'/><rect x='50' y='2' width='2' height='22'/><rect x='53' y='2' width='1' height='22'/><rect x='55' y='2' width='2' height='22'/>
-                        </g>
-                        <text x='30' y='29' font-family='monospace' font-size='4' text-anchor='middle' fill='black'>9 780000 000000</text>
-                    </svg>
+                    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30' preserveAspectRatio='none'><rect width='60' height='30' fill='white'/><g fill='black'><rect x='3' y='2' width='1' height='22'/><rect x='5' y='2' width='2' height='22'/><rect x='8' y='2' width='1' height='22'/><rect x='10' y='2' width='1' height='22'/><rect x='12' y='2' width='3' height='22'/><rect x='16' y='2' width='1' height='22'/><rect x='18' y='2' width='2' height='22'/><rect x='22' y='2' width='1' height='22'/><rect x='24' y='2' width='1' height='22'/><rect x='26' y='2' width='3' height='22'/><rect x='30' y='2' width='1' height='22'/><rect x='32' y='2' width='2' height='22'/><rect x='35' y='2' width='1' height='22'/><rect x='37' y='2' width='1' height='22'/><rect x='39' y='2' width='2' height='22'/><rect x='42' y='2' width='1' height='22'/><rect x='44' y='2' width='3' height='22'/><rect x='48' y='2' width='1' height='22'/><rect x='50' y='2' width='2' height='22'/><rect x='53' y='2' width='1' height='22'/><rect x='55' y='2' width='2' height='22'/></g><text x='30' y='29' font-family='monospace' font-size='4' text-anchor='middle' fill='black'>9 780000 000000</text></svg>
                 </div>
             </div>
-
             <div class="vinyl-record" id="record">
                 <div class="vinyl-disc" id="vinylDisc">
                     <div class="vinyl-label draggable-cover" id="label">
@@ -1045,18 +689,9 @@
                 <div class="glow-halo" id="glowHaloCd"></div>
                 <div class="cd-back"></div>
                 <div class="cd-front draggable-cover" id="cdFront">
-                    <div class="cover-placeholder">
-                        <div class="ph-icon">🎵</div>
-                        <div class="ph-text">이미지를 업로드하세요</div>
-                    </div>
+                    <div class="cover-placeholder"><div class="ph-icon">🎵</div><div class="ph-text">이미지를 업로드하세요</div></div>
                     <div class="cover-barcode" id="cdBarcode">
-                        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30' preserveAspectRatio='none'>
-                            <rect width='60' height='30' fill='white'/>
-                            <g fill='black'>
-                                <rect x='3' y='2' width='1' height='22'/><rect x='5' y='2' width='2' height='22'/><rect x='8' y='2' width='1' height='22'/><rect x='10' y='2' width='1' height='22'/><rect x='12' y='2' width='3' height='22'/><rect x='16' y='2' width='1' height='22'/><rect x='18' y='2' width='2' height='22'/><rect x='22' y='2' width='1' height='22'/><rect x='24' y='2' width='1' height='22'/><rect x='26' y='2' width='3' height='22'/><rect x='30' y='2' width='1' height='22'/><rect x='32' y='2' width='2' height='22'/><rect x='35' y='2' width='1' height='22'/><rect x='37' y='2' width='1' height='22'/><rect x='39' y='2' width='2' height='22'/><rect x='42' y='2' width='1' height='22'/><rect x='44' y='2' width='3' height='22'/><rect x='48' y='2' width='1' height='22'/><rect x='50' y='2' width='2' height='22'/><rect x='53' y='2' width='1' height='22'/><rect x='55' y='2' width='2' height='22'/>
-                            </g>
-                            <text x='30' y='29' font-family='monospace' font-size='4' text-anchor='middle' fill='black'>9 780000 000000</text>
-                        </svg>
+                        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30' preserveAspectRatio='none'><rect width='60' height='30' fill='white'/><g fill='black'><rect x='3' y='2' width='1' height='22'/><rect x='5' y='2' width='2' height='22'/><rect x='8' y='2' width='1' height='22'/><rect x='10' y='2' width='1' height='22'/><rect x='12' y='2' width='3' height='22'/><rect x='16' y='2' width='1' height='22'/><rect x='18' y='2' width='2' height='22'/><rect x='22' y='2' width='1' height='22'/><rect x='24' y='2' width='1' height='22'/><rect x='26' y='2' width='3' height='22'/><rect x='30' y='2' width='1' height='22'/><rect x='32' y='2' width='2' height='22'/><rect x='35' y='2' width='1' height='22'/><rect x='37' y='2' width='1' height='22'/><rect x='39' y='2' width='2' height='22'/><rect x='42' y='2' width='1' height='22'/><rect x='44' y='2' width='3' height='22'/><rect x='48' y='2' width='1' height='22'/><rect x='50' y='2' width='2' height='22'/><rect x='53' y='2' width='1' height='22'/><rect x='55' y='2' width='2' height='22'/></g><text x='30' y='29' font-family='monospace' font-size='4' text-anchor='middle' fill='black'>9 780000 000000</text></svg>
                     </div>
                 </div>
                 <div class="cd-spine"></div>
@@ -1070,10 +705,7 @@
                 <div class="glow-halo" id="glowHaloCassette"></div>
                 <div class="cassette-body" id="cassettBody">
                     <div class="cassette-label draggable-cover" id="cassetteCover">
-                        <div class="cover-placeholder">
-                            <div class="ph-icon">🎵</div>
-                            <div class="ph-text">이미지를 업로드하세요</div>
-                        </div>
+                        <div class="cover-placeholder"><div class="ph-icon">🎵</div><div class="ph-text">이미지를 업로드하세요</div></div>
                     </div>
                     <div class="cassette-window">
                         <div class="cassette-reel"></div>
@@ -1093,18 +725,13 @@
             <div style="position:relative">
                 <div class="glow-halo" id="glowHaloCard"></div>
                 <div class="stream-card draggable-cover" id="streamCard">
-                    <div class="cover-placeholder">
-                        <div class="ph-icon">🎵</div>
-                        <div class="ph-text">이미지를 업로드하세요</div>
-                    </div>
+                    <div class="cover-placeholder"><div class="ph-icon">🎵</div><div class="ph-text">이미지를 업로드하세요</div></div>
                     <div class="stream-card-overlay"></div>
                     <div class="stream-card-info">
                         <div class="stream-card-title" id="scTitle">앨범 제목</div>
                         <div class="stream-card-artist" id="scArtist">아티스트</div>
                         <div class="stream-card-controls">
-                            <div class="sc-btn">⏮</div>
-                            <div class="sc-btn play">▶</div>
-                            <div class="sc-btn">⏭</div>
+                            <div class="sc-btn">⏮</div><div class="sc-btn play">▶</div><div class="sc-btn">⏭</div>
                         </div>
                         <div class="stream-card-bar"><div class="stream-card-progress"></div></div>
                     </div>
@@ -1120,7 +747,8 @@
 <script>
 const S = {
     imageUrl: null, mode: 'vinyl',
-    bgColor: '#0d0d0d', bgEffect: 'solid', bgAccentColor: '#ffffff',
+    bgColor: '#0d0d0d', bgEffect: 'solid',
+    gradStartColor: '#ff69b4', gradEndColor: '#0d0d0d',
     spinSpeed: 8, vinylColor: '#0e0e0e',
     glow: false, glowColor: '#ffffff',
     sheen: true, tilt: true, barcode: false,
@@ -1131,8 +759,6 @@ const S = {
 };
 
 const $ = id => document.getElementById(id);
-
-// ── HELPERS ─────────────────────────────────────────────
 function hex2rgba(hex, a) {
     const n = parseInt(hex.replace('#',''), 16);
     return `rgba(${n>>16},${(n>>8)&0xff},${n&0xff},${a})`;
@@ -1145,33 +771,28 @@ let isDragging=false, dragEl=null, dragStart={x:0,y:0}, posStart={x:50,y:50};
 document.querySelectorAll('.draggable-cover').forEach(el => {
     el.addEventListener('mousedown', e => {
         if (!S.imageUrl) return;
-        isDragging = true; dragEl = el;
-        dragStart = {x:e.clientX, y:e.clientY};
-        posStart = {...(bgPos[el.id]||{x:50,y:50})};
-        el.classList.add('dragging');
-        e.preventDefault();
+        isDragging=true; dragEl=el;
+        dragStart={x:e.clientX,y:e.clientY};
+        posStart={...(bgPos[el.id]||{x:50,y:50})};
+        el.classList.add('dragging'); e.preventDefault();
     });
 });
 
 document.addEventListener('mousemove', e => {
-    if (!isDragging || !dragEl) return;
-    const id = dragEl.id;
-    if (!bgPos[id]) bgPos[id]={x:50,y:50};
-    const rect = dragEl.getBoundingClientRect();
-    const dx = (e.clientX - dragStart.x) / rect.width  * 100;
-    const dy = (e.clientY - dragStart.y) / rect.height * 100;
-    bgPos[id].x = Math.max(0, Math.min(100, posStart.x - dx));
-    bgPos[id].y = Math.max(0, Math.min(100, posStart.y - dy));
-    dragEl.style.backgroundPosition = `${bgPos[id].x}% ${bgPos[id].y}%`;
-    if (id==='cover') {
-        bgPos.label = {...bgPos[id]};
-        $('label').style.backgroundPosition = `${bgPos.label.x}% ${bgPos.label.y}%`;
-    }
+    if (!isDragging||!dragEl) return;
+    const id=dragEl.id; if(!bgPos[id]) bgPos[id]={x:50,y:50};
+    const rect=dragEl.getBoundingClientRect();
+    const dx=(e.clientX-dragStart.x)/rect.width*100;
+    const dy=(e.clientY-dragStart.y)/rect.height*100;
+    bgPos[id].x=Math.max(0,Math.min(100,posStart.x-dx));
+    bgPos[id].y=Math.max(0,Math.min(100,posStart.y-dy));
+    dragEl.style.backgroundPosition=`${bgPos[id].x}% ${bgPos[id].y}%`;
+    if(id==='cover'){ bgPos.label={...bgPos[id]}; $('label').style.backgroundPosition=`${bgPos.label.x}% ${bgPos.label.y}%`; }
 });
 
 document.addEventListener('mouseup', () => {
-    if (dragEl) dragEl.classList.remove('dragging');
-    isDragging = false; dragEl = null;
+    if(dragEl) dragEl.classList.remove('dragging');
+    isDragging=false; dragEl=null;
 });
 
 // ── TABS ────────────────────────────────────────────────
@@ -1186,349 +807,289 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 
 // ── UPLOAD ──────────────────────────────────────────────
 $('imageUpload').addEventListener('change', e => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = ev => {
-        S.imageUrl = ev.target.result;
-        Object.keys(bgPos).forEach(k => { bgPos[k]={x:50,y:50}; });
+    const file=e.target.files[0]; if(!file) return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+        S.imageUrl=ev.target.result;
+        Object.keys(bgPos).forEach(k=>{bgPos[k]={x:50,y:50};});
         applyImage();
-        const uz = $('uploadZone');
+        const uz=$('uploadZone');
         uz.classList.add('has-image');
-        uz.querySelector('.upload-text').textContent = file.name.length > 22 ? file.name.slice(0,20)+'…' : file.name;
-        uz.querySelector('.upload-sub').textContent = '드래그로 위치 조절';
+        uz.querySelector('.upload-text').textContent=file.name.length>22?file.name.slice(0,20)+'…':file.name;
+        uz.querySelector('.upload-sub').textContent='드래그로 위치 조절';
         showToast('업로드 완료');
     };
     reader.readAsDataURL(file);
 });
 
 function applyImage() {
-    const url = `url(${S.imageUrl})`;
-    ['cover','label','cdFront','cassetteCover','streamCard','streamCardBg'].forEach(id => {
+    const url=`url(${S.imageUrl})`;
+    ['cover','label','cdFront','cassetteCover','streamCard','streamCardBg'].forEach(id=>{
         const el=$(id);
-        el.style.backgroundImage = url;
-        el.style.backgroundSize = 'cover';
-        el.style.backgroundPosition = '50% 50%';
+        el.style.backgroundImage=url;
+        el.style.backgroundSize='cover';
+        el.style.backgroundPosition='50% 50%';
         el.classList.add('has-image');
     });
-    if (S.glow) applyGlow();
+    if(S.glow) applyGlow();
 }
 
 // ── MODE ────────────────────────────────────────────────
-document.querySelectorAll('.mode-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+document.querySelectorAll('.mode-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
         document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        S.mode = btn.dataset.mode;
-        switchMode(S.mode);
+        btn.classList.add('active'); S.mode=btn.dataset.mode; switchMode(S.mode);
     });
 });
 
 function switchMode(mode) {
     ['Vinyl','Cd','Cassette','Card'].forEach(m=>$('mockup'+m).style.display='none');
-    const map = {vinyl:'mockupVinyl', cd:'mockupCd', cassette:'mockupCassette', card:'mockupCard'};
-    $(map[mode]).style.display = 'flex';
+    const map={vinyl:'mockupVinyl',cd:'mockupCd',cassette:'mockupCassette',card:'mockupCard'};
+    $(map[mode]).style.display='flex';
 }
 
 // ── BACKGROUND ──────────────────────────────────────────
-document.querySelectorAll('#bgSwatches .swatch').forEach(sw => {
-    sw.addEventListener('click', () => {
-        document.querySelectorAll('#bgSwatches .swatch').forEach(s=>s.classList.remove('active'));
-        sw.classList.add('active');
-        S.bgColor = sw.dataset.color;
-        applyBg();
-    });
-});
-
-$('bgColorCustom').addEventListener('input', e => {
-    document.querySelectorAll('#bgSwatches .swatch').forEach(s=>s.classList.remove('active'));
-    S.bgColor = e.target.value;
-    applyBg();
-});
-
-document.querySelectorAll('[data-bg-effect]').forEach(el => {
-    el.addEventListener('click', () => {
+document.querySelectorAll('[data-bg-effect]').forEach(el=>{
+    el.addEventListener('click',()=>{
         document.querySelectorAll('[data-bg-effect]').forEach(e=>e.classList.remove('active'));
-        el.classList.add('active');
-        S.bgEffect = el.dataset.bgEffect;
-        applyBg();
+        el.classList.add('active'); S.bgEffect=el.dataset.bgEffect;
+        updateBgUI(); applyBg();
     });
 });
 
-document.querySelectorAll('[data-accent]').forEach(sw => {
-    sw.addEventListener('click', () => {
-        document.querySelectorAll('[data-accent]').forEach(s=>s.classList.remove('active'));
-        sw.classList.add('active');
-        S.bgAccentColor = sw.dataset.accent;
-        applyBg();
+function updateBgUI() {
+    const isGrad = S.bgEffect==='gradient';
+    $('gradientColorPanel').classList.toggle('show', isGrad);
+    $('solidColorGroup').style.display = isGrad ? 'none' : '';
+}
+
+// Solid/glow/particles bg color
+document.querySelectorAll('#bgSwatches .swatch').forEach(sw=>{
+    sw.addEventListener('click',()=>{
+        document.querySelectorAll('#bgSwatches .swatch').forEach(s=>s.classList.remove('active'));
+        sw.classList.add('active'); S.bgColor=sw.dataset.color; applyBg();
     });
 });
+$('bgColorCustom').addEventListener('input',e=>{ S.bgColor=e.target.value; applyBg(); });
 
-$('bgAccentCustom').addEventListener('input', e => {
-    document.querySelectorAll('[data-accent]').forEach(s=>s.classList.remove('active'));
-    S.bgAccentColor = e.target.value;
-    applyBg();
+// Gradient start color
+document.querySelectorAll('[data-gs]').forEach(sw=>{
+    sw.addEventListener('click',()=>{
+        document.querySelectorAll('[data-gs]').forEach(s=>s.classList.remove('active'));
+        sw.classList.add('active'); S.gradStartColor=sw.dataset.gs; applyBg();
+    });
 });
+$('gradStartCustom').addEventListener('input',e=>{ S.gradStartColor=e.target.value; applyBg(); });
+
+// Gradient end color
+document.querySelectorAll('[data-ge]').forEach(sw=>{
+    sw.addEventListener('click',()=>{
+        document.querySelectorAll('[data-ge]').forEach(s=>s.classList.remove('active'));
+        sw.classList.add('active'); S.gradEndColor=sw.dataset.ge; applyBg();
+    });
+});
+$('gradEndCustom').addEventListener('input',e=>{ S.gradEndColor=e.target.value; applyBg(); });
 
 function applyBg() {
     stopParticles();
-    const ca = $('capture-area');
-    ca.style.backgroundColor = S.bgColor;
-    ca.style.backgroundImage = 'none';
+    const ca=$('capture-area');
+    ca.style.backgroundImage='none';
 
-    if (S.bgEffect === 'gradient') {
-        ca.style.backgroundImage =
-            `linear-gradient(135deg, ${S.bgAccentColor} 0%, ${hex2rgba(S.bgAccentColor, 0.3)} 45%, ${S.bgColor} 75%)`;
-    } else if (S.bgEffect === 'glow') {
-        ca.style.backgroundImage =
-            `radial-gradient(ellipse 55% 60% at 50% 50%, ${S.bgAccentColor} 0%, ${hex2rgba(S.bgAccentColor, 0.35)} 35%, ${S.bgColor} 68%)`;
-    } else if (S.bgEffect === 'particles') {
+    if(S.bgEffect==='gradient') {
+        // Two fully independent colors — no banding artifact, simple linear
+        ca.style.backgroundColor=S.gradEndColor;
+        ca.style.backgroundImage=`linear-gradient(135deg, ${S.gradStartColor} 0%, ${hex2rgba(S.gradStartColor,0.35)} 48%, ${S.gradEndColor} 78%)`;
+    } else if(S.bgEffect==='glow') {
+        ca.style.backgroundColor=S.bgColor;
+        ca.style.backgroundImage=`radial-gradient(ellipse 55% 60% at 50% 50%, ${hex2rgba(S.bgColor, 0)} 0%, ${hex2rgba('#ffffff',0.18)} 0%, ${hex2rgba('#ffffff',0)} 60%), radial-gradient(ellipse 55% 60% at 50% 50%, ${liven(S.bgColor,120)} 0%, ${liven(S.bgColor,40)} 35%, ${S.bgColor} 68%)`;
+        ca.style.backgroundImage=`radial-gradient(ellipse 55% 60% at 50% 50%, ${liven(S.bgColor,120)} 0%, ${liven(S.bgColor,40)} 35%, ${S.bgColor} 68%)`;
+    } else if(S.bgEffect==='particles') {
+        ca.style.backgroundColor=S.bgColor;
         startParticles();
+    } else {
+        ca.style.backgroundColor=S.bgColor;
     }
 }
 
+function liven(hex, amt) {
+    const n=parseInt(hex.replace('#',''),16);
+    return `rgb(${Math.min(255,(n>>16)+amt)},${Math.min(255,((n>>8)&0xff)+amt)},${Math.min(255,(n&0xff)+amt)})`;
+}
+
 // ── SPIN SPEED ──────────────────────────────────────────
-$('spinSpeed').addEventListener('input', function() {
-    S.spinSpeed = +this.value;
-    $('spinSpeed-val').textContent = this.value+'초';
-    $('record').style.animation = `spinVinyl ${this.value}s linear infinite`;
-    $('cdDisc').style.animation  = `spinVinyl ${this.value/2}s linear infinite`;
-    document.querySelectorAll('.cassette-reel').forEach(r => r.style.animationDuration=(this.value/4)+'s');
+$('spinSpeed').addEventListener('input',function(){
+    S.spinSpeed=+this.value; $('spinSpeed-val').textContent=this.value+'초';
+    $('record').style.animation=`spinVinyl ${this.value}s linear infinite`;
+    $('cdDisc').style.animation=`spinVinyl ${this.value/2}s linear infinite`;
+    document.querySelectorAll('.cassette-reel').forEach(r=>r.style.animationDuration=(this.value/4)+'s');
 });
 
 // ── VINYL COLOR ─────────────────────────────────────────
-document.querySelectorAll('[data-vinyl]').forEach(sw => {
-    sw.addEventListener('click', () => {
+document.querySelectorAll('[data-vinyl]').forEach(sw=>{
+    sw.addEventListener('click',()=>{
         document.querySelectorAll('[data-vinyl]').forEach(s=>s.classList.remove('active'));
-        sw.classList.add('active');
-        S.vinylColor = sw.dataset.vinyl;
-        const vd = $('vinylDisc');
-        vd.style.background = S.vinylColor;
-        vd.style.backgroundImage = `repeating-radial-gradient(rgba(0,0,0,0) 0%, rgba(0,0,0,0) 3.5px, rgba(255,255,255,0.025) 4px, rgba(0,0,0,0) 4.5px)`;
+        sw.classList.add('active'); S.vinylColor=sw.dataset.vinyl;
+        const vd=$('vinylDisc'); vd.style.background=S.vinylColor;
     });
 });
 
 // ── GLOW COLOR ──────────────────────────────────────────
-document.querySelectorAll('[data-glow]').forEach(sw => {
-    sw.addEventListener('click', () => {
+document.querySelectorAll('[data-glow]').forEach(sw=>{
+    sw.addEventListener('click',()=>{
         document.querySelectorAll('[data-glow]').forEach(s=>s.classList.remove('active'));
-        sw.classList.add('active');
-        S.glowColor = sw.dataset.glow;
-        if (S.glow) applyGlow();
+        sw.classList.add('active'); S.glowColor=sw.dataset.glow;
+        if(S.glow) applyGlow();
     });
 });
+$('glowColorCustom').addEventListener('input',e=>{ S.glowColor=e.target.value; if(S.glow) applyGlow(); });
 
-$('glowColorCustom').addEventListener('input', e => {
-    document.querySelectorAll('[data-glow]').forEach(s=>s.classList.remove('active'));
-    S.glowColor = e.target.value;
-    if (S.glow) applyGlow();
-});
-
-// ── GLOW ────────────────────────────────────────────────
-const GLOW_IDS = ['glowHalo','glowHaloCd','glowHaloCassette','glowHaloCard'];
-const COVER_IDS_GLOW = ['cover','cdFront','cassettBody','streamCard'];
+const GLOW_IDS=['glowHalo','glowHaloCd','glowHaloCassette','glowHaloCard'];
 
 function applyGlow() {
-    const bg = `radial-gradient(ellipse 75% 75% at 50% 50%, ${hex2rgba(S.glowColor, 0.55)} 0%, ${hex2rgba(S.glowColor, 0.22)} 38%, transparent 68%)`;
-    GLOW_IDS.forEach(id => {
-        const el = $(id);
-        if (el) { el.style.background = bg; el.style.opacity = '1'; }
-    });
-    // Also box-shadow for richness
-    const sh = `0 0 30px ${hex2rgba(S.glowColor, 0.7)}, 0 0 70px ${hex2rgba(S.glowColor, 0.35)}`;
-    $('cover').style.boxShadow      = sh + ', 30px 0 80px rgba(0,0,0,0.9)';
-    $('cdFront').style.boxShadow    = sh + ', 0 20px 60px rgba(0,0,0,0.8)';
-    $('cassettBody') && ($('cassettBody').style.boxShadow = sh + ', 0 20px 60px rgba(0,0,0,0.8)');
-    $('streamCard').style.boxShadow = sh + ', 0 30px 80px rgba(0,0,0,0.8)';
+    const bg=`radial-gradient(ellipse 75% 75% at 50% 50%, ${hex2rgba(S.glowColor,0.55)} 0%, ${hex2rgba(S.glowColor,0.22)} 38%, transparent 68%)`;
+    GLOW_IDS.forEach(id=>{ const el=$(id); if(el){el.style.background=bg; el.style.opacity='1';} });
+    const sh=`0 0 30px ${hex2rgba(S.glowColor,0.7)}, 0 0 70px ${hex2rgba(S.glowColor,0.35)}`;
+    $('cover').style.boxShadow=sh+', 15px 0 50px rgba(0,0,0,0.95)';
+    $('cdFront').style.boxShadow=sh+', 0 15px 50px rgba(0,0,0,0.85)';
+    const cb=$('cassettBody'); if(cb) cb.style.boxShadow=sh+', 0 20px 60px rgba(0,0,0,0.8)';
+    $('streamCard').style.boxShadow=sh+', 0 30px 80px rgba(0,0,0,0.8)';
 }
 
 function clearGlow() {
-    GLOW_IDS.forEach(id => { const el=$(id); if(el) el.style.opacity='0'; });
-    $('cover').style.boxShadow      = '30px 0 80px rgba(0,0,0,0.9), 6px 0 20px rgba(0,0,0,0.6)';
-    $('cdFront').style.boxShadow    = '0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05)';
-    const cb = $('cassettBody'); if(cb) cb.style.boxShadow = '0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06)';
-    $('streamCard').style.boxShadow = '0 30px 80px rgba(0,0,0,0.8)';
+    GLOW_IDS.forEach(id=>{ const el=$(id); if(el) el.style.opacity='0'; });
+    $('cover').style.boxShadow='15px 0 50px rgba(0,0,0,0.95), 2px 0 10px rgba(0,0,0,0.8)';
+    $('cdFront').style.boxShadow='0 15px 50px rgba(0,0,0,0.85)';
+    const cb=$('cassettBody'); if(cb) cb.style.boxShadow='0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06)';
+    $('streamCard').style.boxShadow='0 30px 80px rgba(0,0,0,0.8)';
 }
 
 // ── TOGGLES ─────────────────────────────────────────────
-document.querySelectorAll('.toggle-row').forEach(row => {
-    row.addEventListener('click', () => {
-        const id = row.dataset.toggle;
-        const el = $(id);
-        el.classList.toggle('on');
-        handleToggle(id, el.classList.contains('on'));
+document.querySelectorAll('.toggle-row').forEach(row=>{
+    row.addEventListener('click',()=>{
+        const id=row.dataset.toggle; const el=$(id);
+        el.classList.toggle('on'); handleToggle(id,el.classList.contains('on'));
     });
 });
 
-function handleToggle(id, v) {
-    if      (id==='toggleGlow')    { S.glow=v; v ? applyGlow() : clearGlow(); }
-    else if (id==='toggleSheen')   { S.sheen=v; $('vinylDisc').classList.toggle('no-sheen',!v); }
-    else if (id==='toggleTilt')    { S.tilt=v; if(!v) $('capture-area').style.transform=''; }
-    else if (id==='toggleBarcode') {
-        S.barcode=v;
-        document.querySelectorAll('.cover-barcode').forEach(b=>b.classList.toggle('visible',v));
-    }
-    else if (id==='toggleText')   { S.showText=v; $('textOverlay').classList.toggle('visible',v); }
-    else if (id==='toggleShadow') { S.shadow=v; applyShadow(); }
-    else if (id==='toggleGradBg') {
-        S.gradBg=v;
-        $('textOverlay').style.background = v ? 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)' : '';
-    }
+function handleToggle(id,v) {
+    if(id==='toggleGlow'){S.glow=v; v?applyGlow():clearGlow();}
+    else if(id==='toggleSheen'){S.sheen=v; $('vinylDisc').classList.toggle('no-sheen',!v);}
+    else if(id==='toggleTilt'){S.tilt=v; if(!v) $('capture-area').style.transform='';}
+    else if(id==='toggleBarcode'){S.barcode=v; document.querySelectorAll('.cover-barcode').forEach(b=>b.classList.toggle('visible',v));}
+    else if(id==='toggleText'){S.showText=v; $('textOverlay').classList.toggle('visible',v);}
+    else if(id==='toggleShadow'){S.shadow=v; applyShadow();}
+    else if(id==='toggleGradBg'){S.gradBg=v; $('textOverlay').style.background=v?'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)':('')}
 }
 
-// ── TEXT SHADOW ─────────────────────────────────────────
+// ── SHADOW ──────────────────────────────────────────────
 function applyShadow() {
-    if (S.shadow) {
-        const c  = hex2rgba(S.shadowColor, 0.88);
-        const c2 = hex2rgba(S.shadowColor, 0.5);
-        $('coverTitle').style.textShadow  = `0 2px 20px ${c}, 0 1px 6px ${c2}`;
-        $('coverArtist').style.textShadow = `0 2px 12px ${c}`;
+    if(S.shadow){
+        const c=hex2rgba(S.shadowColor,0.88); const c2=hex2rgba(S.shadowColor,0.5);
+        $('coverTitle').style.textShadow=`0 2px 20px ${c}, 0 1px 6px ${c2}`;
+        $('coverArtist').style.textShadow=`0 2px 12px ${c}`;
     } else {
-        $('coverTitle').style.textShadow  = 'none';
-        $('coverArtist').style.textShadow = 'none';
+        $('coverTitle').style.textShadow='none'; $('coverArtist').style.textShadow='none';
     }
 }
 
-document.querySelectorAll('[data-sc]').forEach(sw => {
-    sw.addEventListener('click', () => {
+document.querySelectorAll('[data-sc]').forEach(sw=>{
+    sw.addEventListener('click',()=>{
         document.querySelectorAll('[data-sc]').forEach(s=>s.classList.remove('active'));
-        sw.classList.add('active');
-        S.shadowColor = sw.dataset.sc;
-        applyShadow();
+        sw.classList.add('active'); S.shadowColor=sw.dataset.sc; applyShadow();
     });
 });
-
-$('scColorCustom').addEventListener('input', e => {
-    document.querySelectorAll('[data-sc]').forEach(s=>s.classList.remove('active'));
-    S.shadowColor = e.target.value;
-    applyShadow();
-});
+$('scColorCustom').addEventListener('input',e=>{ S.shadowColor=e.target.value; applyShadow(); });
 
 // ── TEXT ────────────────────────────────────────────────
-$('artistInput').addEventListener('input', e => {
-    S.artist = e.target.value;
-    $('coverArtist').textContent = e.target.value;
-    $('scArtist').textContent    = e.target.value || '아티스트';
-});
+$('artistInput').addEventListener('input',e=>{ S.artist=e.target.value; $('coverArtist').textContent=e.target.value; $('scArtist').textContent=e.target.value||'아티스트'; });
+$('titleInput').addEventListener('input',e=>{ S.title=e.target.value; $('coverTitle').textContent=e.target.value; $('scTitle').textContent=e.target.value||'앨범 제목'; });
+$('fontSelect').addEventListener('change',e=>{ S.font=e.target.value; $('coverTitle').style.fontFamily=e.target.value; $('coverArtist').style.fontFamily=e.target.value; });
+$('titleSize').addEventListener('input',function(){ S.titleSize=+this.value; $('titleSize-val').textContent=this.value+'px'; $('coverTitle').style.fontSize=this.value+'px'; });
 
-$('titleInput').addEventListener('input', e => {
-    S.title = e.target.value;
-    $('coverTitle').textContent = e.target.value;
-    $('scTitle').textContent    = e.target.value || '앨범 제목';
-});
-
-$('fontSelect').addEventListener('change', e => {
-    S.font = e.target.value;
-    $('coverTitle').style.fontFamily  = e.target.value;
-    $('coverArtist').style.fontFamily = e.target.value;
-});
-
-$('titleSize').addEventListener('input', function() {
-    S.titleSize = +this.value;
-    $('titleSize-val').textContent = this.value+'px';
-    $('coverTitle').style.fontSize = this.value+'px';
-});
-
-document.querySelectorAll('[data-pos]').forEach(el => {
-    el.addEventListener('click', () => {
+document.querySelectorAll('[data-pos]').forEach(el=>{
+    el.addEventListener('click',()=>{
         document.querySelectorAll('[data-pos]').forEach(e=>e.classList.remove('active'));
-        el.classList.add('active');
-        S.textPos = el.dataset.pos;
-        const ol = $('textOverlay');
-        ol.style.justifyContent = S.textPos==='bottom'?'flex-end':S.textPos==='top'?'flex-start':'center';
-        ol.style.alignItems     = S.textPos==='center'?'center':'flex-start';
+        el.classList.add('active'); S.textPos=el.dataset.pos;
+        const ol=$('textOverlay');
+        ol.style.justifyContent=S.textPos==='bottom'?'flex-end':S.textPos==='top'?'flex-start':'center';
+        ol.style.alignItems=S.textPos==='center'?'center':'flex-start';
     });
 });
 
-document.querySelectorAll('[data-tc]').forEach(sw => {
-    sw.addEventListener('click', () => {
+document.querySelectorAll('[data-tc]').forEach(sw=>{
+    sw.addEventListener('click',()=>{
         document.querySelectorAll('[data-tc]').forEach(s=>s.classList.remove('active'));
         sw.classList.add('active'); setTextColor(sw.dataset.tc);
     });
 });
+$('tcColorCustom').addEventListener('input',e=>{ document.querySelectorAll('[data-tc]').forEach(s=>s.classList.remove('active')); setTextColor(e.target.value); });
 
-$('tcColorCustom').addEventListener('input', e => {
-    document.querySelectorAll('[data-tc]').forEach(s=>s.classList.remove('active'));
-    setTextColor(e.target.value);
-});
-
-function setTextColor(c) {
-    S.textColor = c;
-    $('coverTitle').style.color  = c;
-    $('coverArtist').style.color = c;
-}
+function setTextColor(c) { S.textColor=c; $('coverTitle').style.color=c; $('coverArtist').style.color=c; }
 
 // ── 3D TILT ─────────────────────────────────────────────
-$('mainView').addEventListener('mousemove', e => {
-    if (!S.tilt) return;
-    const ca   = $('capture-area');
-    const rect = ca.getBoundingClientRect();
-    const dx   = ((e.clientX - rect.left) / rect.width  - 0.5) * 2;
-    const dy   = ((e.clientY - rect.top)  / rect.height - 0.5) * 2;
-    ca.style.transform = `perspective(1200px) rotateY(${dx*4}deg) rotateX(${-dy*3}deg)`;
+$('mainView').addEventListener('mousemove',e=>{
+    if(!S.tilt) return;
+    const ca=$('capture-area'); const rect=ca.getBoundingClientRect();
+    const dx=((e.clientX-rect.left)/rect.width-0.5)*2;
+    const dy=((e.clientY-rect.top)/rect.height-0.5)*2;
+    ca.style.transform=`perspective(1200px) rotateY(${dx*4}deg) rotateX(${-dy*3}deg)`;
 });
+$('mainView').addEventListener('mouseleave',()=>{ $('capture-area').style.transform='perspective(1200px) rotateY(0deg) rotateX(0deg)'; });
 
-$('mainView').addEventListener('mouseleave', () => {
-    $('capture-area').style.transform = 'perspective(1200px) rotateY(0deg) rotateX(0deg)';
-});
-
-// ── PARTICLES ── (now inside capture-area so they appear in export) ──
-const canvas = $('particles');
-const pctx   = canvas.getContext('2d');
-let rafId = null;
-const pts = [];
+// ── PARTICLES ───────────────────────────────────────────
+const canvas=$('particles');
+const pctx=canvas.getContext('2d');
+let rafId=null;
+const pts=[];
 
 function startParticles() {
-    const ca = $('capture-area');
-    canvas.width  = ca.offsetWidth;
-    canvas.height = ca.offsetHeight;
-    canvas.style.display = 'block';
-    pts.length = 0;
-    for (let i=0; i<120; i++) pts.push({
-        x: Math.random()*canvas.width,
-        y: Math.random()*canvas.height,
-        r: Math.random()*2.5+0.5,
-        vx:(Math.random()-0.5)*0.3,
-        vy:-(Math.random()*0.6+0.2),
-        a: Math.random()*0.7+0.15,
+    const ca=$('capture-area');
+    canvas.width=ca.offsetWidth; canvas.height=ca.offsetHeight;
+    canvas.style.width=ca.offsetWidth+'px'; canvas.style.height=ca.offsetHeight+'px';
+    canvas.style.display='block';
+    pts.length=0;
+    for(let i=0;i<120;i++) pts.push({
+        x:Math.random()*canvas.width, y:Math.random()*canvas.height,
+        r:Math.random()*2.5+0.5, vx:(Math.random()-0.5)*0.3, vy:-(Math.random()*0.6+0.2), a:Math.random()*0.7+0.15
     });
-    (function draw() {
+    (function draw(){
         pctx.clearRect(0,0,canvas.width,canvas.height);
-        pts.forEach(p => {
-            pctx.beginPath();
-            pctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-            pctx.fillStyle=`rgba(255,255,255,${p.a})`;
-            pctx.fill();
+        pts.forEach(p=>{
+            pctx.beginPath(); pctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+            pctx.fillStyle=`rgba(255,255,255,${p.a})`; pctx.fill();
             p.x+=p.vx; p.y+=p.vy;
-            if(p.y<-5){p.y=canvas.height+5;p.x=Math.random()*canvas.width;}
+            if(p.y<-5){p.y=canvas.height+5; p.x=Math.random()*canvas.width;}
         });
-        rafId = requestAnimationFrame(draw);
+        rafId=requestAnimationFrame(draw);
     })();
 }
 
 function stopParticles() {
-    if(rafId){cancelAnimationFrame(rafId);rafId=null;}
+    if(rafId){cancelAnimationFrame(rafId); rafId=null;}
     pctx.clearRect(0,0,canvas.width,canvas.height);
-    pts.length=0;
-    canvas.style.display='none';
+    pts.length=0; canvas.style.display='none';
 }
 
 // ── SAVE ────────────────────────────────────────────────
 $('saveBtn').addEventListener('click', async () => {
-    const ca  = $('capture-area');
+    const ca=$('capture-area');
+    const btn=$('saveBtn');
 
-    // Pause animations
+    // Pause all animations
     [$('record'),$('cdDisc')].forEach(el=>el.style.animationPlayState='paused');
     document.querySelectorAll('.cassette-reel').forEach(r=>r.style.animationPlayState='paused');
-    // Remove 3D transform so image is flat
-    ca.style.transform = '';
 
-    const btn = $('saveBtn');
-    btn.textContent = '생성 중...';
-    btn.disabled = true;
+    // FIX: fully stop particles animation before capture (prevents canvas artifacts)
+    const hadParticles = S.bgEffect==='particles';
+    if(hadParticles && rafId) { cancelAnimationFrame(rafId); rafId=null; }
 
-    // Small delay to let DOM settle
-    await new Promise(r=>setTimeout(r,100));
+    // Remove 3D tilt
+    ca.style.transform='';
+
+    btn.textContent='생성 중...'; btn.disabled=true;
+
+    // Wait for DOM to settle
+    await new Promise(r=>setTimeout(r,120));
 
     html2canvas(ca, {
         scale: 3,
@@ -1536,17 +1097,22 @@ $('saveBtn').addEventListener('click', async () => {
         allowTaint: true,
         backgroundColor: null,
         logging: false,
-    }).then(c => {
-        const link = document.createElement('a');
-        link.download = `album_mockup_${Date.now()}.png`;
-        link.href = c.toDataURL('image/png');
+        // FIX: force redraw to avoid stale composite layers
+        ignoreElements: el => false,
+    }).then(c=>{
+        const link=document.createElement('a');
+        link.download=`album_mockup_${Date.now()}.png`;
+        link.href=c.toDataURL('image/png');
         link.click();
 
-        btn.textContent = 'PNG로 저장';
-        btn.disabled = false;
+        btn.textContent='PNG로 저장'; btn.disabled=false;
 
+        // Resume animations
         [$('record'),$('cdDisc')].forEach(el=>el.style.animationPlayState='running');
         document.querySelectorAll('.cassette-reel').forEach(r=>r.style.animationPlayState='running');
+
+        // Resume particles
+        if(hadParticles) startParticles();
 
         showToast('저장되었습니다');
     });
@@ -1554,9 +1120,7 @@ $('saveBtn').addEventListener('click', async () => {
 
 // ── TOAST ───────────────────────────────────────────────
 function showToast(msg) {
-    const t=$('toast');
-    t.textContent=msg;
-    t.classList.add('show');
+    const t=$('toast'); t.textContent=msg; t.classList.add('show');
     setTimeout(()=>t.classList.remove('show'),2400);
 }
 
