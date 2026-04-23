@@ -50,7 +50,6 @@
         .upload-zone.has-image .upload-icon { background:white; }
         .upload-text { font-size:12.5px; color:var(--text); font-weight:600; margin-bottom:2px; }
         .upload-sub { font-size:10.5px; color:var(--text-muted); }
-        
         input[type="file"] { width:0.1px; height:0.1px; opacity:0; overflow:hidden; position:absolute; z-index:-1; }
 
         /* mode grid */
@@ -201,9 +200,8 @@
         .cover-text-overlay.visible .cover-title { opacity:1; }
 
         .vinyl-record { position:absolute; left:225px; width:385px; height:385px; border-radius:50%; z-index:1; display:flex; align-items:center; justify-content:center; animation:spinVinyl 8s linear infinite; }
-        .vinyl-disc { width:100%; height:100%; border-radius:50%; background:#0e0e0e; position:relative; overflow:hidden; }
-        .vinyl-disc::before { content:''; position:absolute; inset:0; border-radius:50%; background: conic-gradient(from 0deg, transparent 0deg 80deg, rgba(255,255,255,0.06) 80deg 120deg, transparent 120deg 200deg, rgba(255,255,255,0.04) 200deg 240deg, transparent 240deg 360deg); opacity:1; transition:opacity 0.3s; }
-        .vinyl-disc.no-sheen::before { opacity:0; }
+        /* 💡 CSS 그라디언트를 지우고 캔버스로 대체 */
+        .vinyl-disc { width:100%; height:100%; border-radius:50%; position:relative; overflow:hidden; }
         .vinyl-label { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:145px; height:145px; border-radius:50%; background:#333 50% 50%/cover no-repeat; overflow:hidden; }
         .vinyl-label .cover-placeholder { color:rgba(255,255,255,0.3); gap:3px; }
         .vinyl-label .ph-icon { font-size:14px; }
@@ -219,7 +217,7 @@
         .cd-back { position:absolute; top:7px; left:7px; width:390px; height:390px; background:#161616; border-radius:4px; z-index:4; }
         .cd-front { position:absolute; inset:0; background:#222 50% 50%/cover no-repeat; border-radius:4px; overflow:hidden; z-index:5; }
         .cd-spine { position:absolute; left:-11px; top:0; bottom:0; width:11px; background:linear-gradient(90deg, #090909, #1a1a1a); border-radius:2px 0 0 2px; z-index:6; }
-        .cd-disc { position:absolute; right:-100px; top:50%; transform:translateY(-50%); width:210px; height:210px; border-radius:50%; background: conic-gradient(#aaaabc 0deg 15deg,#8888a8 15deg 30deg,#c0c0d0 30deg 45deg,#7878a0 45deg 60deg,#c8c8d8 60deg 75deg,#9090b0 75deg 90deg,#aaaabc 90deg 105deg,#9898b8 105deg 120deg,#b8b8c8 120deg 135deg,#8080a0 135deg 150deg,#aaaabc 150deg 165deg,#9494b2 165deg 180deg,#c0c0d0 180deg 195deg,#8888a8 195deg 210deg,#a8a8c0 210deg 225deg,#9898b8 225deg 240deg,#c0c0d0 240deg 255deg,#8888b0 255deg 270deg,#aaaabc 270deg 285deg,#9090b0 285deg 300deg,#c8c8d8 300deg 315deg,#8080a0 315deg 330deg,#aaaabc 330deg 345deg,#9898b0 345deg 360deg); display:flex; align-items:center; justify-content:center; animation:spinVinyl 4s linear infinite; z-index:5; }
+        .cd-disc { position:absolute; right:-100px; top:50%; transform:translateY(-50%); width:210px; height:210px; border-radius:50%; display:flex; align-items:center; justify-content:center; animation:spinVinyl 4s linear infinite; z-index:5; }
         .cd-hole { width:38px; height:38px; background:#1a1a1a; border-radius:50%; }
 
         /* ── CASSETTE ────────────────── */
@@ -228,7 +226,7 @@
         .cassette-body { position:relative; width:440px; height:270px; background:#181818; border-radius:10px; overflow:hidden; z-index:5; }
         .cassette-label { position:absolute; top:18px; left:18px; right:18px; height:130px; background:#222 50% 50%/cover no-repeat; border-radius:5px; overflow:hidden; }
         .cassette-window { position:absolute; bottom:22px; left:50%; transform:translateX(-50%); width:200px; height:68px; background:rgba(0,0,0,0.55); border-radius:5px; border:1px solid rgba(255,255,255,0.07); display:flex; align-items:center; justify-content:space-around; padding:8px; }
-        .cassette-reel { width:46px; height:46px; border-radius:50%; background: conic-gradient(#2a2a2a 0deg 60deg,#181818 60deg 120deg,#2a2a2a 120deg 180deg,#181818 180deg 240deg,#2a2a2a 240deg 300deg,#181818 300deg 360deg); display:flex; align-items:center; justify-content:center; animation:spinVinyl 2s linear infinite; }
+        .cassette-reel { width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; animation:spinVinyl 2s linear infinite; }
         .cassette-reel::after { content:''; width:14px; height:14px; background:#0d0d0d; border-radius:50%; }
         .cassette-screw { position:absolute; width:7px; height:7px; background:#252525; border-radius:50%; border:1px solid rgba(255,255,255,0.08); }
 
@@ -598,6 +596,88 @@ function clearGlow() {
     GLOW_LAYERS.forEach(id=>{ const el=$(id); if(el) el.classList.remove('on'); });
 }
 
+// 💡 리얼 3D 바이닐 텍스처 (홈 + 빛 반사) 생성
+function applyVinylTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 800; canvas.height = 800;
+    const ctx = canvas.getContext('2d');
+    const cx = 400, cy = 400, r = 400;
+
+    // 베이스 컬러
+    ctx.fillStyle = S.vinylColor;
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.fill();
+
+    // 바이닐 홈 (리얼한 파인 선)
+    ctx.lineWidth = 1.5;
+    for(let i=140; i<r-10; i+=4) {
+        ctx.strokeStyle = i % 8 === 0 ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.35)';
+        ctx.beginPath(); ctx.arc(cx, cy, i, 0, Math.PI*2); ctx.stroke();
+    }
+
+    // 3D 빛 반사 (Sheen)
+    if(S.sheen && ctx.createConicGradient) {
+        const grad = ctx.createConicGradient(Math.PI/3, cx, cy);
+        grad.addColorStop(0, 'rgba(255,255,255,0)');
+        grad.addColorStop(0.12, 'rgba(255,255,255,0.15)'); // 하이라이트 1
+        grad.addColorStop(0.24, 'rgba(255,255,255,0)');
+        grad.addColorStop(0.5, 'rgba(255,255,255,0)');
+        grad.addColorStop(0.62, 'rgba(255,255,255,0.15)'); // 하이라이트 2 (반대편)
+        grad.addColorStop(0.74, 'rgba(255,255,255,0)');
+        grad.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.fill();
+    }
+
+    $('vinylDisc').style.backgroundImage = `url("${canvas.toDataURL('image/png')}")`;
+    $('vinylDisc').style.backgroundSize = '100% 100%';
+}
+
+// 💡 CD 빛 반사 생성
+function applyCdTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 400; canvas.height = 400;
+    const ctx = canvas.getContext('2d');
+    const cx = 200, cy = 200, r = 200;
+
+    if (ctx.createConicGradient) {
+        const grad = ctx.createConicGradient(0, cx, cy);
+        const colors = ['#aaaabc','#8888a8','#c0c0d0','#7878a0','#c8c8d8','#9090b0','#aaaabc','#9898b8','#b8b8c8','#8080a0','#aaaabc','#9494b2','#c0c0d0','#8888a8','#a8a8c0','#9898b8','#c0c0d0','#8888b0','#aaaabc','#9090b0','#c8c8d8','#8080a0','#aaaabc'];
+        colors.forEach((c, i) => grad.addColorStop(i / (colors.length-1), c));
+        ctx.fillStyle = grad;
+        ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.fill();
+    }
+    $('cdDisc').style.backgroundImage = `url("${canvas.toDataURL('image/png')}")`;
+    $('cdDisc').style.backgroundSize = '100% 100%';
+}
+
+// 💡 카세트 릴 패턴 생성
+function applyCassetteTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 100; canvas.height = 100;
+    const ctx = canvas.getContext('2d');
+    const cx = 50, cy = 50, r = 50;
+
+    if (ctx.createConicGradient) {
+        const grad = ctx.createConicGradient(0, cx, cy);
+        const steps = 6;
+        for(let i=0; i<steps; i++) {
+            const c1 = '#2a2a2a'; const c2 = '#181818';
+            grad.addColorStop(i/steps, c1);
+            grad.addColorStop((i+0.5)/steps, c1);
+            grad.addColorStop((i+0.5)/steps, c2);
+            grad.addColorStop((i+1)/steps, c2);
+        }
+        ctx.fillStyle = grad;
+        ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.fill();
+    }
+    const data = `url("${canvas.toDataURL('image/png')}")`;
+    document.querySelectorAll('.cassette-reel').forEach(el => {
+        el.style.backgroundImage = data;
+        el.style.backgroundSize = '100% 100%';
+    });
+}
+
+
 // IMAGE DRAG
 const bgPos = { cover:{x:50,y:50}, cdFront:{x:50,y:50}, cassetteCover:{x:50,y:50}, streamCard:{x:50,y:50}, label:{x:50,y:50} };
 let isDragging=false, dragEl=null, dragStart={x:0,y:0}, posStart={x:50,y:50};
@@ -754,7 +834,12 @@ $('spinSpeed').addEventListener('input', function(){
 
 // VINYL COLOR
 document.querySelectorAll('[data-vinyl]').forEach(sw=>{
-    sw.addEventListener('click', ()=>{document.querySelectorAll('[data-vinyl]').forEach(s=>s.classList.remove('active')); sw.classList.add('active'); S.vinylColor=sw.dataset.vinyl; $('vinylDisc').style.background=S.vinylColor;});
+    sw.addEventListener('click', ()=>{
+        document.querySelectorAll('[data-vinyl]').forEach(s=>s.classList.remove('active')); 
+        sw.classList.add('active'); 
+        S.vinylColor=sw.dataset.vinyl; 
+        applyVinylTexture();
+    });
 });
 
 // GLOW COLOR
@@ -770,7 +855,7 @@ document.querySelectorAll('.toggle-row').forEach(row=>{
 
 function handleToggle(id,v){
     if(id==='toggleGlow'){S.glow=v; v?applyGlow():clearGlow();}
-    else if(id==='toggleSheen'){S.sheen=v; $('vinylDisc').classList.toggle('no-sheen',!v);}
+    else if(id==='toggleSheen'){S.sheen=v; applyVinylTexture();}
     else if(id==='toggleTilt'){S.tilt=v; if(!v) $('tiltWrap').style.transform='';}
     else if(id==='toggleBarcode'){S.barcode=v; document.querySelectorAll('.cover-barcode').forEach(b=>b.classList.toggle('visible',v));}
     else if(id==='toggleText'){S.showText=v; $('textOverlay').classList.toggle('visible',v);}
@@ -848,16 +933,10 @@ function stopParticles(){
     pts.length=0; canvas.style.display='none';
 }
 
-// ═══════════════════════════════════════════════════════
-// EXPORT (검은 선 완벽 제거 로직 추가)
-// ═══════════════════════════════════════════════════════
+// 💡 [핵심 최적화] 튀는 현상 제거 및 렌더링 속도 최적화 적용
 $('saveBtn').addEventListener('click', async ()=>{
     const ca=$('capture-area');
     const btn=$('saveBtn');
-
-    const scrollX = window.scrollX;
-    const scrollY = window.scrollY;
-    window.scrollTo(0, 0);
 
     [$('record'),$('cdDisc')].forEach(el=>el.style.animationPlayState='paused');
     document.querySelectorAll('.cassette-reel').forEach(r=>r.style.animationPlayState='paused');
@@ -868,32 +947,17 @@ $('saveBtn').addEventListener('click', async ()=>{
     document.body.classList.add('exporting');
     btn.textContent='생성 중...'; btn.disabled=true;
 
-    // 💡 [핵심] 원본 요소를 임시로 좌상단 끝에 강제로 고정시킵니다. 
-    // 브라우저의 화면 정렬(Flex) 때문에 발생하는 0.5px의 소수점 오차를 원천적으로 지워버립니다.
-    const oldStyle = { 
-        position: ca.style.position, 
-        top: ca.style.top, 
-        left: ca.style.left, 
-        transform: ca.style.transform,
-        zIndex: ca.style.zIndex
-    };
-    ca.style.position = 'fixed';
-    ca.style.top = '0px';
-    ca.style.left = '0px';
-    ca.style.transform = 'none';
-    ca.style.zIndex = '9999';
-
-    await new Promise(r=>setTimeout(r, 20));
+    // 대기시간 대폭 축소
+    await new Promise(requestAnimationFrame);
 
     try {
         const c = await html2canvas(ca, {
             scale: 2, 
             useCORS: true,
             allowTaint: true,
-            // 💡 [핵심] 캡처본 가장자리의 미세한 투명 여백이 뷰어에서 검은색으로 보이지 않도록 
-            // 캔버스 기본 배경을 현재 설정된 배경색과 동일하게 꽉 채웁니다.
             backgroundColor: S.bgEffect === 'gradient' ? S.gradEndColor : S.bgColor,
             logging: false,
+            // 💡 캡처 시 화면 0,0 좌표로 강제 초기화하여 소수점 여백(검은 선) 차단
             x: 0,
             y: 0,
             width: 860,
@@ -901,9 +965,12 @@ $('saveBtn').addEventListener('click', async ()=>{
             onclone: (clonedDoc) => {
                 clonedDoc.body.classList.add('exporting');
                 const clonedCa = clonedDoc.getElementById('capture-area');
-                clonedCa.style.position = 'fixed';
+                
+                // 💡 사용자가 보는 화면은 그대로 둔 채, 복제된 화면 안에서만 절대좌표로 밀어버립니다 (튀는 현상 해결)
+                clonedCa.style.position = 'absolute';
                 clonedCa.style.top = '0px';
                 clonedCa.style.left = '0px';
+                clonedCa.style.transform = 'none';
                 clonedCa.style.margin = '0px';
 
                 const s=clonedDoc.createElement('style');
@@ -911,12 +978,8 @@ $('saveBtn').addEventListener('click', async ()=>{
                     *, *::before, *::after { transition: none !important; animation: none !important; }
                     .main-view, #mainView { background: transparent !important; }
                     .main-view::before, .main-view::after,
-                    #mainView::before, #mainView::after {
-                        display: none !important;
-                        content: none !important;
-                        background: none !important;
-                    }
-                    body { background: transparent !important; }
+                    #mainView::before, #mainView::after { display: none !important; content: none !important; background: none !important; }
+                    body { background: transparent !important; margin: 0; padding: 0; }
                     #capture-area { box-shadow: none !important; border-radius: 0 !important; }
                     #tiltWrap { transform: none !important; }
                 `;
@@ -934,14 +997,6 @@ $('saveBtn').addEventListener('click', async ()=>{
         console.error(err);
         showToast('저장 실패');
     } finally {
-        // 캡처 직후 원래 중앙 위치로 자연스럽게 되돌립니다.
-        ca.style.position = oldStyle.position;
-        ca.style.top = oldStyle.top;
-        ca.style.left = oldStyle.left;
-        ca.style.transform = oldStyle.transform;
-        ca.style.zIndex = oldStyle.zIndex;
-
-        window.scrollTo(scrollX, scrollY);
         document.body.classList.remove('exporting');
         btn.textContent='PNG로 저장'; btn.disabled=false;
         [$('record'),$('cdDisc')].forEach(el=>el.style.animationPlayState='running');
@@ -951,6 +1006,11 @@ $('saveBtn').addEventListener('click', async ()=>{
 });
 
 function showToast(msg){const t=$('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2400);}
+
+// 초기 텍스처 로드
+applyVinylTexture();
+applyCdTexture();
+applyCassetteTexture();
 
 switchMode('vinyl');
 </script>
