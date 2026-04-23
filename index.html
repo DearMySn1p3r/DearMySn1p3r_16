@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Album Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/[email protected]/dist/web/static/pretendard.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --bg: #fafafa;
+            --surface: #ffffff;
+            --surface-alt: #f5f5f7;
+            --border: #eeeef1;
+            --border-hover: #dcdce0;
+            --text: #0a0a0f;
+            --text-sub: #6a6a75;
+            --text-muted: #a8a8b0;
+            --ink: #0a0a0f;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            font-weight: 500;
+            -webkit-font-smoothing: antialiased;
+            letter-spacing: -0.01em;
+        }
+
+        /* ── SIDEBAR ────────────────────────────────────── */
+        .sidebar {
+            width: 320px;
+            min-width: 320px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 26px 24px 18px;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-size: 26px;
+            font-weight: 400;
+            letter-spacing: -0.5px;
+            color: var(--ink);
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .tagline {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .tab-nav {
+            display: flex;
+            padding: 0 24px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .tab-btn {
+            padding: 12px 4px;
+            margin-right: 22px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s;
+            letter-spacing: -0.01em;
+        }
+
+        .tab-btn:hover { color: var(--text-sub); }
+        .tab-btn.active { color: var(--ink); }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: 0; right: 0;
+            height: 2px;
+            background: var(--ink);
+            border-radius: 2px 2px 0 0;
+        }
+
+        .sidebar-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 22px 24px 20px;
+        }
+
+        .sidebar-scroll::-webkit-scrollbar { width: 5px; }
+        .sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+        .sidebar-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        .sidebar-scroll::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+
+        .tab-panel { display: none; flex-direction: column; gap: 22px; }
+        .tab-panel.active { display: flex; }
+
+        .group { display: flex; flex-direction: column; gap: 10px; }
+
+        .group-label {
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            color: var(--text-muted);
+        }
+
+        /* ── UPLOAD ─────────────────────────────────────── */
+        .upload-zone {
+            border: 1.5px dashed var(--border-hover);
+            border-radius: 12px;
+            padding: 22px 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--bg);
+            display: block;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--ink);
+            background: var(--surface-alt);
+        }
+
+        .upload-zone.has-image {
+            border-style: solid;
+            border-color: var(--ink);
+            background: var(--surface-alt);
+        }
+
+        .upload-icon {
+            width: 38px; height: 38px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 16px;
+        }
+
+        .upload-zone.has-image .upload-icon { background: white; }
+        .upload-text { font-size: 13px; color: var(--text); font-weight: 600; margin-bottom: 2px; }
+        .upload-sub { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+
+        input[type="file"] { display: none; }
+
+        /* ── MODE GRID ──────────────────────────────────── */
+        .mode-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .mode-btn {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 10px;
+            cursor: pointer;
+            transition: all 0.18s;
+            text-align: center;
+            font-family: inherit;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--border-hover);
+            background: var(--surface-alt);
+            transform: translateY(-1px);
+        }
+
+        .mode-btn.active {
+            border-color: var(--ink);
+            background: var(--ink);
+        }
+
+        .mode-btn .mi { font-size: 18px; margin-bottom: 4px; }
+        .mode-btn .ml {
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .mode-btn.active .ml { color: white; }
+
+        /* ── PILLS ──────────────────────────────────────── */
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .pill {
+            padding: 6px 12px;
+            border-radius: 100px;
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all 0.18s;
+            white-space: nowrap;
+            font-family: inherit;
+            letter-spacing: -0.01em;
+        }
+
+        .pill:hover {
+            border-color: var(--border-hover);
+            color: var(--text);
+        }
+
+        .pill.active {
+            background: var(--ink);
+            border-color: var(--ink);
+            color: white;
+        }
+
+        /* ── SWATCHES ───────────────────────────────────── */
+        .swatch-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .swatch {
+            width: 28px; height: 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.15s;
+            border: 1.5px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .swatch:hover { transform: scale(1.1); }
+        .swatch.active { transform: scale(1.1); }
+
+        .swatch.active::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border: 2px solid var(--ink);
+            border-radius: 11px;
+        }
+
+        .swatch-custom {
+            width: 28px; height: 28px;
+            border-radius: 8px;
+            border: 1.5px dashed var(--border-hover);
+            cursor: pointer;
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; color: var(--text-muted);
+            background: var(--surface);
+            transition: all 0.15s;
+            flex-shrink: 0;
+        }
+
+        .swatch-custom:hover {
+            border-color: var(--ink);
+            color: var(--ink);
+        }
+
+        .swatch-custom input {
+            position: absolute; inset: 0;
+            opacity: 0; cursor: pointer;
+            width: 100%; height: 100%;
+        }
+
+        /* ── TEXT INPUT ─────────────────────────────────── */
+        .text-input {
+            width: 100%;
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            padding: 11px 13px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            outline: none;
+            transition: border-color 0.18s;
+            letter-spacing: -0.01em;
+        }
+
+        .text-input:focus { border-color: var(--ink); }
+        .text-input::placeholder { color: var(--text-muted); }
+
+        select.text-input {
+            cursor: pointer;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236a6a75' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 32px;
+        }
+
+        /* ── SLIDER ─────────────────────────────────────── */
+        .slider-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 3px;
+            background: var(--border);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px; height: 16px;
+            background: var(--ink);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.15s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+
+        .slider-val {
+            font-size: 12px;
+            color: var(--text);
+            font-weight: 600;
+            min-width: 42px;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ── TOGGLE ─────────────────────────────────────── */
+        .toggle-list { display: flex; flex-direction: column; gap: 12px; }
+
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: 2px 0;
+        }
+
+        .toggle-name {
+            font-size: 12.5px;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .toggle {
+            width: 36px; height: 22px;
+            background: var(--border);
+            border-radius: 11px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+
+        .toggle.on { background: var(--ink); }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            top: 2.5px; left: 2.5px;
+            width: 17px; height: 17px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.2s;
+            box-shadow: 0 1.5px 3px rgba(0,0,0,0.12);
+        }
+
+        .toggle.on::after { transform: translateX(14px); }
+
+        /* ── FOOTER ─────────────────────────────────────── */
+        .sidebar-footer {
+            padding: 16px 24px 22px;
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .save-btn {
+            width: 100%;
+            padding: 13px;
+            background: var(--ink);
+            border: none;
+            border-radius: 11px;
+            color: white;
+            font-family: inherit;
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.18s, transform 0.1s;
+            letter-spacing: -0.01em;
+        }
+
+        .save-btn:hover:not(:disabled) { opacity: 0.88; }
+        .save-btn:active:not(:disabled) { transform: scale(0.98); }
+        .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* ── MAIN VIEW ──────────────────────────────────── */
+        .main-view {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(ellipse 60% 70% at 50% 50%, #ffffff 0%, #f0f0f3 100%);
+        }
+
+        .main-view::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(0,0,0,0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .preview-label {
+            position: absolute;
+            top: 28px; left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-size: 14px;
+            color: var(--text-muted);
+            letter-spacing: 0.2px;
+            z-index: 5;
+        }
+
+        #capture-area {
+            position: relative;
+            width: 860px;
+            height: 540px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: background-color 0.4s, transform 0.15s ease-out;
+            transform-style: preserve-3d;
+            border-radius: 4px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.12), 0 10px 30px rgba(0,0,0,0.06);
+        }
+
+        /* ── COVER PLACEHOLDER ──────────────────────────── */
+        .cover-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: rgba(255,255,255,0.45);
+            text-align: center;
+            z-index: 2;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .has-image .cover-placeholder { opacity: 0; }
+
+        .ph-icon { font-size: 26px; opacity: 0.7; }
+        .ph-text {
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+            line-height: 1.4;
+        }
+
+        /* cassette has a shorter label area */
+        .cassette-label .cover-placeholder { gap: 6px; }
+        .cassette-label .ph-icon { font-size: 20px; }
+        .cassette-label .ph-text { font-size: 11px; }
+
+        /* stream card is narrow */
+        .stream-card .cover-placeholder { gap: 8px; }
+        .stream-card .ph-icon { font-size: 22px; }
+        .stream-card .ph-text { font-size: 11px; }
+
+        /* ── BARCODE ────────────────────────────────────── */
+        .cover-barcode {
+            position: absolute;
+            bottom: 14px; right: 14px;
+            width: 60px; height: 30px;
+            background: white;
+            padding: 2px;
+            border-radius: 1px;
+            z-index: 4;
+            opacity: 0;
+            transition: opacity 0.3s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .cover-barcode.visible { opacity: 1; }
+
+        .cover-barcode svg {
+            width: 100%; height: 100%;
+            display: block;
+        }
+
+        /* CD uses smaller barcode */
+        .cd-front .cover-barcode { width: 54px; height: 26px; bottom: 12px; right: 12px; }
+
+        /* ── VINYL ──────────────────────────────────────── */
+        .mockup-vinyl {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 610px; height: 410px;
+        }
+
+        .album-cover {
+            position: absolute;
+            left: 0; top: 0;
+            width: 410px; height: 410px;
+            background: #222 center/cover no-repeat;
+            border-radius: 3px;
+            z-index: 5;
+            box-shadow: 30px 0 80px rgba(0,0,0,0.9), 6px 0 20px rgba(0,0,0,0.6);
+            overflow: hidden;
+            transition: filter 0.3s, box-shadow 0.4s;
+        }
+
+        .cover-text-overlay {
+            position: absolute; inset: 0; z-index: 3;
+            padding: 24px;
+            display: flex; flex-direction: column; justify-content: flex-end;
+            pointer-events: none;
+            transition: background 0.3s;
+        }
+
+        .cover-artist {
+            font-size: 13px; font-weight: 600; color: white;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+            letter-spacing: 0.3px;
+            opacity: 0; transition: opacity 0.3s;
+            font-family: inherit;
+            margin-bottom: 4px;
+        }
+
+        .cover-title {
+            font-size: 22px; font-weight: 700; color: white;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.9);
+            line-height: 1.15;
+            opacity: 0; transition: opacity 0.3s;
+            font-family: inherit;
+            letter-spacing: -0.02em;
+        }
+
+        .cover-text-overlay.visible .cover-artist,
+        .cover-text-overlay.visible .cover-title { opacity: 1; }
+
+        .vinyl-record {
+            position: absolute;
+            left: 225px;
+            width: 385px; height: 385px;
+            border-radius: 50%;
+            z-index: 1;
+            display: flex; align-items: center; justify-content: center;
+            animation: spinVinyl 8s linear infinite;
+        }
+
+        .vinyl-disc {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            background: #0e0e0e;
+            background-image: repeating-radial-gradient(
+                rgba(0,0,0,0) 0%, rgba(0,0,0,0) 3.5px,
+                rgba(255,255,255,0.025) 4px, rgba(0,0,0,0) 4.5px
+            );
+            box-shadow: 0 10px 60px rgba(0,0,0,0.7), inset 0 0 60px rgba(255,255,255,0.02);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vinyl-disc::before {
+            content: '';
+            position: absolute; inset: 0; border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg 80deg,
+                rgba(255,255,255,0.035) 80deg 120deg,
+                transparent 120deg 200deg,
+                rgba(255,255,255,0.025) 200deg 240deg,
+                transparent 240deg 360deg
+            );
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+
+        .vinyl-disc.no-sheen::before { opacity: 0; }
+
+        .vinyl-label {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 145px; height: 145px;
+            border-radius: 50%;
+            background: #333 center/cover no-repeat;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.05), inset 0 0 20px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .vinyl-label .cover-placeholder { color: rgba(255,255,255,0.3); }
+        .vinyl-label .ph-icon { font-size: 16px; }
+        .vinyl-label .ph-text { display: none; }
+
+        .vinyl-hole {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px; height: 12px;
+            background: #060606;
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        @keyframes spinVinyl {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* ── CD ─────────────────────────────────────────── */
+        .mockup-cd { display: none; align-items: center; justify-content: center; }
+
+        .cd-case { position: relative; width: 390px; height: 390px; }
+
+        .cd-back {
+            position: absolute;
+            top: 7px; left: 7px;
+            width: 390px; height: 390px;
+            background: #161616;
+            border-radius: 4px;
+            box-shadow: 4px 4px 20px rgba(0,0,0,0.7);
+        }
+
+        .cd-front {
+            position: absolute; inset: 0;
+            background: #222 center/cover no-repeat;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+            transition: filter 0.3s;
+        }
+
+        .cd-spine {
+            position: absolute;
+            left: -11px; top: 0; bottom: 0;
+            width: 11px;
+            background: linear-gradient(90deg, #090909, #1a1a1a);
+            border-radius: 2px 0 0 2px;
+        }
+
+        .cd-disc {
+            position: absolute;
+            right: -100px; top: 50%;
+            transform: translateY(-50%);
+            width: 210px; height: 210px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #aaaabc 0deg 15deg, #8888a8 15deg 30deg, #c0c0d0 30deg 45deg,
+                #7878a0 45deg 60deg, #c8c8d8 60deg 75deg, #9090b0 75deg 90deg,
+                #aaaabc 90deg 105deg, #9898b8 105deg 120deg, #b8b8c8 120deg 135deg,
+                #8080a0 135deg 150deg, #aaaabc 150deg 165deg, #9494b2 165deg 180deg,
+                #c0c0d0 180deg 195deg, #8888a8 195deg 210deg, #a8a8c0 210deg 225deg,
+                #9898b8 225deg 240deg, #c0c0d0 240deg 255deg, #8888b0 255deg 270deg,
+                #aaaabc 270deg 285deg, #9090b0 285deg 300deg, #c8c8d8 300deg 315deg,
+                #8080a0 315deg 330deg, #aaaabc 330deg 345deg, #9898b0 345deg 360deg
+            );
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            display: flex; align-items: center; justify-content: center;
+            animation: spinVinyl 4s linear infinite;
+        }
+
+        .cd-hole { width: 38px; height: 38px; background: #1a1a1a; border-radius: 50%; }
+
+        /* ── CASSETTE ───────────────────────────────────── */
+        .mockup-cassette { display: none; align-items: center; justify-content: center; }
+
+        .cassette-body {
+            width: 440px; height: 270px;
+            background: #181818;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06);
+            overflow: hidden;
+        }
+
+        .cassette-label {
+            position: absolute;
+            top: 18px; left: 18px; right: 18px;
+            height: 130px;
+            background: #222 center/cover no-repeat;
+            border-radius: 5px;
+            overflow: hidden;
+            transition: filter 0.3s;
+        }
+
+        .cassette-window {
+            position: absolute;
+            bottom: 22px;
+            left: 50%; transform: translateX(-50%);
+            width: 200px; height: 68px;
+            background: rgba(0,0,0,0.55);
+            border-radius: 5px;
+            border: 1px solid rgba(255,255,255,0.07);
+            display: flex; align-items: center; justify-content: space-around;
+            padding: 8px;
+        }
+
+        .cassette-reel {
+            width: 46px; height: 46px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #2a2a2a 0deg 60deg, #181818 60deg 120deg,
+                #2a2a2a 120deg 180deg, #181818 180deg 240deg,
+                #2a2a2a 240deg 300deg, #181818 300deg 360deg
+            );
+            display: flex; align-items: center; justify-content: center;
+            animation: spinVinyl 2s linear infinite;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.6);
+        }
+
+        .cassette-reel::after {
+            content: '';
+            width: 14px; height: 14px;
+            background: #0d0d0d;
+            border-radius: 50%;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
+        }
+
+        .cassette-screw {
+            position: absolute;
+            width: 7px; height: 7px;
+            background: #252525;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        /* ── STREAM CARD ────────────────────────────────── */
+        .mockup-card { display: none; align-items: center; justify-content: center; gap: 24px; }
+
+        .stream-card {
+            width: 255px; height: 355px;
+            border-radius: 18px;
+            background: #222 center/cover no-repeat;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+            transition: filter 0.3s;
+        }
+
+        .stream-card-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 55%);
+            z-index: 3;
+        }
+
+        .stream-card-info {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 18px 16px;
+            z-index: 4;
+        }
+
+        .stream-card-title { font-size: 17px; font-weight: 700; line-height: 1.2; margin-bottom: 4px; color: white; letter-spacing: -0.02em; }
+        .stream-card-artist { font-size: 11.5px; color: rgba(255,255,255,0.55); font-weight: 500; }
+
+        .stream-card-controls {
+            display: flex; align-items: center; justify-content: center;
+            gap: 16px; margin-top: 14px;
+            color: white;
+        }
+
+        .sc-btn { font-size: 16px; cursor: default; opacity: 0.8; }
+        .sc-btn.play {
+            width: 36px; height: 36px;
+            background: white; color: black;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px;
+            opacity: 1;
+        }
+
+        .stream-card-bar { height: 3px; background: rgba(255,255,255,0.15); border-radius: 3px; margin-top: 12px; }
+        .stream-card-progress { height: 100%; width: 55%; background: white; border-radius: 3px; }
+
+        .stream-card-bg {
+            width: 200px; height: 300px;
+            border-radius: 14px;
+            background: #222 center/cover no-repeat;
+            opacity: 0.5;
+            filter: blur(2px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .stream-card-bg .cover-placeholder { display: none; }
+
+        /* ── PARTICLES ──────────────────────────────────── */
+        #particles {
+            position: absolute; inset: 0;
+            pointer-events: none; z-index: 0;
+            display: none;
+        }
+
+        /* ── TOAST ──────────────────────────────────────── */
+        .toast {
+            position: fixed;
+            bottom: 24px; right: 24px;
+            background: var(--ink);
+            color: white;
+            border-radius: 11px;
+            padding: 12px 18px;
+            font-size: 12.5px;
+            font-weight: 600;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+            letter-spacing: -0.01em;
+        }
+
+        .toast.show { transform: translateY(0); opacity: 1; }
+
+    </style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ─────────────────────────────────────────── -->
+<div class="sidebar">
+    <div class="sidebar-header">
+        <div class="logo">Album Studio</div>
+        <p class="tagline">나만의 앨범 목업 만들기</p>
+    </div>
+
+    <div class="tab-nav">
+        <button class="tab-btn active" data-tab="artwork">아트워크</button>
+        <button class="tab-btn" data-tab="style">스타일</button>
+        <button class="tab-btn" data-tab="text">텍스트</button>
+    </div>
+
+    <div class="sidebar-scroll">
+
+        <!-- ARTWORK -->
+        <div class="tab-panel active" id="tab-artwork">
+
+            <div class="group">
+                <label for="imageUpload" class="upload-zone" id="uploadZone">
+                    <div class="upload-icon">📷</div>
+                    <div class="upload-text">이미지 업로드</div>
+                    <div class="upload-sub">PNG · JPG · WEBP</div>
+                </label>
+                <input type="file" id="imageUpload" accept="image/*">
+            </div>
+
+            <div class="group">
+                <span class="group-label">목업 종류</span>
+                <div class="mode-grid">
+                    <button class="mode-btn active" data-mode="vinyl">
+                        <div class="mi">💿</div><div class="ml">바이닐</div>
+                    </button>
+                    <button class="mode-btn" data-mode="cd">
+                        <div class="mi">📀</div><div class="ml">CD</div>
+                    </button>
+                    <button class="mode-btn" data-mode="cassette">
+                        <div class="mi">📼</div><div class="ml">카세트</div>
+                    </button>
+                    <button class="mode-btn" data-mode="card">
+                        <div class="mi">📱</div><div class="ml">스트리밍</div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="group">
+                <span class="group-label">배경색</span>
+                <div class="swatch-row" id="bgSwatches">
+                    <div class="swatch active" style="background:#0d0d0d" data-color="#0d0d0d"></div>
+                    <div class="swatch" style="background:#f5f5f7" data-color="#f5f5f7"></div>
+                    <div class="swatch" style="background:#1a0d2e" data-color="#1a0d2e"></div>
+                    <div class="swatch" style="background:#0d1a2e" data-color="#0d1a2e"></div>
+                    <div class="swatch" style="background:#2e0d0d" data-color="#2e0d0d"></div>
+                    <div class="swatch" style="background:#0d2e22" data-color="#0d2e22"></div>
+                    <div class="swatch-custom" title="직접 선택">
+                        <span>+</span>
+                        <input type="color" id="bgColorCustom" value="#0d0d0d">
+                    </div>
+                </div>
+            </div>
+
+            <div class="group">
+                <span class="group-label">배경 효과</span>
+                <div class="pill-row" id="bgEffects">
+                    <div class="pill active" data-bg-effect="solid">기본</div>
+                    <div class="pill" data-bg-effect="gradient">그라디언트</div>
+                    <div class="pill" data-bg-effect="glow">글로우</div>
+                    <div class="pill" data-bg-effect="particles">파티클</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- STYLE -->
+        <div class="tab-panel" id="tab-style">
+
+            <div class="group">
+                <span class="group-label">이미지 필터</span>
+                <div class="pill-row">
+                    <div class="pill active" data-filter="none">기본</div>
+                    <div class="pill" data-filter="grayscale(100%)">흑백</div>
+                    <div class="pill" data-filter="sepia(80%)">세피아</div>
+                    <div class="pill" data-filter="saturate(200%) hue-rotate(20deg)">비비드</div>
+                    <div class="pill" data-filter="brightness(0.65) contrast(1.5)">누아르</div>
+                    <div class="pill" data-filter="sepia(50%) saturate(150%) hue-rotate(330deg)">웜</div>
+                    <div class="pill" data-filter="saturate(40%) brightness(1.15)">페이드</div>
+                </div>
+            </div>
+
+            <div class="group">
+                <span class="group-label">바이닐 색상</span>
+                <div class="swatch-row" id="vinylSwatches">
+                    <div class="swatch active" style="background:#0e0e0e" data-vinyl="#0e0e0e"></div>
+                    <div class="swatch" style="background:#1e1030" data-vinyl="#1e1030"></div>
+                    <div class="swatch" style="background:#301010" data-vinyl="#301010"></div>
+                    <div class="swatch" style="background:#103018" data-vinyl="#103018"></div>
+                    <div class="swatch" style="background:#c8a46e" data-vinyl="#c8a46e"></div>
+                    <div class="swatch" style="background:#4a4a4a" data-vinyl="#4a4a4a"></div>
+                </div>
+            </div>
+
+            <div class="group">
+                <span class="group-label">회전 속도</span>
+                <div class="slider-wrap">
+                    <input type="range" id="spinSpeed" min="2" max="30" value="8">
+                    <span class="slider-val" id="spinSpeed-val">8초</span>
+                </div>
+            </div>
+
+            <div class="group">
+                <span class="group-label">효과</span>
+                <div class="toggle-list">
+                    <div class="toggle-row" data-toggle="toggleGlow">
+                        <span class="toggle-name">커버 글로우</span>
+                        <div class="toggle" id="toggleGlow"></div>
+                    </div>
+                    <div class="toggle-row" data-toggle="toggleSheen">
+                        <span class="toggle-name">바이닐 광택</span>
+                        <div class="toggle on" id="toggleSheen"></div>
+                    </div>
+                    <div class="toggle-row" data-toggle="toggleTilt">
+                        <span class="toggle-name">3D 틸트</span>
+                        <div class="toggle on" id="toggleTilt"></div>
+                    </div>
+                    <div class="toggle-row" data-toggle="toggleBarcode">
+                        <span class="toggle-name">바코드 표시</span>
+                        <div class="toggle" id="toggleBarcode"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TEXT -->
+        <div class="tab-panel" id="tab-text">
+
+            <div class="group">
+                <span class="group-label">아티스트</span>
+                <input type="text" class="text-input" id="artistInput" placeholder="예: 아이유">
+            </div>
+
+            <div class="group">
+                <span class="group-label">앨범 제목</span>
+                <input type="text" class="text-input" id="titleInput" placeholder="예: 좋은 날">
+            </div>
+
+            <div class="group">
+                <span class="group-label">글꼴</span>
+                <select class="text-input" id="fontSelect">
+                    <option value="'Pretendard', sans-serif">Pretendard — 모던</option>
+                    <option value="'Instrument Serif', serif">Instrument — 감성</option>
+                    <option value="Georgia, serif">Georgia — 클래식</option>
+                    <option value="Impact, sans-serif">Impact — 볼드</option>
+                    <option value="'Courier New', monospace">Courier — 타자기</option>
+                </select>
+            </div>
+
+            <div class="group">
+                <span class="group-label">텍스트 위치</span>
+                <div class="pill-row">
+                    <div class="pill active" data-pos="bottom">하단</div>
+                    <div class="pill" data-pos="top">상단</div>
+                    <div class="pill" data-pos="center">중앙</div>
+                </div>
+            </div>
+
+            <div class="group">
+                <span class="group-label">제목 크기</span>
+                <div class="slider-wrap">
+                    <input type="range" id="titleSize" min="14" max="52" value="22">
+                    <span class="slider-val" id="titleSize-val">22px</span>
+                </div>
+            </div>
+
+            <div class="group">
+                <span class="group-label">텍스트 색상</span>
+                <div class="swatch-row">
+                    <div class="swatch active" style="background:#ffffff" data-tc="#ffffff"></div>
+                    <div class="swatch" style="background:#0a0a0a" data-tc="#0a0a0a"></div>
+                    <div class="swatch" style="background:#ffdd77" data-tc="#ffdd77"></div>
+                    <div class="swatch" style="background:#ff6ab0" data-tc="#ff6ab0"></div>
+                    <div class="swatch" style="background:#66ffcc" data-tc="#66ffcc"></div>
+                    <div class="swatch-custom" title="직접 선택">
+                        <span>+</span>
+                        <input type="color" id="tcColorCustom" value="#ffffff">
+                    </div>
+                </div>
+            </div>
+
+            <div class="group">
+                <div class="toggle-list">
+                    <div class="toggle-row" data-toggle="toggleText">
+                        <span class="toggle-name">커버에 텍스트 표시</span>
+                        <div class="toggle on" id="toggleText"></div>
+                    </div>
+                    <div class="toggle-row" data-toggle="toggleShadow">
+                        <span class="toggle-name">텍스트 그림자</span>
+                        <div class="toggle on" id="toggleShadow"></div>
+                    </div>
+                    <div class="toggle-row" data-toggle="toggleGradBg">
+                        <span class="toggle-name">그라디언트 배경</span>
+                        <div class="toggle" id="toggleGradBg"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="sidebar-footer">
+        <button class="save-btn" id="saveBtn">PNG로 저장</button>
+    </div>
+</div>
+
+<!-- ── MAIN VIEW ─────────────────────────────────────────── -->
+<div class="main-view" id="mainView">
+    <div class="preview-label">실시간 미리보기</div>
+    <canvas id="particles"></canvas>
+
+    <div id="capture-area" style="background:#0d0d0d">
+
+        <!-- VINYL -->
+        <div class="mockup-vinyl" id="mockupVinyl">
+            <div class="album-cover" id="cover">
+                <div class="cover-placeholder">
+                    <div class="ph-icon">🎵</div>
+                    <div class="ph-text">이미지를 업로드하세요</div>
+                </div>
+                <div class="cover-text-overlay visible" id="textOverlay">
+                    <div class="cover-artist" id="coverArtist"></div>
+                    <div class="cover-title" id="coverTitle"></div>
+                </div>
+                <div class="cover-barcode" id="coverBarcode">
+                    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30' preserveAspectRatio='none'>
+                        <rect width='60' height='30' fill='white'/>
+                        <g fill='black'>
+                            <rect x='3' y='2' width='1' height='22'/>
+                            <rect x='5' y='2' width='2' height='22'/>
+                            <rect x='8' y='2' width='1' height='22'/>
+                            <rect x='10' y='2' width='1' height='22'/>
+                            <rect x='12' y='2' width='3' height='22'/>
+                            <rect x='16' y='2' width='1' height='22'/>
+                            <rect x='18' y='2' width='2' height='22'/>
+                            <rect x='22' y='2' width='1' height='22'/>
+                            <rect x='24' y='2' width='1' height='22'/>
+                            <rect x='26' y='2' width='3' height='22'/>
+                            <rect x='30' y='2' width='1' height='22'/>
+                            <rect x='32' y='2' width='2' height='22'/>
+                            <rect x='35' y='2' width='1' height='22'/>
+                            <rect x='37' y='2' width='1' height='22'/>
+                            <rect x='39' y='2' width='2' height='22'/>
+                            <rect x='42' y='2' width='1' height='22'/>
+                            <rect x='44' y='2' width='3' height='22'/>
+                            <rect x='48' y='2' width='1' height='22'/>
+                            <rect x='50' y='2' width='2' height='22'/>
+                            <rect x='53' y='2' width='1' height='22'/>
+                            <rect x='55' y='2' width='2' height='22'/>
+                        </g>
+                        <text x='30' y='29' font-family='monospace' font-size='4' text-anchor='middle' fill='black'>9 780000 000000</text>
+                    </svg>
+                </div>
+            </div>
+            <div class="vinyl-record" id="record">
+                <div class="vinyl-disc" id="vinylDisc">
+                    <div class="vinyl-label" id="label">
+                        <div class="cover-placeholder"><div class="ph-icon">🎵</div></div>
+                    </div>
+                    <div class="vinyl-hole"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CD -->
+        <div class="mockup-cd" id="mockupCd">
+            <div class="cd-case">
+                <div class="cd-back"></div>
+                <div class="cd-front" id="cdFront">
+                    <div class="cover-placeholder">
+                        <div class="ph-icon">🎵</div>
+                        <div class="ph-text">이미지를 업로드하세요</div>
+                    </div>
+                    <div class="cover-barcode" data-barcode-clone>
+                        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30' preserveAspectRatio='none'>
+                            <rect width='60' height='30' fill='white'/>
+                            <g fill='black'>
+                                <rect x='3' y='2' width='1' height='22'/><rect x='5' y='2' width='2' height='22'/><rect x='8' y='2' width='1' height='22'/><rect x='10' y='2' width='1' height='22'/><rect x='12' y='2' width='3' height='22'/><rect x='16' y='2' width='1' height='22'/><rect x='18' y='2' width='2' height='22'/><rect x='22' y='2' width='1' height='22'/><rect x='24' y='2' width='1' height='22'/><rect x='26' y='2' width='3' height='22'/><rect x='30' y='2' width='1' height='22'/><rect x='32' y='2' width='2' height='22'/><rect x='35' y='2' width='1' height='22'/><rect x='37' y='2' width='1' height='22'/><rect x='39' y='2' width='2' height='22'/><rect x='42' y='2' width='1' height='22'/><rect x='44' y='2' width='3' height='22'/><rect x='48' y='2' width='1' height='22'/><rect x='50' y='2' width='2' height='22'/><rect x='53' y='2' width='1' height='22'/><rect x='55' y='2' width='2' height='22'/>
+                            </g>
+                            <text x='30' y='29' font-family='monospace' font-size='4' text-anchor='middle' fill='black'>9 780000 000000</text>
+                        </svg>
+                    </div>
+                </div>
+                <div class="cd-spine"></div>
+                <div class="cd-disc" id="cdDisc">
+                    <div class="cd-hole"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CASSETTE -->
+        <div class="mockup-cassette" id="mockupCassette">
+            <div class="cassette-body">
+                <div class="cassette-label" id="cassetteCover">
+                    <div class="cover-placeholder">
+                        <div class="ph-icon">🎵</div>
+                        <div class="ph-text">이미지를 업로드하세요</div>
+                    </div>
+                </div>
+                <div class="cassette-window">
+                    <div class="cassette-reel"></div>
+                    <div class="cassette-reel" style="animation-direction:reverse"></div>
+                </div>
+                <div class="cassette-screw" style="top:8px;left:10px"></div>
+                <div class="cassette-screw" style="top:8px;right:10px"></div>
+                <div class="cassette-screw" style="bottom:8px;left:10px"></div>
+                <div class="cassette-screw" style="bottom:8px;right:10px"></div>
+            </div>
+        </div>
+
+        <!-- STREAM CARD -->
+        <div class="mockup-card" id="mockupCard">
+            <div class="stream-card-bg" id="streamCardBg"></div>
+            <div class="stream-card" id="streamCard">
+                <div class="cover-placeholder">
+                    <div class="ph-icon">🎵</div>
+                    <div class="ph-text">이미지를 업로드하세요</div>
+                </div>
+                <div class="stream-card-overlay"></div>
+                <div class="stream-card-info">
+                    <div class="stream-card-title" id="scTitle">앨범 제목</div>
+                    <div class="stream-card-artist" id="scArtist">아티스트</div>
+                    <div class="stream-card-controls">
+                        <div class="sc-btn">⏮</div>
+                        <div class="sc-btn play">▶</div>
+                        <div class="sc-btn">⏭</div>
+                    </div>
+                    <div class="stream-card-bar"><div class="stream-card-progress"></div></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const S = {
+    imageUrl: null, mode: 'vinyl',
+    bgColor: '#0d0d0d', bgEffect: 'solid',
+    filter: 'none',
+    spinSpeed: 8, vinylColor: '#0e0e0e',
+    glow: false, sheen: true, tilt: true, barcode: false,
+    artist: '', title: '',
+    textPos: 'bottom', font: "'Pretendard', sans-serif",
+    textColor: '#ffffff', titleSize: 22,
+    showText: true, shadow: true, gradBg: false,
+};
+
+const $ = id => document.getElementById(id);
+
+// ── TABS ────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        $('tab-' + btn.dataset.tab).classList.add('active');
+    });
+});
+
+// ── UPLOAD ──────────────────────────────────────────────
+$('imageUpload').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+        S.imageUrl = ev.target.result;
+        applyImage();
+        const uz = $('uploadZone');
+        uz.classList.add('has-image');
+        uz.querySelector('.upload-text').textContent = file.name.length > 22 ? file.name.slice(0,20)+'…' : file.name;
+        uz.querySelector('.upload-sub').textContent = '클릭해서 변경';
+        showToast('업로드 완료');
+    };
+    reader.readAsDataURL(file);
+});
+
+function applyImage() {
+    const url = `url(${S.imageUrl})`;
+    ['cover','label','cdFront','cassetteCover','streamCard','streamCardBg'].forEach(id => {
+        const el = $(id);
+        el.style.backgroundImage = url;
+        el.classList.add('has-image');
+    });
+    applyFilterAll();
+    if (S.glow) applyGlow();
+}
+
+// ── MODE ────────────────────────────────────────────────
+document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        S.mode = btn.dataset.mode;
+        switchMode(S.mode);
+    });
+});
+
+function switchMode(mode) {
+    ['Vinyl','Cd','Cassette','Card'].forEach(m => $('mockup' + m).style.display = 'none');
+    const map = { vinyl: 'mockupVinyl', cd: 'mockupCd', cassette: 'mockupCassette', card: 'mockupCard' };
+    $(map[mode]).style.display = 'flex';
+}
+
+// ── BACKGROUND ──────────────────────────────────────────
+document.querySelectorAll('#bgSwatches .swatch').forEach(sw => {
+    sw.addEventListener('click', () => {
+        document.querySelectorAll('#bgSwatches .swatch').forEach(s => s.classList.remove('active'));
+        sw.classList.add('active');
+        S.bgColor = sw.dataset.color;
+        applyBg();
+    });
+});
+
+$('bgColorCustom').addEventListener('input', e => {
+    document.querySelectorAll('#bgSwatches .swatch').forEach(s => s.classList.remove('active'));
+    S.bgColor = e.target.value;
+    applyBg();
+});
+
+document.querySelectorAll('[data-bg-effect]').forEach(el => {
+    el.addEventListener('click', () => {
+        document.querySelectorAll('[data-bg-effect]').forEach(e => e.classList.remove('active'));
+        el.classList.add('active');
+        S.bgEffect = el.dataset.bgEffect;
+        applyBg();
+    });
+});
+
+function applyBg() {
+    stopParticles();
+    const ca = $('capture-area');
+    ca.style.backgroundColor = S.bgColor;
+    ca.style.backgroundImage = 'none';
+
+    if (S.bgEffect === 'gradient') {
+        ca.style.backgroundImage = `radial-gradient(ellipse 70% 60% at 25% 40%, ${liven(S.bgColor, 35)} 0%, ${S.bgColor} 65%)`;
+    } else if (S.bgEffect === 'glow') {
+        ca.style.backgroundImage = `radial-gradient(ellipse 60% 60% at 50% 50%, ${liven(S.bgColor, 55)} 0%, ${S.bgColor} 55%)`;
+    } else if (S.bgEffect === 'particles') {
+        startParticles();
+    }
+}
+
+function liven(hex, amt) {
+    const n = parseInt(hex.replace('#',''), 16);
+    const r = Math.min(255, (n >> 16) + amt);
+    const g = Math.min(255, ((n >> 8) & 0xff) + amt);
+    const b = Math.min(255, (n & 0xff) + amt);
+    return `rgb(${r},${g},${b})`;
+}
+
+// ── FILTERS ─────────────────────────────────────────────
+document.querySelectorAll('[data-filter]').forEach(el => {
+    el.addEventListener('click', () => {
+        document.querySelectorAll('[data-filter]').forEach(e => e.classList.remove('active'));
+        el.classList.add('active');
+        S.filter = el.dataset.filter;
+        applyFilterAll();
+    });
+});
+
+function applyFilterAll() {
+    const f = S.filter === 'none' ? '' : S.filter;
+    ['cover','cdFront','cassetteCover','streamCard','label'].forEach(id => $(id).style.filter = f);
+}
+
+// ── SPIN SPEED ──────────────────────────────────────────
+$('spinSpeed').addEventListener('input', function() {
+    S.spinSpeed = +this.value;
+    $('spinSpeed-val').textContent = this.value + '초';
+    $('record').style.animation = `spinVinyl ${this.value}s linear infinite`;
+    $('cdDisc').style.animation = `spinVinyl ${this.value/2}s linear infinite`;
+    document.querySelectorAll('.cassette-reel').forEach(r => r.style.animationDuration = (this.value/4)+'s');
+});
+
+// ── VINYL COLOR ─────────────────────────────────────────
+document.querySelectorAll('[data-vinyl]').forEach(sw => {
+    sw.addEventListener('click', () => {
+        document.querySelectorAll('[data-vinyl]').forEach(s => s.classList.remove('active'));
+        sw.classList.add('active');
+        S.vinylColor = sw.dataset.vinyl;
+        const vd = $('vinylDisc');
+        vd.style.background = S.vinylColor;
+        vd.style.backgroundImage = `repeating-radial-gradient(rgba(0,0,0,0) 0%, rgba(0,0,0,0) 3.5px, rgba(255,255,255,0.025) 4px, rgba(0,0,0,0) 4.5px)`;
+    });
+});
+
+// ── TOGGLES ─────────────────────────────────────────────
+document.querySelectorAll('.toggle-row').forEach(row => {
+    row.addEventListener('click', () => {
+        const toggleId = row.dataset.toggle;
+        const el = $(toggleId);
+        el.classList.toggle('on');
+        handleToggle(toggleId, el.classList.contains('on'));
+    });
+});
+
+function handleToggle(id, v) {
+    if (id === 'toggleGlow') { S.glow = v; if (v) applyGlow(); else clearGlow(); }
+    else if (id === 'toggleSheen') { S.sheen = v; $('vinylDisc').classList.toggle('no-sheen', !v); }
+    else if (id === 'toggleTilt') { S.tilt = v; if (!v) $('capture-area').style.transform = ''; }
+    else if (id === 'toggleBarcode') {
+        S.barcode = v;
+        document.querySelectorAll('.cover-barcode').forEach(b => b.classList.toggle('visible', v));
+    }
+    else if (id === 'toggleText') { S.showText = v; $('textOverlay').classList.toggle('visible', v); }
+    else if (id === 'toggleShadow') {
+        S.shadow = v;
+        $('coverTitle').style.textShadow = v ? '0 2px 20px rgba(0,0,0,0.9)' : 'none';
+        $('coverArtist').style.textShadow = v ? '0 2px 12px rgba(0,0,0,0.8)' : 'none';
+    }
+    else if (id === 'toggleGradBg') {
+        S.gradBg = v;
+        $('textOverlay').style.background = v ? 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)' : '';
+    }
+}
+
+function applyGlow() {
+    if (!S.imageUrl) return;
+    $('cover').style.boxShadow = '0 0 90px rgba(255,255,255,0.25), 30px 0 80px rgba(0,0,0,0.9)';
+}
+
+function clearGlow() {
+    $('cover').style.boxShadow = '30px 0 80px rgba(0,0,0,0.9), 6px 0 20px rgba(0,0,0,0.6)';
+}
+
+// ── TEXT ────────────────────────────────────────────────
+$('artistInput').addEventListener('input', e => {
+    S.artist = e.target.value;
+    $('coverArtist').textContent = e.target.value;
+    $('scArtist').textContent = e.target.value || '아티스트';
+});
+
+$('titleInput').addEventListener('input', e => {
+    S.title = e.target.value;
+    $('coverTitle').textContent = e.target.value;
+    $('scTitle').textContent = e.target.value || '앨범 제목';
+});
+
+$('fontSelect').addEventListener('change', e => {
+    S.font = e.target.value;
+    $('coverTitle').style.fontFamily = e.target.value;
+    $('coverArtist').style.fontFamily = e.target.value;
+});
+
+$('titleSize').addEventListener('input', function() {
+    S.titleSize = +this.value;
+    $('titleSize-val').textContent = this.value + 'px';
+    $('coverTitle').style.fontSize = this.value + 'px';
+});
+
+document.querySelectorAll('[data-pos]').forEach(el => {
+    el.addEventListener('click', () => {
+        document.querySelectorAll('[data-pos]').forEach(e => e.classList.remove('active'));
+        el.classList.add('active');
+        S.textPos = el.dataset.pos;
+        const ol = $('textOverlay');
+        ol.style.justifyContent = S.textPos === 'bottom' ? 'flex-end' : S.textPos === 'top' ? 'flex-start' : 'center';
+        ol.style.alignItems = S.textPos === 'center' ? 'center' : 'flex-start';
+    });
+});
+
+document.querySelectorAll('[data-tc]').forEach(sw => {
+    sw.addEventListener('click', () => {
+        document.querySelectorAll('[data-tc]').forEach(s => s.classList.remove('active'));
+        sw.classList.add('active');
+        setTextColor(sw.dataset.tc);
+    });
+});
+
+$('tcColorCustom').addEventListener('input', e => {
+    document.querySelectorAll('[data-tc]').forEach(s => s.classList.remove('active'));
+    setTextColor(e.target.value);
+});
+
+function setTextColor(c) {
+    S.textColor = c;
+    $('coverTitle').style.color = c;
+    $('coverArtist').style.color = c;
+}
+
+// ── 3D TILT ─────────────────────────────────────────────
+$('mainView').addEventListener('mousemove', e => {
+    if (!S.tilt) return;
+    const ca = $('capture-area');
+    const rect = ca.getBoundingClientRect();
+    const dx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+    const dy = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+    ca.style.transform = `perspective(1200px) rotateY(${dx*3}deg) rotateX(${-dy*2}deg)`;
+});
+
+$('mainView').addEventListener('mouseleave', () => {
+    $('capture-area').style.transform = 'perspective(1200px) rotateY(0deg) rotateX(0deg)';
+});
+
+// ── PARTICLES ───────────────────────────────────────────
+const canvas = $('particles');
+const ctx = canvas.getContext('2d');
+let rafId = null;
+const pts = [];
+
+function startParticles() {
+    canvas.style.display = 'block';
+    const ca = $('capture-area');
+    canvas.width = ca.offsetWidth;
+    canvas.height = ca.offsetHeight;
+    const rect = ca.getBoundingClientRect();
+    const parentRect = $('mainView').getBoundingClientRect();
+    canvas.style.position = 'absolute';
+    canvas.style.top = (rect.top - parentRect.top) + 'px';
+    canvas.style.left = (rect.left - parentRect.left) + 'px';
+    pts.length = 0;
+    for (let i = 0; i < 70; i++) {
+        pts.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 1.8 + 0.4,
+            vx: (Math.random() - 0.5) * 0.25,
+            vy: -(Math.random() * 0.45 + 0.15),
+            a: Math.random() * 0.55 + 0.1,
+        });
+    }
+    (function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pts.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+            ctx.fillStyle = `rgba(255,255,255,${p.a})`;
+            ctx.fill();
+            p.x += p.vx; p.y += p.vy;
+            if (p.y < -5) { p.y = canvas.height + 5; p.x = Math.random()*canvas.width; }
+        });
+        rafId = requestAnimationFrame(draw);
+    })();
+}
+
+function stopParticles() {
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pts.length = 0;
+    canvas.style.display = 'none';
+}
+
+// ── SAVE ────────────────────────────────────────────────
+$('saveBtn').addEventListener('click', async () => {
+    const ca = $('capture-area');
+    const rec = $('record');
+    const cdDisc = $('cdDisc');
+
+    rec.style.animationPlayState = 'paused';
+    cdDisc.style.animationPlayState = 'paused';
+    document.querySelectorAll('.cassette-reel').forEach(r => r.style.animationPlayState = 'paused');
+    ca.style.transform = '';
+
+    const btn = $('saveBtn');
+    btn.textContent = '생성 중...';
+    btn.disabled = true;
+
+    await new Promise(r => setTimeout(r, 80));
+
+    html2canvas(ca, { scale: 3, useCORS: true, allowTaint: true, backgroundColor: null }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `album_mockup_${Date.now()}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+
+        btn.textContent = 'PNG로 저장';
+        btn.disabled = false;
+
+        rec.style.animationPlayState = 'running';
+        cdDisc.style.animationPlayState = 'running';
+        document.querySelectorAll('.cassette-reel').forEach(r => r.style.animationPlayState = 'running');
+
+        showToast('저장되었습니다');
+    });
+});
+
+// ── TOAST ───────────────────────────────────────────────
+function showToast(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+switchMode('vinyl');
+</script>
+</body>
+</html>
