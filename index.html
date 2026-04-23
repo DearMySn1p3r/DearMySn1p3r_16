@@ -11,53 +11,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
-            --bg: #fafafa;
-            --surface: #ffffff;
-            --surface-alt: #f5f5f7;
-            --border: #eeeef1;
-            --border-hover: #dcdce0;
-            --text: #0a0a0f;
-            --text-sub: #6a6a75;
-            --text-muted: #a8a8b0;
-            --ink: #0a0a0f;
+            --bg: #fafafa; --surface: #ffffff; --surface-alt: #f5f5f7;
+            --border: #eeeef1; --border-hover: #dcdce0;
+            --text: #0a0a0f; --text-sub: #6a6a75; --text-muted: #a8a8b0; --ink: #0a0a0f;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Pretendard', -apple-system, sans-serif;
             background: var(--bg); color: var(--text);
             display: flex; height: 100vh; overflow: hidden;
             font-weight: 500; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em;
         }
 
-        /* ── SIDEBAR ───────────────────────────── */
-        .sidebar {
-            width: 316px; min-width: 316px;
-            background: var(--surface);
-            border-right: 1px solid var(--border);
-            display: flex; flex-direction: column; overflow: hidden;
-        }
+        /* ── SIDEBAR ─────────────────────── */
+        .sidebar { width: 316px; min-width: 316px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
         .sidebar-header { padding: 24px 22px 16px; flex-shrink: 0; }
-        .logo {
-            font-family: 'Instrument Serif', serif; font-style: italic;
-            font-size: 25px; font-weight: 400; letter-spacing: -0.5px;
-            color: var(--ink); line-height: 1; margin-bottom: 4px;
-        }
+        .logo { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 25px; font-weight: 400; letter-spacing: -0.5px; color: var(--ink); line-height: 1; margin-bottom: 4px; }
         .tagline { font-size: 11px; color: var(--text-muted); font-weight: 500; }
 
         .tab-nav { display: flex; padding: 0 22px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-        .tab-btn {
-            padding: 11px 4px; margin-right: 20px;
-            background: none; border: none; color: var(--text-muted);
-            font-family: inherit; font-size: 12px; font-weight: 700;
-            cursor: pointer; position: relative; transition: color 0.2s;
-        }
+        .tab-btn { padding: 11px 4px; margin-right: 20px; background: none; border: none; color: var(--text-muted); font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; position: relative; transition: color 0.2s; }
         .tab-btn:hover { color: var(--text-sub); }
         .tab-btn.active { color: var(--ink); }
-        .tab-btn.active::after {
-            content: ''; position: absolute;
-            bottom: -1px; left: 0; right: 0;
-            height: 2px; background: var(--ink); border-radius: 2px 2px 0 0;
-        }
+        .tab-btn.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--ink); border-radius: 2px 2px 0 0; }
 
         .sidebar-scroll { flex: 1; overflow-y: auto; padding: 20px 22px 18px; }
         .sidebar-scroll::-webkit-scrollbar { width: 4px; }
@@ -66,184 +42,108 @@
 
         .tab-panel { display: none; flex-direction: column; gap: 20px; }
         .tab-panel.active { display: flex; }
-
         .group { display: flex; flex-direction: column; gap: 9px; }
         .group-label { font-size: 10px; font-weight: 700; letter-spacing: 0.4px; color: var(--text-muted); }
 
-        /* ── UPLOAD ────────────────────────────── */
-        .upload-zone {
-            border: 1.5px dashed var(--border-hover); border-radius: 11px;
-            padding: 20px 16px; text-align: center; cursor: pointer;
-            transition: all 0.2s; background: var(--bg); display: block;
-        }
+        /* ── UPLOAD ──────────────────────── */
+        .upload-zone { border: 1.5px dashed var(--border-hover); border-radius: 11px; padding: 20px 16px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--bg); display: block; }
         .upload-zone:hover { border-color: var(--ink); background: var(--surface-alt); }
         .upload-zone.has-image { border-style: solid; border-color: var(--ink); background: var(--surface-alt); }
-        .upload-icon {
-            width: 36px; height: 36px; background: var(--surface);
-            border: 1px solid var(--border); border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 9px; font-size: 15px;
-        }
+        .upload-icon { width: 36px; height: 36px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 9px; font-size: 15px; }
         .upload-zone.has-image .upload-icon { background: white; }
         .upload-text { font-size: 12.5px; color: var(--text); font-weight: 600; margin-bottom: 2px; }
         .upload-sub { font-size: 10.5px; color: var(--text-muted); }
         input[type="file"] { display: none; }
 
-        /* ── MODE GRID ─────────────────────────── */
+        /* ── MODE GRID ───────────────────── */
         .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
-        .mode-btn {
-            background: var(--surface); border: 1.5px solid var(--border);
-            border-radius: 10px; padding: 13px 8px; cursor: pointer;
-            transition: all 0.18s; text-align: center; font-family: inherit;
-        }
+        .mode-btn { background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; padding: 13px 8px; cursor: pointer; transition: all 0.18s; text-align: center; font-family: inherit; }
         .mode-btn:hover { border-color: var(--border-hover); background: var(--surface-alt); transform: translateY(-1px); }
         .mode-btn.active { border-color: var(--ink); background: var(--ink); }
         .mode-btn .mi { font-size: 18px; margin-bottom: 4px; }
         .mode-btn .ml { font-size: 11px; font-weight: 600; color: var(--text); }
         .mode-btn.active .ml { color: white; }
 
-        /* ── PILLS ─────────────────────────────── */
+        /* ── PILLS ───────────────────────── */
         .pill-row { display: flex; flex-wrap: wrap; gap: 5px; }
-        .pill {
-            padding: 6px 11px; border-radius: 100px;
-            background: var(--surface); border: 1.5px solid var(--border);
-            font-size: 11px; font-weight: 600; color: var(--text-sub);
-            cursor: pointer; transition: all 0.18s; white-space: nowrap; font-family: inherit;
-        }
+        .pill { padding: 6px 11px; border-radius: 100px; background: var(--surface); border: 1.5px solid var(--border); font-size: 11px; font-weight: 600; color: var(--text-sub); cursor: pointer; transition: all 0.18s; white-space: nowrap; font-family: inherit; }
         .pill:hover { border-color: var(--border-hover); color: var(--text); }
         .pill.active { background: var(--ink); border-color: var(--ink); color: white; }
 
-        /* ── SWATCHES ──────────────────────────── */
+        /* ── SWATCHES ────────────────────── */
         .swatch-row { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; }
-        .swatch {
-            width: 26px; height: 26px; border-radius: 7px; cursor: pointer;
-            position: relative; transition: transform 0.15s;
-            border: 1.5px solid var(--border); flex-shrink: 0;
-        }
+        .swatch { width: 26px; height: 26px; border-radius: 7px; cursor: pointer; position: relative; transition: transform 0.15s; border: 1.5px solid var(--border); flex-shrink: 0; }
         .swatch:hover { transform: scale(1.1); }
         .swatch.active { transform: scale(1.1); }
-        .swatch.active::after {
-            content: ''; position: absolute; inset: -3px;
-            border: 2px solid var(--ink); border-radius: 10px;
-        }
-        .swatch-custom {
-            width: 26px; height: 26px; border-radius: 7px;
-            border: 1.5px dashed var(--border-hover); cursor: pointer;
-            position: relative; display: flex; align-items: center; justify-content: center;
-            font-size: 13px; color: var(--text-muted); background: var(--surface);
-            transition: all 0.15s; flex-shrink: 0;
-        }
+        .swatch.active::after { content: ''; position: absolute; inset: -3px; border: 2px solid var(--ink); border-radius: 10px; }
+        .swatch-custom { width: 26px; height: 26px; border-radius: 7px; border: 1.5px dashed var(--border-hover); cursor: pointer; position: relative; display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--text-muted); background: var(--surface); transition: all 0.15s; flex-shrink: 0; }
         .swatch-custom:hover { border-color: var(--ink); color: var(--ink); }
         .swatch-custom input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
 
-        /* ── GRADIENT SECTION ──────────────────── */
-        .gradient-colors {
-            display: none;
-            flex-direction: column;
-            gap: 10px;
-            padding: 12px 14px;
-            background: var(--surface-alt);
-            border-radius: 10px;
-            border: 1px solid var(--border);
-        }
+        /* ── GRADIENT PANEL ──────────────── */
+        .gradient-colors { display: none; flex-direction: column; gap: 10px; padding: 12px 14px; background: var(--surface-alt); border-radius: 10px; border: 1px solid var(--border); }
         .gradient-colors.show { display: flex; }
         .grad-row { display: flex; align-items: center; gap: 10px; }
-        .grad-row-label { font-size: 10px; font-weight: 700; color: var(--text-muted); min-width: 36px; letter-spacing: 0.3px; }
+        .grad-row-label { font-size: 10px; font-weight: 700; color: var(--text-muted); min-width: 36px; }
 
-        /* ── TEXT INPUT ────────────────────────── */
-        .text-input {
-            width: 100%; background: var(--surface);
-            border: 1.5px solid var(--border); border-radius: 9px;
-            padding: 10px 12px; color: var(--text);
-            font-family: inherit; font-size: 12.5px; font-weight: 500;
-            outline: none; transition: border-color 0.18s;
-        }
+        /* ── TEXT INPUT ──────────────────── */
+        .text-input { width: 100%; background: var(--surface); border: 1.5px solid var(--border); border-radius: 9px; padding: 10px 12px; color: var(--text); font-family: inherit; font-size: 12.5px; font-weight: 500; outline: none; transition: border-color 0.18s; }
         .text-input:focus { border-color: var(--ink); }
         .text-input::placeholder { color: var(--text-muted); }
-        select.text-input {
-            cursor: pointer; -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236a6a75' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat; background-position: right 12px center; padding-right: 30px;
-        }
+        select.text-input { cursor: pointer; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236a6a75' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 30px; }
 
-        /* ── SLIDER ────────────────────────────── */
+        /* ── SLIDER ──────────────────────── */
         .slider-wrap { display: flex; align-items: center; gap: 11px; }
-        input[type="range"] {
-            flex: 1; -webkit-appearance: none;
-            height: 3px; background: var(--border); border-radius: 3px; outline: none;
-        }
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none; width: 15px; height: 15px;
-            background: var(--ink); border-radius: 50%; cursor: pointer; transition: transform 0.15s;
-        }
+        input[type="range"] { flex: 1; -webkit-appearance: none; height: 3px; background: var(--border); border-radius: 3px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 15px; background: var(--ink); border-radius: 50%; cursor: pointer; transition: transform 0.15s; }
         input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
         .slider-val { font-size: 11.5px; color: var(--text); font-weight: 600; min-width: 38px; text-align: right; }
 
-        /* ── TOGGLE ────────────────────────────── */
+        /* ── TOGGLE ──────────────────────── */
         .toggle-list { display: flex; flex-direction: column; gap: 11px; }
         .toggle-row { display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 1px 0; }
         .toggle-name { font-size: 12px; color: var(--text); font-weight: 500; }
-        .toggle {
-            width: 34px; height: 20px; background: var(--border);
-            border-radius: 10px; position: relative; cursor: pointer;
-            transition: background 0.2s; flex-shrink: 0;
-        }
+        .toggle { width: 34px; height: 20px; background: var(--border); border-radius: 10px; position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
         .toggle.on { background: var(--ink); }
-        .toggle::after {
-            content: ''; position: absolute; top: 2.5px; left: 2.5px;
-            width: 15px; height: 15px; background: white; border-radius: 50%;
-            transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-        }
+        .toggle::after { content: ''; position: absolute; top: 2.5px; left: 2.5px; width: 15px; height: 15px; background: white; border-radius: 50%; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
         .toggle.on::after { transform: translateX(14px); }
 
-        /* ── FOOTER ────────────────────────────── */
+        /* ── FOOTER ──────────────────────── */
         .sidebar-footer { padding: 14px 22px 20px; border-top: 1px solid var(--border); flex-shrink: 0; }
-        .save-btn {
-            width: 100%; padding: 13px; background: var(--ink);
-            border: none; border-radius: 10px; color: white;
-            font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
-            transition: opacity 0.18s, transform 0.1s;
-        }
+        .save-btn { width: 100%; padding: 13px; background: var(--ink); border: none; border-radius: 10px; color: white; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: opacity 0.18s, transform 0.1s; }
         .save-btn:hover:not(:disabled) { opacity: 0.88; }
         .save-btn:active:not(:disabled) { transform: scale(0.98); }
         .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        /* ── MAIN VIEW ─────────────────────────── */
+        /* ── MAIN VIEW ───────────────────── */
         .main-view {
             flex: 1; display: flex; align-items: center; justify-content: center;
             position: relative; overflow: hidden;
             background: radial-gradient(ellipse 60% 70% at 50% 50%, #ffffff 0%, #f0f0f3 100%);
         }
+        /* dot grid — NOTE: this pseudo-element is suppressed during export via onclone */
         .main-view::before {
             content: ''; position: absolute; inset: 0;
-            background-image: radial-gradient(circle, rgba(0,0,0,0.05) 1px, transparent 1px);
+            background-image: radial-gradient(circle, rgba(0,0,0,0.06) 1px, transparent 1px);
             background-size: 24px 24px; opacity: 0.5; pointer-events: none;
         }
 
-        /* ── CAPTURE AREA ──────────────────────── */
+        /* ── CAPTURE AREA ────────────────── */
         #capture-area {
             position: relative; width: 860px; height: 540px;
             display: flex; align-items: center; justify-content: center;
             overflow: hidden;
+            /* NO transform-style: preserve-3d — causes html2canvas artifacts */
             transition: background-color 0.4s, transform 0.15s ease-out;
-            transform-style: preserve-3d; border-radius: 4px;
+            border-radius: 4px;
             box-shadow: 0 30px 80px rgba(0,0,0,0.12), 0 10px 30px rgba(0,0,0,0.06);
         }
 
-        /* Particles INSIDE capture-area so they are exported */
-        #particles {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none; z-index: 0; display: none;
-        }
+        /* Particles INSIDE capture-area */
+        #particles { position: absolute; top: 0; left: 0; pointer-events: none; z-index: 0; display: none; }
 
-        /* ── COVER PLACEHOLDER ─────────────────── */
-        .cover-placeholder {
-            position: absolute; inset: 0;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 9px; color: rgba(255,255,255,0.45); text-align: center;
-            z-index: 2; pointer-events: none; transition: opacity 0.3s;
-        }
+        /* ── COVER PLACEHOLDER ───────────── */
+        .cover-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 9px; color: rgba(255,255,255,0.45); text-align: center; z-index: 2; pointer-events: none; transition: opacity 0.3s; }
         .has-image .cover-placeholder { opacity: 0; }
         .ph-icon { font-size: 24px; opacity: 0.7; }
         .ph-text { font-size: 11.5px; font-weight: 500; line-height: 1.4; }
@@ -252,117 +152,58 @@
         .stream-card .ph-icon { font-size: 20px; }
         .stream-card .ph-text { font-size: 10.5px; }
 
-        /* ── DRAGGABLE ─────────────────────────── */
+        /* ── DRAGGABLE ───────────────────── */
         .draggable-cover { cursor: default; user-select: none; -webkit-user-select: none; }
         .draggable-cover.has-image { cursor: grab; }
         .draggable-cover.dragging { cursor: grabbing !important; }
 
-        /* ── BARCODE ───────────────────────────── */
-        .cover-barcode {
-            position: absolute; bottom: 14px; right: 14px;
-            width: 60px; height: 30px; background: white;
-            padding: 2px; border-radius: 1px; z-index: 6;
-            opacity: 0; transition: opacity 0.3s;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-        }
+        /* ── BARCODE ─────────────────────── */
+        .cover-barcode { position: absolute; bottom: 14px; right: 14px; width: 60px; height: 30px; background: white; padding: 2px; border-radius: 1px; z-index: 6; opacity: 0; transition: opacity 0.3s; }
         .cover-barcode.visible { opacity: 1; }
         .cover-barcode svg { width: 100%; height: 100%; display: block; }
 
-        /* ── GLOW HALO ─────────────────────────── */
-        .glow-halo {
-            position: absolute; border-radius: 8px;
-            pointer-events: none; opacity: 0; transition: opacity 0.4s; z-index: 3;
-        }
-        #glowHalo         { left: -55px; top: -55px; width: 520px; height: 520px; }
-        #glowHaloCd       { left: -55px; top: -55px; width: 500px; height: 500px; }
-        #glowHaloCassette { left: -55px; top: -55px; width: 550px; height: 380px; }
-        #glowHaloCard     { left: -55px; top: -55px; width: 365px; height: 465px; }
-
-        /* ── VINYL MOCKUP ──────────────────────── */
+        /* ── VINYL MOCKUP ────────────────── */
         .mockup-vinyl { position: relative; display: flex; align-items: center; width: 610px; height: 410px; }
 
         .album-cover {
-            position: absolute; left: 0; top: 0;
-            width: 410px; height: 410px;
+            position: absolute; left: 0; top: 0; width: 410px; height: 410px;
             background: #222 50% 50%/cover no-repeat;
             border-radius: 3px; z-index: 5; overflow: hidden;
-            /* FIX: single clean shadow, no extreme offset that causes banding in html2canvas */
-            box-shadow: 15px 0 50px rgba(0,0,0,0.95), 2px 0 10px rgba(0,0,0,0.8);
-            transition: box-shadow 0.4s;
+            /* NO box-shadow — use filter:drop-shadow via JS for reliable html2canvas export */
+            transition: filter 0.4s;
         }
 
-        .cover-text-overlay {
-            position: absolute; inset: 0; z-index: 3; padding: 22px;
-            display: flex; flex-direction: column; justify-content: flex-end;
-            pointer-events: none; transition: background 0.3s;
-        }
-        .cover-artist {
-            font-size: 13px; font-weight: 600; color: white;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.85); letter-spacing: 0.2px;
-            opacity: 0; transition: opacity 0.3s; margin-bottom: 4px;
-        }
-        .cover-title {
-            font-size: 22px; font-weight: 700; color: white;
-            text-shadow: 0 2px 20px rgba(0,0,0,0.9); line-height: 1.15;
-            opacity: 0; transition: opacity 0.3s; letter-spacing: -0.02em;
-        }
+        .cover-text-overlay { position: absolute; inset: 0; z-index: 3; padding: 22px; display: flex; flex-direction: column; justify-content: flex-end; pointer-events: none; transition: background 0.3s; }
+        .cover-artist { font-size: 13px; font-weight: 600; color: white; text-shadow: 0 2px 12px rgba(0,0,0,0.85); letter-spacing: 0.2px; opacity: 0; transition: opacity 0.3s; margin-bottom: 4px; }
+        .cover-title { font-size: 22px; font-weight: 700; color: white; text-shadow: 0 2px 20px rgba(0,0,0,0.9); line-height: 1.15; opacity: 0; transition: opacity 0.3s; letter-spacing: -0.02em; }
         .cover-text-overlay.visible .cover-artist,
         .cover-text-overlay.visible .cover-title { opacity: 1; }
 
-        .vinyl-record {
-            position: absolute; left: 225px;
-            width: 385px; height: 385px; border-radius: 50%; z-index: 1;
-            display: flex; align-items: center; justify-content: center;
-            animation: spinVinyl 8s linear infinite;
-        }
+        .vinyl-record { position: absolute; left: 225px; width: 385px; height: 385px; border-radius: 50%; z-index: 1; display: flex; align-items: center; justify-content: center; animation: spinVinyl 8s linear infinite; }
 
         .vinyl-disc {
-            width: 100%; height: 100%; border-radius: 50%;
-            background: #0e0e0e;
-            /* FIX: removed repeating-radial-gradient — it caused black banding lines in html2canvas export */
+            width: 100%; height: 100%; border-radius: 50%; background: #0e0e0e;
+            /* NO repeating-radial-gradient — caused black banding lines in export */
             box-shadow: 0 8px 40px rgba(0,0,0,0.8);
             position: relative; overflow: hidden;
         }
-
-        /* Sheen stays — this is a simple conic gradient, renders cleanly */
         .vinyl-disc::before {
             content: ''; position: absolute; inset: 0; border-radius: 50%;
-            background: conic-gradient(
-                from 0deg,
-                transparent 0deg 80deg,
-                rgba(255,255,255,0.06) 80deg 120deg,
-                transparent 120deg 200deg,
-                rgba(255,255,255,0.04) 200deg 240deg,
-                transparent 240deg 360deg
-            );
+            background: conic-gradient(from 0deg, transparent 0deg 80deg, rgba(255,255,255,0.06) 80deg 120deg, transparent 120deg 200deg, rgba(255,255,255,0.04) 200deg 240deg, transparent 240deg 360deg);
             opacity: 1; transition: opacity 0.3s;
         }
         .vinyl-disc.no-sheen::before { opacity: 0; }
 
-        .vinyl-label {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 145px; height: 145px; border-radius: 50%;
-            background: #333 50% 50%/cover no-repeat;
-            box-shadow: 0 0 0 1px rgba(255,255,255,0.05), inset 0 0 20px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
+        .vinyl-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 145px; height: 145px; border-radius: 50%; background: #333 50% 50%/cover no-repeat; box-shadow: inset 0 0 20px rgba(0,0,0,0.3); overflow: hidden; }
         .vinyl-label .cover-placeholder { color: rgba(255,255,255,0.3); gap: 3px; }
         .vinyl-label .ph-icon { font-size: 14px; }
         .vinyl-label .ph-text { display: none; }
 
-        .vinyl-hole {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 12px; height: 12px; background: #060606; border-radius: 50%; z-index: 2;
-        }
+        .vinyl-hole { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 12px; height: 12px; background: #060606; border-radius: 50%; z-index: 2; }
 
-        @keyframes spinVinyl {
-            from { transform: rotate(0deg); }
-            to   { transform: rotate(360deg); }
-        }
+        @keyframes spinVinyl { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* ── CD ────────────────────────────────── */
+        /* ── CD ──────────────────────────── */
         .mockup-cd { display: none; align-items: center; justify-content: center; }
         .cd-case { position: relative; width: 390px; height: 390px; }
         .cd-back { position: absolute; top: 7px; left: 7px; width: 390px; height: 390px; background: #161616; border-radius: 4px; box-shadow: 4px 4px 20px rgba(0,0,0,0.7); }
@@ -370,34 +211,20 @@
             position: absolute; inset: 0;
             background: #222 50% 50%/cover no-repeat;
             border-radius: 4px; overflow: hidden;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.85);
-            transition: box-shadow 0.4s;
+            /* NO box-shadow — use filter via JS */
+            transition: filter 0.4s;
         }
         .cd-spine { position: absolute; left: -11px; top: 0; bottom: 0; width: 11px; background: linear-gradient(90deg, #090909, #1a1a1a); border-radius: 2px 0 0 2px; }
-        .cd-disc {
-            position: absolute; right: -100px; top: 50%; transform: translateY(-50%);
-            width: 210px; height: 210px; border-radius: 50%;
-            background: conic-gradient(
-                #aaaabc 0deg 15deg,#8888a8 15deg 30deg,#c0c0d0 30deg 45deg,#7878a0 45deg 60deg,
-                #c8c8d8 60deg 75deg,#9090b0 75deg 90deg,#aaaabc 90deg 105deg,#9898b8 105deg 120deg,
-                #b8b8c8 120deg 135deg,#8080a0 135deg 150deg,#aaaabc 150deg 165deg,#9494b2 165deg 180deg,
-                #c0c0d0 180deg 195deg,#8888a8 195deg 210deg,#a8a8c0 210deg 225deg,#9898b8 225deg 240deg,
-                #c0c0d0 240deg 255deg,#8888b0 255deg 270deg,#aaaabc 270deg 285deg,#9090b0 285deg 300deg,
-                #c8c8d8 300deg 315deg,#8080a0 315deg 330deg,#aaaabc 330deg 345deg,#9898b0 345deg 360deg
-            );
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            display: flex; align-items: center; justify-content: center;
-            animation: spinVinyl 4s linear infinite; z-index: 5;
-        }
+        .cd-disc { position: absolute; right: -100px; top: 50%; transform: translateY(-50%); width: 210px; height: 210px; border-radius: 50%; background: conic-gradient(#aaaabc 0deg 15deg,#8888a8 15deg 30deg,#c0c0d0 30deg 45deg,#7878a0 45deg 60deg,#c8c8d8 60deg 75deg,#9090b0 75deg 90deg,#aaaabc 90deg 105deg,#9898b8 105deg 120deg,#b8b8c8 120deg 135deg,#8080a0 135deg 150deg,#aaaabc 150deg 165deg,#9494b2 165deg 180deg,#c0c0d0 180deg 195deg,#8888a8 195deg 210deg,#a8a8c0 210deg 225deg,#9898b8 225deg 240deg,#c0c0d0 240deg 255deg,#8888b0 255deg 270deg,#aaaabc 270deg 285deg,#9090b0 285deg 300deg,#c8c8d8 300deg 315deg,#8080a0 315deg 330deg,#aaaabc 330deg 345deg,#9898b0 345deg 360deg); box-shadow: 0 10px 40px rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; animation: spinVinyl 4s linear infinite; z-index: 5; }
         .cd-hole { width: 38px; height: 38px; background: #1a1a1a; border-radius: 50%; }
 
-        /* ── CASSETTE ──────────────────────────── */
+        /* ── CASSETTE ────────────────────── */
         .mockup-cassette { display: none; align-items: center; justify-content: center; }
         .cassette-body {
             position: relative; width: 440px; height: 270px;
             background: #181818; border-radius: 10px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06);
-            overflow: hidden; transition: box-shadow 0.4s;
+            /* NO box-shadow — use filter via JS */
+            overflow: hidden; transition: filter 0.4s;
         }
         .cassette-label { position: absolute; top: 18px; left: 18px; right: 18px; height: 130px; background: #222 50% 50%/cover no-repeat; border-radius: 5px; overflow: hidden; }
         .cassette-window { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); width: 200px; height: 68px; background: rgba(0,0,0,0.55); border-radius: 5px; border: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: space-around; padding: 8px; }
@@ -405,9 +232,15 @@
         .cassette-reel::after { content: ''; width: 14px; height: 14px; background: #0d0d0d; border-radius: 50%; }
         .cassette-screw { position: absolute; width: 7px; height: 7px; background: #252525; border-radius: 50%; border: 1px solid rgba(255,255,255,0.08); }
 
-        /* ── STREAM CARD ───────────────────────── */
+        /* ── STREAM CARD ─────────────────── */
         .mockup-card { display: none; align-items: center; justify-content: center; gap: 24px; }
-        .stream-card { position: relative; width: 255px; height: 355px; border-radius: 18px; background: #222 50% 50%/cover no-repeat; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.8); transition: box-shadow 0.4s; }
+        .stream-card {
+            position: relative; width: 255px; height: 355px;
+            border-radius: 18px; background: #222 50% 50%/cover no-repeat;
+            overflow: hidden;
+            /* NO box-shadow — use filter via JS */
+            transition: filter 0.4s;
+        }
         .stream-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 55%); z-index: 3; }
         .stream-card-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 18px 16px; z-index: 4; }
         .stream-card-title { font-size: 17px; font-weight: 700; line-height: 1.2; margin-bottom: 4px; color: white; letter-spacing: -0.02em; }
@@ -419,7 +252,7 @@
         .stream-card-progress { height: 100%; width: 55%; background: white; border-radius: 3px; }
         .stream-card-bg { width: 200px; height: 300px; border-radius: 14px; background: #222 50% 50%/cover no-repeat; opacity: 0.5; filter: blur(2px); box-shadow: 0 20px 50px rgba(0,0,0,0.6); overflow: hidden; }
 
-        /* ── TOAST ─────────────────────────────── */
+        /* ── TOAST ───────────────────────── */
         .toast { position: fixed; bottom: 22px; right: 22px; background: var(--ink); color: white; border-radius: 10px; padding: 11px 17px; font-size: 12px; font-weight: 600; box-shadow: 0 12px 40px rgba(0,0,0,0.2); transform: translateY(20px); opacity: 0; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); z-index: 100; }
         .toast.show { transform: translateY(0); opacity: 1; }
     </style>
@@ -440,9 +273,8 @@
 
     <div class="sidebar-scroll">
 
-        <!-- ── 아트워크 탭 ── -->
+        <!-- 아트워크 탭 -->
         <div class="tab-panel active" id="tab-artwork">
-
             <div class="group">
                 <label for="imageUpload" class="upload-zone" id="uploadZone">
                     <div class="upload-icon">📷</div>
@@ -472,7 +304,7 @@
                 </div>
             </div>
 
-            <!-- 기본/글로우/파티클 배경색 -->
+            <!-- 단색 배경색 (그라디언트가 아닐 때) -->
             <div class="group" id="solidColorGroup">
                 <span class="group-label">배경색</span>
                 <div class="swatch-row" id="bgSwatches">
@@ -486,7 +318,7 @@
                 </div>
             </div>
 
-            <!-- 그라디언트 전용 색상 패널 -->
+            <!-- 그라디언트 전용 색상 (시작색/끝색 독립 조절) -->
             <div class="gradient-colors" id="gradientColorPanel">
                 <div class="grad-row">
                     <span class="grad-row-label">시작색</span>
@@ -513,12 +345,10 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
-        <!-- ── 스타일 탭 ── -->
+        <!-- 스타일 탭 -->
         <div class="tab-panel" id="tab-style">
-
             <div class="group">
                 <span class="group-label">바이닐 색상</span>
                 <div class="swatch-row" id="vinylSwatches">
@@ -561,20 +391,12 @@
                     <div class="swatch-custom"><span>+</span><input type="color" id="glowColorCustom" value="#ffffff"></div>
                 </div>
             </div>
-
         </div>
 
-        <!-- ── 텍스트 탭 ── -->
+        <!-- 텍스트 탭 -->
         <div class="tab-panel" id="tab-text">
-
-            <div class="group">
-                <span class="group-label">아티스트</span>
-                <input type="text" class="text-input" id="artistInput">
-            </div>
-            <div class="group">
-                <span class="group-label">앨범 제목</span>
-                <input type="text" class="text-input" id="titleInput">
-            </div>
+            <div class="group"><span class="group-label">아티스트</span><input type="text" class="text-input" id="artistInput"></div>
+            <div class="group"><span class="group-label">앨범 제목</span><input type="text" class="text-input" id="titleInput"></div>
 
             <div class="group">
                 <span class="group-label">글꼴</span>
@@ -644,7 +466,6 @@
                     <div class="toggle-row" data-toggle="toggleGradBg"><span class="toggle-name">그라디언트 배경</span><div class="toggle" id="toggleGradBg"></div></div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -657,12 +478,11 @@
 <div class="main-view" id="mainView">
     <div id="capture-area" style="background:#0d0d0d">
 
-        <!-- Particles are inside capture-area → exported correctly -->
+        <!-- Particles inside capture-area for correct export -->
         <canvas id="particles"></canvas>
 
-        <!-- VINYL -->
+        <!-- VINYL (no glow-halo divs — glow handled by filter:drop-shadow) -->
         <div class="mockup-vinyl" id="mockupVinyl">
-            <div class="glow-halo" id="glowHalo"></div>
             <div class="album-cover draggable-cover" id="cover">
                 <div class="cover-placeholder"><div class="ph-icon">🎵</div><div class="ph-text">이미지를 업로드하세요</div></div>
                 <div class="cover-text-overlay visible" id="textOverlay">
@@ -675,9 +495,7 @@
             </div>
             <div class="vinyl-record" id="record">
                 <div class="vinyl-disc" id="vinylDisc">
-                    <div class="vinyl-label draggable-cover" id="label">
-                        <div class="cover-placeholder"><div class="ph-icon">🎵</div></div>
-                    </div>
+                    <div class="vinyl-label draggable-cover" id="label"><div class="cover-placeholder"><div class="ph-icon">🎵</div></div></div>
                     <div class="vinyl-hole"></div>
                 </div>
             </div>
@@ -685,8 +503,7 @@
 
         <!-- CD -->
         <div class="mockup-cd" id="mockupCd">
-            <div class="cd-case" style="position:relative">
-                <div class="glow-halo" id="glowHaloCd"></div>
+            <div class="cd-case">
                 <div class="cd-back"></div>
                 <div class="cd-front draggable-cover" id="cdFront">
                     <div class="cover-placeholder"><div class="ph-icon">🎵</div><div class="ph-text">이미지를 업로드하세요</div></div>
@@ -701,40 +518,27 @@
 
         <!-- CASSETTE -->
         <div class="mockup-cassette" id="mockupCassette">
-            <div style="position:relative">
-                <div class="glow-halo" id="glowHaloCassette"></div>
-                <div class="cassette-body" id="cassettBody">
-                    <div class="cassette-label draggable-cover" id="cassetteCover">
-                        <div class="cover-placeholder"><div class="ph-icon">🎵</div><div class="ph-text">이미지를 업로드하세요</div></div>
-                    </div>
-                    <div class="cassette-window">
-                        <div class="cassette-reel"></div>
-                        <div class="cassette-reel" style="animation-direction:reverse"></div>
-                    </div>
-                    <div class="cassette-screw" style="top:8px;left:10px"></div>
-                    <div class="cassette-screw" style="top:8px;right:10px"></div>
-                    <div class="cassette-screw" style="bottom:8px;left:10px"></div>
-                    <div class="cassette-screw" style="bottom:8px;right:10px"></div>
-                </div>
+            <div class="cassette-body" id="cassettBody">
+                <div class="cassette-label draggable-cover" id="cassetteCover"><div class="cover-placeholder"><div class="ph-icon">🎵</div><div class="ph-text">이미지를 업로드하세요</div></div></div>
+                <div class="cassette-window"><div class="cassette-reel"></div><div class="cassette-reel" style="animation-direction:reverse"></div></div>
+                <div class="cassette-screw" style="top:8px;left:10px"></div>
+                <div class="cassette-screw" style="top:8px;right:10px"></div>
+                <div class="cassette-screw" style="bottom:8px;left:10px"></div>
+                <div class="cassette-screw" style="bottom:8px;right:10px"></div>
             </div>
         </div>
 
         <!-- STREAM CARD -->
         <div class="mockup-card" id="mockupCard">
             <div class="stream-card-bg" id="streamCardBg"></div>
-            <div style="position:relative">
-                <div class="glow-halo" id="glowHaloCard"></div>
-                <div class="stream-card draggable-cover" id="streamCard">
-                    <div class="cover-placeholder"><div class="ph-icon">🎵</div><div class="ph-text">이미지를 업로드하세요</div></div>
-                    <div class="stream-card-overlay"></div>
-                    <div class="stream-card-info">
-                        <div class="stream-card-title" id="scTitle">앨범 제목</div>
-                        <div class="stream-card-artist" id="scArtist">아티스트</div>
-                        <div class="stream-card-controls">
-                            <div class="sc-btn">⏮</div><div class="sc-btn play">▶</div><div class="sc-btn">⏭</div>
-                        </div>
-                        <div class="stream-card-bar"><div class="stream-card-progress"></div></div>
-                    </div>
+            <div class="stream-card draggable-cover" id="streamCard">
+                <div class="cover-placeholder"><div class="ph-icon">🎵</div><div class="ph-text">이미지를 업로드하세요</div></div>
+                <div class="stream-card-overlay"></div>
+                <div class="stream-card-info">
+                    <div class="stream-card-title" id="scTitle">앨범 제목</div>
+                    <div class="stream-card-artist" id="scArtist">아티스트</div>
+                    <div class="stream-card-controls"><div class="sc-btn">⏮</div><div class="sc-btn play">▶</div><div class="sc-btn">⏭</div></div>
+                    <div class="stream-card-bar"><div class="stream-card-progress"></div></div>
                 </div>
             </div>
         </div>
@@ -746,23 +550,56 @@
 
 <script>
 const S = {
-    imageUrl: null, mode: 'vinyl',
-    bgColor: '#0d0d0d', bgEffect: 'solid',
-    gradStartColor: '#ff69b4', gradEndColor: '#0d0d0d',
-    spinSpeed: 8, vinylColor: '#0e0e0e',
-    glow: false, glowColor: '#ffffff',
-    sheen: true, tilt: true, barcode: false,
-    artist: '', title: '',
-    textPos: 'bottom', font: "'Pretendard', sans-serif",
-    textColor: '#ffffff', titleSize: 22,
-    showText: true, shadow: true, shadowColor: '#000000', gradBg: false,
+    imageUrl:null, mode:'vinyl',
+    bgColor:'#0d0d0d', bgEffect:'solid',
+    gradStartColor:'#ff69b4', gradEndColor:'#0d0d0d',
+    spinSpeed:8, vinylColor:'#0e0e0e',
+    glow:false, glowColor:'#ffffff',
+    sheen:true, tilt:true, barcode:false,
+    artist:'', title:'',
+    textPos:'bottom', font:"'Pretendard', sans-serif",
+    textColor:'#ffffff', titleSize:22,
+    showText:true, shadow:true, shadowColor:'#000000', gradBg:false,
 };
 
 const $ = id => document.getElementById(id);
+
 function hex2rgba(hex, a) {
     const n = parseInt(hex.replace('#',''), 16);
     return `rgba(${n>>16},${(n>>8)&0xff},${n&0xff},${a})`;
 }
+
+// ── DEFAULT FILTERS (depth shadows via CSS filter, reliable in html2canvas) ──
+// Using filter:drop-shadow instead of box-shadow so glow can be stacked on the same property
+const DEF = {
+    cover:      'drop-shadow(12px 0px 30px rgba(0,0,0,0.97)) drop-shadow(3px 0px 8px rgba(0,0,0,0.75))',
+    cdFront:    'drop-shadow(0px 15px 40px rgba(0,0,0,0.9)) drop-shadow(0px 3px 8px rgba(0,0,0,0.6))',
+    cassettBody:'drop-shadow(0px 18px 50px rgba(0,0,0,0.88)) drop-shadow(0px 0px 1px rgba(255,255,255,0.06))',
+    streamCard: 'drop-shadow(0px 22px 55px rgba(0,0,0,0.88)) drop-shadow(0px 6px 15px rgba(0,0,0,0.6))',
+};
+
+function setFilter(id, extra) {
+    const el = $(id); if (!el) return;
+    el.style.filter = extra ? DEF[id] + ' ' + extra : DEF[id];
+}
+
+function initFilters() {
+    Object.keys(DEF).forEach(id => setFilter(id, ''));
+}
+
+function glowExtra() {
+    const c1 = hex2rgba(S.glowColor, 0.9);
+    const c2 = hex2rgba(S.glowColor, 0.55);
+    const c3 = hex2rgba(S.glowColor, 0.25);
+    return `drop-shadow(0px 0px 14px ${c1}) drop-shadow(0px 0px 32px ${c2}) drop-shadow(0px 0px 60px ${c3})`;
+}
+
+function applyGlow() {
+    const g = glowExtra();
+    Object.keys(DEF).forEach(id => setFilter(id, g));
+}
+
+function clearGlow() { Object.keys(DEF).forEach(id => setFilter(id, '')); }
 
 // ── IMAGE DRAG ──────────────────────────────────────────
 const bgPos = { cover:{x:50,y:50}, cdFront:{x:50,y:50}, cassetteCover:{x:50,y:50}, streamCard:{x:50,y:50}, label:{x:50,y:50} };
@@ -782,16 +619,14 @@ document.addEventListener('mousemove', e => {
     if (!isDragging||!dragEl) return;
     const id=dragEl.id; if(!bgPos[id]) bgPos[id]={x:50,y:50};
     const rect=dragEl.getBoundingClientRect();
-    const dx=(e.clientX-dragStart.x)/rect.width*100;
-    const dy=(e.clientY-dragStart.y)/rect.height*100;
-    bgPos[id].x=Math.max(0,Math.min(100,posStart.x-dx));
-    bgPos[id].y=Math.max(0,Math.min(100,posStart.y-dy));
-    dragEl.style.backgroundPosition=`${bgPos[id].x}% ${bgPos[id].y}%`;
-    if(id==='cover'){ bgPos.label={...bgPos[id]}; $('label').style.backgroundPosition=`${bgPos.label.x}% ${bgPos.label.y}%`; }
+    bgPos[id].x = Math.max(0, Math.min(100, posStart.x - (e.clientX-dragStart.x)/rect.width*100));
+    bgPos[id].y = Math.max(0, Math.min(100, posStart.y - (e.clientY-dragStart.y)/rect.height*100));
+    dragEl.style.backgroundPosition = `${bgPos[id].x}% ${bgPos[id].y}%`;
+    if (id==='cover') { bgPos.label={...bgPos[id]}; $('label').style.backgroundPosition=`${bgPos.label.x}% ${bgPos.label.y}%`; }
 });
 
 document.addEventListener('mouseup', () => {
-    if(dragEl) dragEl.classList.remove('dragging');
+    if (dragEl) dragEl.classList.remove('dragging');
     isDragging=false; dragEl=null;
 });
 
@@ -807,36 +642,34 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 
 // ── UPLOAD ──────────────────────────────────────────────
 $('imageUpload').addEventListener('change', e => {
-    const file=e.target.files[0]; if(!file) return;
+    const file=e.target.files[0]; if (!file) return;
     const reader=new FileReader();
-    reader.onload=ev=>{
+    reader.onload = ev => {
         S.imageUrl=ev.target.result;
         Object.keys(bgPos).forEach(k=>{bgPos[k]={x:50,y:50};});
         applyImage();
         const uz=$('uploadZone');
         uz.classList.add('has-image');
-        uz.querySelector('.upload-text').textContent=file.name.length>22?file.name.slice(0,20)+'…':file.name;
-        uz.querySelector('.upload-sub').textContent='드래그로 위치 조절';
+        uz.querySelector('.upload-text').textContent = file.name.length>22 ? file.name.slice(0,20)+'…' : file.name;
+        uz.querySelector('.upload-sub').textContent = '드래그로 위치 조절';
         showToast('업로드 완료');
     };
     reader.readAsDataURL(file);
 });
 
 function applyImage() {
-    const url=`url(${S.imageUrl})`;
-    ['cover','label','cdFront','cassetteCover','streamCard','streamCardBg'].forEach(id=>{
+    const url = `url(${S.imageUrl})`;
+    ['cover','label','cdFront','cassetteCover','streamCard','streamCardBg'].forEach(id => {
         const el=$(id);
-        el.style.backgroundImage=url;
-        el.style.backgroundSize='cover';
-        el.style.backgroundPosition='50% 50%';
+        el.style.backgroundImage=url; el.style.backgroundSize='cover'; el.style.backgroundPosition='50% 50%';
         el.classList.add('has-image');
     });
-    if(S.glow) applyGlow();
+    if (S.glow) applyGlow();
 }
 
 // ── MODE ────────────────────────────────────────────────
-document.querySelectorAll('.mode-btn').forEach(btn=>{
-    btn.addEventListener('click',()=>{
+document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
         document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
         btn.classList.add('active'); S.mode=btn.dataset.mode; switchMode(S.mode);
     });
@@ -849,63 +682,43 @@ function switchMode(mode) {
 }
 
 // ── BACKGROUND ──────────────────────────────────────────
-document.querySelectorAll('[data-bg-effect]').forEach(el=>{
-    el.addEventListener('click',()=>{
+document.querySelectorAll('[data-bg-effect]').forEach(el => {
+    el.addEventListener('click', () => {
         document.querySelectorAll('[data-bg-effect]').forEach(e=>e.classList.remove('active'));
         el.classList.add('active'); S.bgEffect=el.dataset.bgEffect;
-        updateBgUI(); applyBg();
+        $('gradientColorPanel').classList.toggle('show', S.bgEffect==='gradient');
+        $('solidColorGroup').style.display = S.bgEffect==='gradient' ? 'none' : '';
+        applyBg();
     });
 });
 
-function updateBgUI() {
-    const isGrad = S.bgEffect==='gradient';
-    $('gradientColorPanel').classList.toggle('show', isGrad);
-    $('solidColorGroup').style.display = isGrad ? 'none' : '';
-}
-
-// Solid/glow/particles bg color
 document.querySelectorAll('#bgSwatches .swatch').forEach(sw=>{
-    sw.addEventListener('click',()=>{
-        document.querySelectorAll('#bgSwatches .swatch').forEach(s=>s.classList.remove('active'));
-        sw.classList.add('active'); S.bgColor=sw.dataset.color; applyBg();
-    });
+    sw.addEventListener('click', ()=>{ document.querySelectorAll('#bgSwatches .swatch').forEach(s=>s.classList.remove('active')); sw.classList.add('active'); S.bgColor=sw.dataset.color; applyBg(); });
 });
-$('bgColorCustom').addEventListener('input',e=>{ S.bgColor=e.target.value; applyBg(); });
+$('bgColorCustom').addEventListener('input', e=>{ S.bgColor=e.target.value; applyBg(); });
 
-// Gradient start color
 document.querySelectorAll('[data-gs]').forEach(sw=>{
-    sw.addEventListener('click',()=>{
-        document.querySelectorAll('[data-gs]').forEach(s=>s.classList.remove('active'));
-        sw.classList.add('active'); S.gradStartColor=sw.dataset.gs; applyBg();
-    });
+    sw.addEventListener('click', ()=>{ document.querySelectorAll('[data-gs]').forEach(s=>s.classList.remove('active')); sw.classList.add('active'); S.gradStartColor=sw.dataset.gs; applyBg(); });
 });
-$('gradStartCustom').addEventListener('input',e=>{ S.gradStartColor=e.target.value; applyBg(); });
+$('gradStartCustom').addEventListener('input', e=>{ S.gradStartColor=e.target.value; applyBg(); });
 
-// Gradient end color
 document.querySelectorAll('[data-ge]').forEach(sw=>{
-    sw.addEventListener('click',()=>{
-        document.querySelectorAll('[data-ge]').forEach(s=>s.classList.remove('active'));
-        sw.classList.add('active'); S.gradEndColor=sw.dataset.ge; applyBg();
-    });
+    sw.addEventListener('click', ()=>{ document.querySelectorAll('[data-ge]').forEach(s=>s.classList.remove('active')); sw.classList.add('active'); S.gradEndColor=sw.dataset.ge; applyBg(); });
 });
-$('gradEndCustom').addEventListener('input',e=>{ S.gradEndColor=e.target.value; applyBg(); });
+$('gradEndCustom').addEventListener('input', e=>{ S.gradEndColor=e.target.value; applyBg(); });
 
 function applyBg() {
     stopParticles();
     const ca=$('capture-area');
     ca.style.backgroundImage='none';
-
-    if(S.bgEffect==='gradient') {
-        // Two fully independent colors — no banding artifact, simple linear
+    if (S.bgEffect==='gradient') {
         ca.style.backgroundColor=S.gradEndColor;
         ca.style.backgroundImage=`linear-gradient(135deg, ${S.gradStartColor} 0%, ${hex2rgba(S.gradStartColor,0.35)} 48%, ${S.gradEndColor} 78%)`;
-    } else if(S.bgEffect==='glow') {
+    } else if (S.bgEffect==='glow') {
         ca.style.backgroundColor=S.bgColor;
-        ca.style.backgroundImage=`radial-gradient(ellipse 55% 60% at 50% 50%, ${hex2rgba(S.bgColor, 0)} 0%, ${hex2rgba('#ffffff',0.18)} 0%, ${hex2rgba('#ffffff',0)} 60%), radial-gradient(ellipse 55% 60% at 50% 50%, ${liven(S.bgColor,120)} 0%, ${liven(S.bgColor,40)} 35%, ${S.bgColor} 68%)`;
-        ca.style.backgroundImage=`radial-gradient(ellipse 55% 60% at 50% 50%, ${liven(S.bgColor,120)} 0%, ${liven(S.bgColor,40)} 35%, ${S.bgColor} 68%)`;
-    } else if(S.bgEffect==='particles') {
-        ca.style.backgroundColor=S.bgColor;
-        startParticles();
+        ca.style.backgroundImage=`radial-gradient(ellipse 55% 60% at 50% 50%, ${liven(S.bgColor,120)} 0%, ${liven(S.bgColor,45)} 35%, ${S.bgColor} 68%)`;
+    } else if (S.bgEffect==='particles') {
+        ca.style.backgroundColor=S.bgColor; startParticles();
     } else {
         ca.style.backgroundColor=S.bgColor;
     }
@@ -917,7 +730,7 @@ function liven(hex, amt) {
 }
 
 // ── SPIN SPEED ──────────────────────────────────────────
-$('spinSpeed').addEventListener('input',function(){
+$('spinSpeed').addEventListener('input', function(){
     S.spinSpeed=+this.value; $('spinSpeed-val').textContent=this.value+'초';
     $('record').style.animation=`spinVinyl ${this.value}s linear infinite`;
     $('cdDisc').style.animation=`spinVinyl ${this.value/2}s linear infinite`;
@@ -926,64 +739,44 @@ $('spinSpeed').addEventListener('input',function(){
 
 // ── VINYL COLOR ─────────────────────────────────────────
 document.querySelectorAll('[data-vinyl]').forEach(sw=>{
-    sw.addEventListener('click',()=>{
+    sw.addEventListener('click', ()=>{
         document.querySelectorAll('[data-vinyl]').forEach(s=>s.classList.remove('active'));
         sw.classList.add('active'); S.vinylColor=sw.dataset.vinyl;
-        const vd=$('vinylDisc'); vd.style.background=S.vinylColor;
+        $('vinylDisc').style.background=S.vinylColor;
     });
 });
 
 // ── GLOW COLOR ──────────────────────────────────────────
 document.querySelectorAll('[data-glow]').forEach(sw=>{
-    sw.addEventListener('click',()=>{
+    sw.addEventListener('click', ()=>{
         document.querySelectorAll('[data-glow]').forEach(s=>s.classList.remove('active'));
         sw.classList.add('active'); S.glowColor=sw.dataset.glow;
-        if(S.glow) applyGlow();
+        if (S.glow) applyGlow();
     });
 });
-$('glowColorCustom').addEventListener('input',e=>{ S.glowColor=e.target.value; if(S.glow) applyGlow(); });
-
-const GLOW_IDS=['glowHalo','glowHaloCd','glowHaloCassette','glowHaloCard'];
-
-function applyGlow() {
-    const bg=`radial-gradient(ellipse 75% 75% at 50% 50%, ${hex2rgba(S.glowColor,0.55)} 0%, ${hex2rgba(S.glowColor,0.22)} 38%, transparent 68%)`;
-    GLOW_IDS.forEach(id=>{ const el=$(id); if(el){el.style.background=bg; el.style.opacity='1';} });
-    const sh=`0 0 30px ${hex2rgba(S.glowColor,0.7)}, 0 0 70px ${hex2rgba(S.glowColor,0.35)}`;
-    $('cover').style.boxShadow=sh+', 15px 0 50px rgba(0,0,0,0.95)';
-    $('cdFront').style.boxShadow=sh+', 0 15px 50px rgba(0,0,0,0.85)';
-    const cb=$('cassettBody'); if(cb) cb.style.boxShadow=sh+', 0 20px 60px rgba(0,0,0,0.8)';
-    $('streamCard').style.boxShadow=sh+', 0 30px 80px rgba(0,0,0,0.8)';
-}
-
-function clearGlow() {
-    GLOW_IDS.forEach(id=>{ const el=$(id); if(el) el.style.opacity='0'; });
-    $('cover').style.boxShadow='15px 0 50px rgba(0,0,0,0.95), 2px 0 10px rgba(0,0,0,0.8)';
-    $('cdFront').style.boxShadow='0 15px 50px rgba(0,0,0,0.85)';
-    const cb=$('cassettBody'); if(cb) cb.style.boxShadow='0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06)';
-    $('streamCard').style.boxShadow='0 30px 80px rgba(0,0,0,0.8)';
-}
+$('glowColorCustom').addEventListener('input', e=>{ S.glowColor=e.target.value; if(S.glow) applyGlow(); });
 
 // ── TOGGLES ─────────────────────────────────────────────
 document.querySelectorAll('.toggle-row').forEach(row=>{
-    row.addEventListener('click',()=>{
+    row.addEventListener('click', ()=>{
         const id=row.dataset.toggle; const el=$(id);
-        el.classList.toggle('on'); handleToggle(id,el.classList.contains('on'));
+        el.classList.toggle('on'); handleToggle(id, el.classList.contains('on'));
     });
 });
 
-function handleToggle(id,v) {
-    if(id==='toggleGlow'){S.glow=v; v?applyGlow():clearGlow();}
-    else if(id==='toggleSheen'){S.sheen=v; $('vinylDisc').classList.toggle('no-sheen',!v);}
-    else if(id==='toggleTilt'){S.tilt=v; if(!v) $('capture-area').style.transform='';}
-    else if(id==='toggleBarcode'){S.barcode=v; document.querySelectorAll('.cover-barcode').forEach(b=>b.classList.toggle('visible',v));}
-    else if(id==='toggleText'){S.showText=v; $('textOverlay').classList.toggle('visible',v);}
-    else if(id==='toggleShadow'){S.shadow=v; applyShadow();}
-    else if(id==='toggleGradBg'){S.gradBg=v; $('textOverlay').style.background=v?'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)':('')}
+function handleToggle(id, v) {
+    if      (id==='toggleGlow')    { S.glow=v; v ? applyGlow() : clearGlow(); }
+    else if (id==='toggleSheen')   { S.sheen=v; $('vinylDisc').classList.toggle('no-sheen',!v); }
+    else if (id==='toggleTilt')    { S.tilt=v; if(!v) $('capture-area').style.transform=''; }
+    else if (id==='toggleBarcode') { S.barcode=v; document.querySelectorAll('.cover-barcode').forEach(b=>b.classList.toggle('visible',v)); }
+    else if (id==='toggleText')    { S.showText=v; $('textOverlay').classList.toggle('visible',v); }
+    else if (id==='toggleShadow')  { S.shadow=v; applyShadow(); }
+    else if (id==='toggleGradBg')  { S.gradBg=v; $('textOverlay').style.background=v?'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)':''; }
 }
 
 // ── SHADOW ──────────────────────────────────────────────
 function applyShadow() {
-    if(S.shadow){
+    if (S.shadow) {
         const c=hex2rgba(S.shadowColor,0.88); const c2=hex2rgba(S.shadowColor,0.5);
         $('coverTitle').style.textShadow=`0 2px 20px ${c}, 0 1px 6px ${c2}`;
         $('coverArtist').style.textShadow=`0 2px 12px ${c}`;
@@ -993,21 +786,18 @@ function applyShadow() {
 }
 
 document.querySelectorAll('[data-sc]').forEach(sw=>{
-    sw.addEventListener('click',()=>{
-        document.querySelectorAll('[data-sc]').forEach(s=>s.classList.remove('active'));
-        sw.classList.add('active'); S.shadowColor=sw.dataset.sc; applyShadow();
-    });
+    sw.addEventListener('click', ()=>{ document.querySelectorAll('[data-sc]').forEach(s=>s.classList.remove('active')); sw.classList.add('active'); S.shadowColor=sw.dataset.sc; applyShadow(); });
 });
-$('scColorCustom').addEventListener('input',e=>{ S.shadowColor=e.target.value; applyShadow(); });
+$('scColorCustom').addEventListener('input', e=>{ S.shadowColor=e.target.value; applyShadow(); });
 
 // ── TEXT ────────────────────────────────────────────────
-$('artistInput').addEventListener('input',e=>{ S.artist=e.target.value; $('coverArtist').textContent=e.target.value; $('scArtist').textContent=e.target.value||'아티스트'; });
-$('titleInput').addEventListener('input',e=>{ S.title=e.target.value; $('coverTitle').textContent=e.target.value; $('scTitle').textContent=e.target.value||'앨범 제목'; });
-$('fontSelect').addEventListener('change',e=>{ S.font=e.target.value; $('coverTitle').style.fontFamily=e.target.value; $('coverArtist').style.fontFamily=e.target.value; });
-$('titleSize').addEventListener('input',function(){ S.titleSize=+this.value; $('titleSize-val').textContent=this.value+'px'; $('coverTitle').style.fontSize=this.value+'px'; });
+$('artistInput').addEventListener('input', e=>{ S.artist=e.target.value; $('coverArtist').textContent=e.target.value; $('scArtist').textContent=e.target.value||'아티스트'; });
+$('titleInput').addEventListener('input', e=>{ S.title=e.target.value; $('coverTitle').textContent=e.target.value; $('scTitle').textContent=e.target.value||'앨범 제목'; });
+$('fontSelect').addEventListener('change', e=>{ S.font=e.target.value; $('coverTitle').style.fontFamily=e.target.value; $('coverArtist').style.fontFamily=e.target.value; });
+$('titleSize').addEventListener('input', function(){ S.titleSize=+this.value; $('titleSize-val').textContent=this.value+'px'; $('coverTitle').style.fontSize=this.value+'px'; });
 
 document.querySelectorAll('[data-pos]').forEach(el=>{
-    el.addEventListener('click',()=>{
+    el.addEventListener('click', ()=>{
         document.querySelectorAll('[data-pos]').forEach(e=>e.classList.remove('active'));
         el.classList.add('active'); S.textPos=el.dataset.pos;
         const ol=$('textOverlay');
@@ -1017,24 +807,20 @@ document.querySelectorAll('[data-pos]').forEach(el=>{
 });
 
 document.querySelectorAll('[data-tc]').forEach(sw=>{
-    sw.addEventListener('click',()=>{
-        document.querySelectorAll('[data-tc]').forEach(s=>s.classList.remove('active'));
-        sw.classList.add('active'); setTextColor(sw.dataset.tc);
-    });
+    sw.addEventListener('click', ()=>{ document.querySelectorAll('[data-tc]').forEach(s=>s.classList.remove('active')); sw.classList.add('active'); setTextColor(sw.dataset.tc); });
 });
-$('tcColorCustom').addEventListener('input',e=>{ document.querySelectorAll('[data-tc]').forEach(s=>s.classList.remove('active')); setTextColor(e.target.value); });
-
+$('tcColorCustom').addEventListener('input', e=>{ document.querySelectorAll('[data-tc]').forEach(s=>s.classList.remove('active')); setTextColor(e.target.value); });
 function setTextColor(c) { S.textColor=c; $('coverTitle').style.color=c; $('coverArtist').style.color=c; }
 
 // ── 3D TILT ─────────────────────────────────────────────
-$('mainView').addEventListener('mousemove',e=>{
-    if(!S.tilt) return;
+$('mainView').addEventListener('mousemove', e=>{
+    if (!S.tilt) return;
     const ca=$('capture-area'); const rect=ca.getBoundingClientRect();
     const dx=((e.clientX-rect.left)/rect.width-0.5)*2;
     const dy=((e.clientY-rect.top)/rect.height-0.5)*2;
     ca.style.transform=`perspective(1200px) rotateY(${dx*4}deg) rotateX(${-dy*3}deg)`;
 });
-$('mainView').addEventListener('mouseleave',()=>{ $('capture-area').style.transform='perspective(1200px) rotateY(0deg) rotateX(0deg)'; });
+$('mainView').addEventListener('mouseleave', ()=>{ $('capture-area').style.transform='perspective(1200px) rotateY(0deg) rotateX(0deg)'; });
 
 // ── PARTICLES ───────────────────────────────────────────
 const canvas=$('particles');
@@ -1048,48 +834,45 @@ function startParticles() {
     canvas.style.width=ca.offsetWidth+'px'; canvas.style.height=ca.offsetHeight+'px';
     canvas.style.display='block';
     pts.length=0;
-    for(let i=0;i<120;i++) pts.push({
-        x:Math.random()*canvas.width, y:Math.random()*canvas.height,
-        r:Math.random()*2.5+0.5, vx:(Math.random()-0.5)*0.3, vy:-(Math.random()*0.6+0.2), a:Math.random()*0.7+0.15
-    });
+    for (let i=0;i<120;i++) pts.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2.5+0.5,vx:(Math.random()-0.5)*0.3,vy:-(Math.random()*0.6+0.2),a:Math.random()*0.7+0.15});
     (function draw(){
         pctx.clearRect(0,0,canvas.width,canvas.height);
-        pts.forEach(p=>{
-            pctx.beginPath(); pctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-            pctx.fillStyle=`rgba(255,255,255,${p.a})`; pctx.fill();
-            p.x+=p.vx; p.y+=p.vy;
-            if(p.y<-5){p.y=canvas.height+5; p.x=Math.random()*canvas.width;}
-        });
+        pts.forEach(p=>{pctx.beginPath();pctx.arc(p.x,p.y,p.r,0,Math.PI*2);pctx.fillStyle=`rgba(255,255,255,${p.a})`;pctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.y<-5){p.y=canvas.height+5;p.x=Math.random()*canvas.width;}});
         rafId=requestAnimationFrame(draw);
     })();
 }
 
 function stopParticles() {
-    if(rafId){cancelAnimationFrame(rafId); rafId=null;}
+    if (rafId){cancelAnimationFrame(rafId);rafId=null;}
     pctx.clearRect(0,0,canvas.width,canvas.height);
     pts.length=0; canvas.style.display='none';
 }
 
-// ── SAVE ────────────────────────────────────────────────
+// ── SAVE (with root-cause fixes) ────────────────────────
 $('saveBtn').addEventListener('click', async () => {
     const ca=$('capture-area');
     const btn=$('saveBtn');
 
-    // Pause all animations
+    // 1. Pause all animations
     [$('record'),$('cdDisc')].forEach(el=>el.style.animationPlayState='paused');
     document.querySelectorAll('.cassette-reel').forEach(r=>r.style.animationPlayState='paused');
 
-    // FIX: fully stop particles animation before capture (prevents canvas artifacts)
-    const hadParticles = S.bgEffect==='particles';
-    if(hadParticles && rafId) { cancelAnimationFrame(rafId); rafId=null; }
+    // 2. Stop particles (prevents canvas artifacts in export)
+    const hadParticles=S.bgEffect==='particles';
+    if (hadParticles && rafId){cancelAnimationFrame(rafId);rafId=null;}
 
-    // Remove 3D tilt
+    // 3. Remove 3D transform
     ca.style.transform='';
+
+    // 4. Remove visual chrome that shouldn't be in the export
+    const prevShadow=ca.style.boxShadow;
+    const prevRadius=ca.style.borderRadius;
+    ca.style.boxShadow='none';
+    ca.style.borderRadius='0';
 
     btn.textContent='생성 중...'; btn.disabled=true;
 
-    // Wait for DOM to settle
-    await new Promise(r=>setTimeout(r,120));
+    await new Promise(r=>setTimeout(r,150));
 
     html2canvas(ca, {
         scale: 3,
@@ -1097,8 +880,24 @@ $('saveBtn').addEventListener('click', async () => {
         allowTaint: true,
         backgroundColor: null,
         logging: false,
-        // FIX: force redraw to avoid stale composite layers
-        ignoreElements: el => false,
+        // ═══════════════════════════════════════════════════════
+        // ROOT CAUSE FIX FOR BLACK LINES:
+        // html2canvas renders the ENTIRE page then crops to the
+        // target element. The .main-view::before dot grid is
+        // visually behind #capture-area but gets included in the
+        // render. onclone injects CSS to suppress it before capture.
+        // ═══════════════════════════════════════════════════════
+        onclone: (clonedDoc) => {
+            const s=clonedDoc.createElement('style');
+            s.textContent=`
+                .main-view { background: transparent !important; }
+                .main-view::before, .main-view::after { display: none !important; content: none !important; }
+                #mainView { background: transparent !important; }
+                #mainView::before, #mainView::after { display: none !important; content: none !important; }
+                body { background: transparent !important; }
+            `;
+            clonedDoc.head.appendChild(s);
+        }
     }).then(c=>{
         const link=document.createElement('a');
         link.download=`album_mockup_${Date.now()}.png`;
@@ -1107,23 +906,24 @@ $('saveBtn').addEventListener('click', async () => {
 
         btn.textContent='PNG로 저장'; btn.disabled=false;
 
+        // Restore visual chrome
+        ca.style.boxShadow=prevShadow||'0 30px 80px rgba(0,0,0,0.12), 0 10px 30px rgba(0,0,0,0.06)';
+        ca.style.borderRadius=prevRadius||'4px';
+
         // Resume animations
         [$('record'),$('cdDisc')].forEach(el=>el.style.animationPlayState='running');
         document.querySelectorAll('.cassette-reel').forEach(r=>r.style.animationPlayState='running');
-
-        // Resume particles
-        if(hadParticles) startParticles();
+        if (hadParticles) startParticles();
 
         showToast('저장되었습니다');
     });
 });
 
 // ── TOAST ───────────────────────────────────────────────
-function showToast(msg) {
-    const t=$('toast'); t.textContent=msg; t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),2400);
-}
+function showToast(msg) { const t=$('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2400); }
 
+// ── INIT ────────────────────────────────────────────────
+initFilters();
 switchMode('vinyl');
 </script>
 </body>
