@@ -63,11 +63,7 @@
             margin-bottom: 4px;
         }
 
-        .tagline {
-            font-size: 11px;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
+        .tagline { font-size: 11px; color: var(--text-muted); font-weight: 500; }
 
         .tab-nav {
             display: flex;
@@ -117,13 +113,7 @@
         .tab-panel.active { display: flex; }
 
         .group { display: flex; flex-direction: column; gap: 9px; }
-
-        .group-label {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.4px;
-            color: var(--text-muted);
-        }
+        .group-label { font-size: 10px; font-weight: 700; letter-spacing: 0.4px; color: var(--text-muted); }
 
         /* ── UPLOAD ──────────────────────────── */
         .upload-zone {
@@ -190,7 +180,6 @@
             transition: all 0.18s;
             white-space: nowrap;
             font-family: inherit;
-            letter-spacing: -0.01em;
         }
 
         .pill:hover { border-color: var(--border-hover); color: var(--text); }
@@ -248,7 +237,6 @@
             font-weight: 500;
             outline: none;
             transition: border-color 0.18s;
-            letter-spacing: -0.01em;
         }
 
         .text-input:focus { border-color: var(--ink); }
@@ -352,7 +340,6 @@
             font-weight: 700;
             cursor: pointer;
             transition: opacity 0.18s, transform 0.1s;
-            letter-spacing: -0.01em;
         }
 
         .save-btn:hover:not(:disabled) { opacity: 0.88; }
@@ -380,6 +367,7 @@
             pointer-events: none;
         }
 
+        /* ── CAPTURE AREA ────────────────────── */
         #capture-area {
             position: relative;
             width: 860px;
@@ -392,6 +380,15 @@
             transform-style: preserve-3d;
             border-radius: 4px;
             box-shadow: 0 30px 80px rgba(0,0,0,0.12), 0 10px 30px rgba(0,0,0,0.06);
+        }
+
+        /* Particles are NOW INSIDE capture-area so they get captured */
+        #particles {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            display: none;
         }
 
         /* ── COVER PLACEHOLDER ────────────────── */
@@ -413,7 +410,7 @@
         .has-image .cover-placeholder { opacity: 0; }
 
         .ph-icon { font-size: 24px; opacity: 0.7; }
-        .ph-text { font-size: 11.5px; font-weight: 500; letter-spacing: 0.1px; line-height: 1.4; }
+        .ph-text { font-size: 11.5px; font-weight: 500; line-height: 1.4; }
 
         .cassette-label .cover-placeholder { gap: 5px; }
         .cassette-label .ph-icon { font-size: 18px; }
@@ -436,7 +433,7 @@
             background: white;
             padding: 2px;
             border-radius: 1px;
-            z-index: 4;
+            z-index: 6;
             opacity: 0;
             transition: opacity 0.3s;
             box-shadow: 0 1px 4px rgba(0,0,0,0.25);
@@ -445,12 +442,28 @@
         .cover-barcode.visible { opacity: 1; }
         .cover-barcode svg { width: 100%; height: 100%; display: block; }
 
+        /* ── GLOW HALO (div-based, captured by html2canvas) ── */
+        .glow-halo {
+            position: absolute;
+            border-radius: 8px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: 3;
+        }
+
         /* ── VINYL MOCKUP ────────────────────── */
         .mockup-vinyl {
             position: relative;
             display: flex;
             align-items: center;
             width: 610px; height: 410px;
+        }
+
+        /* Vinyl glow halo: slightly bigger than the 410x410 cover, centered on it */
+        #glowHalo {
+            left: -55px; top: -55px;
+            width: 520px; height: 520px;
         }
 
         .album-cover {
@@ -510,7 +523,7 @@
                 rgba(0,0,0,0) 0%, rgba(0,0,0,0) 3.5px,
                 rgba(255,255,255,0.025) 4px, rgba(0,0,0,0) 4.5px
             );
-            box-shadow: 0 10px 60px rgba(0,0,0,0.7), inset 0 0 60px rgba(255,255,255,0.02);
+            box-shadow: 0 10px 60px rgba(0,0,0,0.7);
             position: relative;
             overflow: hidden;
         }
@@ -526,8 +539,7 @@
                 rgba(255,255,255,0.04) 200deg 240deg,
                 transparent 240deg 360deg
             );
-            opacity: 1;
-            transition: opacity 0.3s;
+            opacity: 1; transition: opacity 0.3s;
         }
 
         .vinyl-disc.no-sheen::before { opacity: 0; }
@@ -543,7 +555,7 @@
             overflow: hidden;
         }
 
-        .vinyl-label .cover-placeholder { color: rgba(255,255,255,0.3); gap: 4px; }
+        .vinyl-label .cover-placeholder { color: rgba(255,255,255,0.3); gap: 3px; }
         .vinyl-label .ph-icon { font-size: 14px; }
         .vinyl-label .ph-text { display: none; }
 
@@ -559,27 +571,31 @@
 
         @keyframes spinVinyl {
             from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            to   { transform: rotate(360deg); }
         }
 
         /* ── CD ──────────────────────────────── */
         .mockup-cd { display: none; align-items: center; justify-content: center; }
         .cd-case { position: relative; width: 390px; height: 390px; }
 
+        #glowHaloCd {
+            left: -55px; top: -55px;
+            width: 500px; height: 500px;
+        }
+
         .cd-back {
             position: absolute; top: 7px; left: 7px;
             width: 390px; height: 390px;
-            background: #161616;
-            border-radius: 4px;
+            background: #161616; border-radius: 4px;
             box-shadow: 4px 4px 20px rgba(0,0,0,0.7);
         }
 
         .cd-front {
             position: absolute; inset: 0;
             background: #222 50% 50%/cover no-repeat;
-            border-radius: 4px;
-            overflow: hidden;
+            border-radius: 4px; overflow: hidden;
             box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+            transition: box-shadow 0.4s;
         }
 
         .cd-spine {
@@ -609,6 +625,7 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.6);
             display: flex; align-items: center; justify-content: center;
             animation: spinVinyl 4s linear infinite;
+            z-index: 5;
         }
 
         .cd-hole { width: 38px; height: 38px; background: #1a1a1a; border-radius: 50%; }
@@ -616,22 +633,25 @@
         /* ── CASSETTE ────────────────────────── */
         .mockup-cassette { display: none; align-items: center; justify-content: center; }
 
+        #glowHaloCassette {
+            left: -55px; top: -55px;
+            width: 550px; height: 380px;
+        }
+
         .cassette-body {
-            width: 440px; height: 270px;
-            background: #181818;
-            border-radius: 10px;
             position: relative;
+            width: 440px; height: 270px;
+            background: #181818; border-radius: 10px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06);
             overflow: hidden;
+            transition: box-shadow 0.4s;
         }
 
         .cassette-label {
             position: absolute;
-            top: 18px; left: 18px; right: 18px;
-            height: 130px;
+            top: 18px; left: 18px; right: 18px; height: 130px;
             background: #222 50% 50%/cover no-repeat;
-            border-radius: 5px;
-            overflow: hidden;
+            border-radius: 5px; overflow: hidden;
         }
 
         .cassette-window {
@@ -646,8 +666,7 @@
         }
 
         .cassette-reel {
-            width: 46px; height: 46px;
-            border-radius: 50%;
+            width: 46px; height: 46px; border-radius: 50%;
             background: conic-gradient(
                 #2a2a2a 0deg 60deg, #181818 60deg 120deg,
                 #2a2a2a 120deg 180deg, #181818 180deg 240deg,
@@ -658,31 +677,25 @@
             box-shadow: inset 0 0 8px rgba(0,0,0,0.6);
         }
 
-        .cassette-reel::after {
-            content: '';
-            width: 14px; height: 14px;
-            background: #0d0d0d;
-            border-radius: 50%;
-        }
-
-        .cassette-screw {
-            position: absolute;
-            width: 7px; height: 7px;
-            background: #252525;
-            border-radius: 50%;
-            border: 1px solid rgba(255,255,255,0.08);
-        }
+        .cassette-reel::after { content: ''; width: 14px; height: 14px; background: #0d0d0d; border-radius: 50%; }
+        .cassette-screw { position: absolute; width: 7px; height: 7px; background: #252525; border-radius: 50%; border: 1px solid rgba(255,255,255,0.08); }
 
         /* ── STREAM CARD ─────────────────────── */
         .mockup-card { display: none; align-items: center; justify-content: center; gap: 24px; }
 
+        #glowHaloCard {
+            left: -55px; top: -55px;
+            width: 365px; height: 465px;
+        }
+
         .stream-card {
+            position: relative;
             width: 255px; height: 355px;
             border-radius: 18px;
             background: #222 50% 50%/cover no-repeat;
             overflow: hidden;
-            position: relative;
             box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+            transition: box-shadow 0.4s;
         }
 
         .stream-card-overlay {
@@ -692,10 +705,8 @@
         }
 
         .stream-card-info {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            padding: 18px 16px;
-            z-index: 4;
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 18px 16px; z-index: 4;
         }
 
         .stream-card-title { font-size: 17px; font-weight: 700; line-height: 1.2; margin-bottom: 4px; color: white; letter-spacing: -0.02em; }
@@ -708,8 +719,7 @@
 
         .sc-btn { font-size: 16px; opacity: 0.8; }
         .sc-btn.play {
-            width: 36px; height: 36px;
-            background: white; color: black;
+            width: 36px; height: 36px; background: white; color: black;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-size: 11px; opacity: 1;
@@ -719,35 +729,20 @@
         .stream-card-progress { height: 100%; width: 55%; background: white; border-radius: 3px; }
 
         .stream-card-bg {
-            width: 200px; height: 300px;
-            border-radius: 14px;
+            width: 200px; height: 300px; border-radius: 14px;
             background: #222 50% 50%/cover no-repeat;
-            opacity: 0.5;
-            filter: blur(2px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            overflow: hidden;
-        }
-
-        /* ── PARTICLES ───────────────────────── */
-        #particles {
-            position: absolute; inset: 0;
-            pointer-events: none; z-index: 0;
-            display: none;
+            opacity: 0.5; filter: blur(2px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6); overflow: hidden;
         }
 
         /* ── TOAST ───────────────────────────── */
         .toast {
-            position: fixed;
-            bottom: 22px; right: 22px;
-            background: var(--ink);
-            color: white;
-            border-radius: 10px;
-            padding: 11px 17px;
-            font-size: 12px;
-            font-weight: 600;
+            position: fixed; bottom: 22px; right: 22px;
+            background: var(--ink); color: white;
+            border-radius: 10px; padding: 11px 17px;
+            font-size: 12px; font-weight: 600;
             box-shadow: 0 12px 40px rgba(0,0,0,0.2);
-            transform: translateY(20px);
-            opacity: 0;
+            transform: translateY(20px); opacity: 0;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 100;
         }
@@ -787,18 +782,10 @@
             <div class="group">
                 <span class="group-label">목업 종류</span>
                 <div class="mode-grid">
-                    <button class="mode-btn active" data-mode="vinyl">
-                        <div class="mi">💿</div><div class="ml">바이닐</div>
-                    </button>
-                    <button class="mode-btn" data-mode="cd">
-                        <div class="mi">📀</div><div class="ml">CD</div>
-                    </button>
-                    <button class="mode-btn" data-mode="cassette">
-                        <div class="mi">📼</div><div class="ml">카세트</div>
-                    </button>
-                    <button class="mode-btn" data-mode="card">
-                        <div class="mi">📱</div><div class="ml">스트리밍</div>
-                    </button>
+                    <button class="mode-btn active" data-mode="vinyl"><div class="mi">💿</div><div class="ml">바이닐</div></button>
+                    <button class="mode-btn" data-mode="cd"><div class="mi">📀</div><div class="ml">CD</div></button>
+                    <button class="mode-btn" data-mode="cassette"><div class="mi">📼</div><div class="ml">카세트</div></button>
+                    <button class="mode-btn" data-mode="card"><div class="mi">📱</div><div class="ml">스트리밍</div></button>
                 </div>
             </div>
 
@@ -812,8 +799,7 @@
                     <div class="swatch" style="background:#2e0d0d" data-color="#2e0d0d"></div>
                     <div class="swatch" style="background:#0d2e22" data-color="#0d2e22"></div>
                     <div class="swatch-custom" title="직접 선택">
-                        <span>+</span>
-                        <input type="color" id="bgColorCustom" value="#0d0d0d">
+                        <span>+</span><input type="color" id="bgColorCustom" value="#0d0d0d">
                     </div>
                 </div>
             </div>
@@ -825,6 +811,21 @@
                     <div class="pill" data-bg-effect="gradient">그라디언트</div>
                     <div class="pill" data-bg-effect="glow">글로우</div>
                     <div class="pill" data-bg-effect="particles">파티클</div>
+                </div>
+            </div>
+
+            <div class="group">
+                <span class="group-label">배경 강조색 <span style="color:var(--text-muted);font-weight:500">(그라디언트·글로우)</span></span>
+                <div class="swatch-row" id="bgAccentSwatches">
+                    <div class="swatch active" style="background:#ffffff" data-accent="#ffffff"></div>
+                    <div class="swatch" style="background:#c0b0ff" data-accent="#c0b0ff"></div>
+                    <div class="swatch" style="background:#ffb0d0" data-accent="#ffb0d0"></div>
+                    <div class="swatch" style="background:#b0d4ff" data-accent="#b0d4ff"></div>
+                    <div class="swatch" style="background:#ffd080" data-accent="#ffd080"></div>
+                    <div class="swatch" style="background:#80ffcc" data-accent="#80ffcc"></div>
+                    <div class="swatch-custom" title="직접 선택">
+                        <span>+</span><input type="color" id="bgAccentCustom" value="#ffffff">
+                    </div>
                 </div>
             </div>
 
@@ -875,6 +876,21 @@
                 </div>
             </div>
 
+            <div class="group">
+                <span class="group-label">글로우 색상</span>
+                <div class="swatch-row" id="glowSwatches">
+                    <div class="swatch" style="background:#a080ff" data-glow="#a080ff"></div>
+                    <div class="swatch active" style="background:#ffffff" data-glow="#ffffff"></div>
+                    <div class="swatch" style="background:#ff80c0" data-glow="#ff80c0"></div>
+                    <div class="swatch" style="background:#60c0ff" data-glow="#60c0ff"></div>
+                    <div class="swatch" style="background:#ffd060" data-glow="#ffd060"></div>
+                    <div class="swatch" style="background:#60ffb0" data-glow="#60ffb0"></div>
+                    <div class="swatch-custom" title="직접 선택">
+                        <span>+</span><input type="color" id="glowColorCustom" value="#ffffff">
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- ── 텍스트 탭 ─── -->
@@ -882,12 +898,12 @@
 
             <div class="group">
                 <span class="group-label">아티스트</span>
-                <input type="text" class="text-input" id="artistInput" placeholder="">
+                <input type="text" class="text-input" id="artistInput">
             </div>
 
             <div class="group">
                 <span class="group-label">앨범 제목</span>
-                <input type="text" class="text-input" id="titleInput" placeholder="">
+                <input type="text" class="text-input" id="titleInput">
             </div>
 
             <div class="group">
@@ -936,8 +952,7 @@
                     <div class="swatch" style="background:#ff6ab0" data-tc="#ff6ab0"></div>
                     <div class="swatch" style="background:#66ffcc" data-tc="#66ffcc"></div>
                     <div class="swatch-custom" title="직접 선택">
-                        <span>+</span>
-                        <input type="color" id="tcColorCustom" value="#ffffff">
+                        <span>+</span><input type="color" id="tcColorCustom" value="#ffffff">
                     </div>
                 </div>
             </div>
@@ -951,8 +966,7 @@
                     <div class="swatch" style="background:#003028" data-sc="#003028"></div>
                     <div class="swatch" style="background:#002040" data-sc="#002040"></div>
                     <div class="swatch-custom" title="직접 선택">
-                        <span>+</span>
-                        <input type="color" id="scColorCustom" value="#000000">
+                        <span>+</span><input type="color" id="scColorCustom" value="#000000">
                     </div>
                 </div>
             </div>
@@ -984,12 +998,17 @@
 
 <!-- ── MAIN VIEW ─────────────────────────────────────────── -->
 <div class="main-view" id="mainView">
-    <canvas id="particles"></canvas>
 
     <div id="capture-area" style="background:#0d0d0d">
 
+        <!-- Particles INSIDE capture-area so they appear in the export -->
+        <canvas id="particles"></canvas>
+
         <!-- VINYL -->
         <div class="mockup-vinyl" id="mockupVinyl">
+            <!-- Glow halo: a div-based gradient, more reliable in html2canvas than box-shadow alone -->
+            <div class="glow-halo" id="glowHalo"></div>
+
             <div class="album-cover draggable-cover" id="cover">
                 <div class="cover-placeholder">
                     <div class="ph-icon">🎵</div>
@@ -1009,6 +1028,7 @@
                     </svg>
                 </div>
             </div>
+
             <div class="vinyl-record" id="record">
                 <div class="vinyl-disc" id="vinylDisc">
                     <div class="vinyl-label draggable-cover" id="label">
@@ -1021,7 +1041,8 @@
 
         <!-- CD -->
         <div class="mockup-cd" id="mockupCd">
-            <div class="cd-case">
+            <div class="cd-case" style="position:relative">
+                <div class="glow-halo" id="glowHaloCd"></div>
                 <div class="cd-back"></div>
                 <div class="cd-front draggable-cover" id="cdFront">
                     <div class="cover-placeholder">
@@ -1045,42 +1066,48 @@
 
         <!-- CASSETTE -->
         <div class="mockup-cassette" id="mockupCassette">
-            <div class="cassette-body">
-                <div class="cassette-label draggable-cover" id="cassetteCover">
-                    <div class="cover-placeholder">
-                        <div class="ph-icon">🎵</div>
-                        <div class="ph-text">이미지를 업로드하세요</div>
+            <div style="position:relative">
+                <div class="glow-halo" id="glowHaloCassette"></div>
+                <div class="cassette-body" id="cassettBody">
+                    <div class="cassette-label draggable-cover" id="cassetteCover">
+                        <div class="cover-placeholder">
+                            <div class="ph-icon">🎵</div>
+                            <div class="ph-text">이미지를 업로드하세요</div>
+                        </div>
                     </div>
+                    <div class="cassette-window">
+                        <div class="cassette-reel"></div>
+                        <div class="cassette-reel" style="animation-direction:reverse"></div>
+                    </div>
+                    <div class="cassette-screw" style="top:8px;left:10px"></div>
+                    <div class="cassette-screw" style="top:8px;right:10px"></div>
+                    <div class="cassette-screw" style="bottom:8px;left:10px"></div>
+                    <div class="cassette-screw" style="bottom:8px;right:10px"></div>
                 </div>
-                <div class="cassette-window">
-                    <div class="cassette-reel"></div>
-                    <div class="cassette-reel" style="animation-direction:reverse"></div>
-                </div>
-                <div class="cassette-screw" style="top:8px;left:10px"></div>
-                <div class="cassette-screw" style="top:8px;right:10px"></div>
-                <div class="cassette-screw" style="bottom:8px;left:10px"></div>
-                <div class="cassette-screw" style="bottom:8px;right:10px"></div>
             </div>
         </div>
 
         <!-- STREAM CARD -->
         <div class="mockup-card" id="mockupCard">
             <div class="stream-card-bg" id="streamCardBg"></div>
-            <div class="stream-card draggable-cover" id="streamCard">
-                <div class="cover-placeholder">
-                    <div class="ph-icon">🎵</div>
-                    <div class="ph-text">이미지를 업로드하세요</div>
-                </div>
-                <div class="stream-card-overlay"></div>
-                <div class="stream-card-info">
-                    <div class="stream-card-title" id="scTitle">앨범 제목</div>
-                    <div class="stream-card-artist" id="scArtist">아티스트</div>
-                    <div class="stream-card-controls">
-                        <div class="sc-btn">⏮</div>
-                        <div class="sc-btn play">▶</div>
-                        <div class="sc-btn">⏭</div>
+            <div style="position:relative">
+                <div class="glow-halo" id="glowHaloCard"></div>
+                <div class="stream-card draggable-cover" id="streamCard">
+                    <div class="cover-placeholder">
+                        <div class="ph-icon">🎵</div>
+                        <div class="ph-text">이미지를 업로드하세요</div>
                     </div>
-                    <div class="stream-card-bar"><div class="stream-card-progress"></div></div>
+                    <div class="stream-card-overlay"></div>
+                    <div class="stream-card-info">
+                        <div class="stream-card-title" id="scTitle">앨범 제목</div>
+                        <div class="stream-card-artist" id="scArtist">아티스트</div>
+                        <div class="stream-card-controls">
+                            <div class="sc-btn">⏮</div>
+                            <div class="sc-btn play">▶</div>
+                            <div class="sc-btn">⏭</div>
+                        </div>
+                        <div class="stream-card-bar"><div class="stream-card-progress"></div></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1093,9 +1120,10 @@
 <script>
 const S = {
     imageUrl: null, mode: 'vinyl',
-    bgColor: '#0d0d0d', bgEffect: 'solid',
+    bgColor: '#0d0d0d', bgEffect: 'solid', bgAccentColor: '#ffffff',
     spinSpeed: 8, vinylColor: '#0e0e0e',
-    glow: false, sheen: true, tilt: true, barcode: false,
+    glow: false, glowColor: '#ffffff',
+    sheen: true, tilt: true, barcode: false,
     artist: '', title: '',
     textPos: 'bottom', font: "'Pretendard', sans-serif",
     textColor: '#ffffff', titleSize: 22,
@@ -1104,17 +1132,22 @@ const S = {
 
 const $ = id => document.getElementById(id);
 
+// ── HELPERS ─────────────────────────────────────────────
+function hex2rgba(hex, a) {
+    const n = parseInt(hex.replace('#',''), 16);
+    return `rgba(${n>>16},${(n>>8)&0xff},${n&0xff},${a})`;
+}
+
 // ── IMAGE DRAG ──────────────────────────────────────────
-const bgPos = { cover: {x:50,y:50}, cdFront:{x:50,y:50}, cassetteCover:{x:50,y:50}, streamCard:{x:50,y:50}, label:{x:50,y:50} };
-let isDragging = false, dragEl = null, dragStart = {x:0,y:0}, posStart = {x:50,y:50};
+const bgPos = { cover:{x:50,y:50}, cdFront:{x:50,y:50}, cassetteCover:{x:50,y:50}, streamCard:{x:50,y:50}, label:{x:50,y:50} };
+let isDragging=false, dragEl=null, dragStart={x:0,y:0}, posStart={x:50,y:50};
 
 document.querySelectorAll('.draggable-cover').forEach(el => {
     el.addEventListener('mousedown', e => {
         if (!S.imageUrl) return;
-        isDragging = true;
-        dragEl = el;
-        dragStart = {x: e.clientX, y: e.clientY};
-        posStart = {...(bgPos[el.id] || {x:50,y:50})};
+        isDragging = true; dragEl = el;
+        dragStart = {x:e.clientX, y:e.clientY};
+        posStart = {...(bgPos[el.id]||{x:50,y:50})};
         el.classList.add('dragging');
         e.preventDefault();
     });
@@ -1123,15 +1156,14 @@ document.querySelectorAll('.draggable-cover').forEach(el => {
 document.addEventListener('mousemove', e => {
     if (!isDragging || !dragEl) return;
     const id = dragEl.id;
-    if (!bgPos[id]) bgPos[id] = {x:50,y:50};
+    if (!bgPos[id]) bgPos[id]={x:50,y:50};
     const rect = dragEl.getBoundingClientRect();
-    const dx = (e.clientX - dragStart.x) / rect.width * 100;
+    const dx = (e.clientX - dragStart.x) / rect.width  * 100;
     const dy = (e.clientY - dragStart.y) / rect.height * 100;
     bgPos[id].x = Math.max(0, Math.min(100, posStart.x - dx));
     bgPos[id].y = Math.max(0, Math.min(100, posStart.y - dy));
     dragEl.style.backgroundPosition = `${bgPos[id].x}% ${bgPos[id].y}%`;
-    // sync label to cover
-    if (id === 'cover') {
+    if (id==='cover') {
         bgPos.label = {...bgPos[id]};
         $('label').style.backgroundPosition = `${bgPos.label.x}% ${bgPos.label.y}%`;
     }
@@ -1139,17 +1171,16 @@ document.addEventListener('mousemove', e => {
 
 document.addEventListener('mouseup', () => {
     if (dragEl) dragEl.classList.remove('dragging');
-    isDragging = false;
-    dragEl = null;
+    isDragging = false; dragEl = null;
 });
 
 // ── TABS ────────────────────────────────────────────────
 document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
         btn.classList.add('active');
-        $('tab-' + btn.dataset.tab).classList.add('active');
+        $('tab-'+btn.dataset.tab).classList.add('active');
     });
 });
 
@@ -1160,13 +1191,12 @@ $('imageUpload').addEventListener('change', e => {
     const reader = new FileReader();
     reader.onload = ev => {
         S.imageUrl = ev.target.result;
-        // reset positions
-        Object.keys(bgPos).forEach(k => { bgPos[k] = {x:50,y:50}; });
+        Object.keys(bgPos).forEach(k => { bgPos[k]={x:50,y:50}; });
         applyImage();
         const uz = $('uploadZone');
         uz.classList.add('has-image');
         uz.querySelector('.upload-text').textContent = file.name.length > 22 ? file.name.slice(0,20)+'…' : file.name;
-        uz.querySelector('.upload-sub').textContent = '드래그로 위치 조절 가능';
+        uz.querySelector('.upload-sub').textContent = '드래그로 위치 조절';
         showToast('업로드 완료');
     };
     reader.readAsDataURL(file);
@@ -1175,7 +1205,7 @@ $('imageUpload').addEventListener('change', e => {
 function applyImage() {
     const url = `url(${S.imageUrl})`;
     ['cover','label','cdFront','cassetteCover','streamCard','streamCardBg'].forEach(id => {
-        const el = $(id);
+        const el=$(id);
         el.style.backgroundImage = url;
         el.style.backgroundSize = 'cover';
         el.style.backgroundPosition = '50% 50%';
@@ -1187,7 +1217,7 @@ function applyImage() {
 // ── MODE ────────────────────────────────────────────────
 document.querySelectorAll('.mode-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
         btn.classList.add('active');
         S.mode = btn.dataset.mode;
         switchMode(S.mode);
@@ -1195,15 +1225,15 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
 });
 
 function switchMode(mode) {
-    ['Vinyl','Cd','Cassette','Card'].forEach(m => $('mockup'+m).style.display='none');
-    const map = {vinyl:'mockupVinyl',cd:'mockupCd',cassette:'mockupCassette',card:'mockupCard'};
+    ['Vinyl','Cd','Cassette','Card'].forEach(m=>$('mockup'+m).style.display='none');
+    const map = {vinyl:'mockupVinyl', cd:'mockupCd', cassette:'mockupCassette', card:'mockupCard'};
     $(map[mode]).style.display = 'flex';
 }
 
 // ── BACKGROUND ──────────────────────────────────────────
 document.querySelectorAll('#bgSwatches .swatch').forEach(sw => {
     sw.addEventListener('click', () => {
-        document.querySelectorAll('#bgSwatches .swatch').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('#bgSwatches .swatch').forEach(s=>s.classList.remove('active'));
         sw.classList.add('active');
         S.bgColor = sw.dataset.color;
         applyBg();
@@ -1211,18 +1241,33 @@ document.querySelectorAll('#bgSwatches .swatch').forEach(sw => {
 });
 
 $('bgColorCustom').addEventListener('input', e => {
-    document.querySelectorAll('#bgSwatches .swatch').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('#bgSwatches .swatch').forEach(s=>s.classList.remove('active'));
     S.bgColor = e.target.value;
     applyBg();
 });
 
 document.querySelectorAll('[data-bg-effect]').forEach(el => {
     el.addEventListener('click', () => {
-        document.querySelectorAll('[data-bg-effect]').forEach(e => e.classList.remove('active'));
+        document.querySelectorAll('[data-bg-effect]').forEach(e=>e.classList.remove('active'));
         el.classList.add('active');
         S.bgEffect = el.dataset.bgEffect;
         applyBg();
     });
+});
+
+document.querySelectorAll('[data-accent]').forEach(sw => {
+    sw.addEventListener('click', () => {
+        document.querySelectorAll('[data-accent]').forEach(s=>s.classList.remove('active'));
+        sw.classList.add('active');
+        S.bgAccentColor = sw.dataset.accent;
+        applyBg();
+    });
+});
+
+$('bgAccentCustom').addEventListener('input', e => {
+    document.querySelectorAll('[data-accent]').forEach(s=>s.classList.remove('active'));
+    S.bgAccentColor = e.target.value;
+    applyBg();
 });
 
 function applyBg() {
@@ -1232,41 +1277,29 @@ function applyBg() {
     ca.style.backgroundImage = 'none';
 
     if (S.bgEffect === 'gradient') {
-        const light = liven(S.bgColor, 110);
-        const mid   = liven(S.bgColor, 50);
         ca.style.backgroundImage =
-            `linear-gradient(135deg, ${light} 0%, ${mid} 40%, ${S.bgColor} 75%)`;
+            `linear-gradient(135deg, ${S.bgAccentColor} 0%, ${hex2rgba(S.bgAccentColor, 0.3)} 45%, ${S.bgColor} 75%)`;
     } else if (S.bgEffect === 'glow') {
-        const bright = liven(S.bgColor, 130);
-        const soft   = liven(S.bgColor, 55);
         ca.style.backgroundImage =
-            `radial-gradient(ellipse 55% 60% at 50% 50%, ${bright} 0%, ${soft} 35%, ${S.bgColor} 70%)`;
+            `radial-gradient(ellipse 55% 60% at 50% 50%, ${S.bgAccentColor} 0%, ${hex2rgba(S.bgAccentColor, 0.35)} 35%, ${S.bgColor} 68%)`;
     } else if (S.bgEffect === 'particles') {
         startParticles();
     }
 }
 
-function liven(hex, amt) {
-    const n = parseInt(hex.replace('#',''), 16);
-    const r = Math.min(255, (n >> 16) + amt);
-    const g = Math.min(255, ((n >> 8) & 0xff) + amt);
-    const b = Math.min(255, (n & 0xff) + amt);
-    return `rgb(${r},${g},${b})`;
-}
-
 // ── SPIN SPEED ──────────────────────────────────────────
 $('spinSpeed').addEventListener('input', function() {
     S.spinSpeed = +this.value;
-    $('spinSpeed-val').textContent = this.value + '초';
+    $('spinSpeed-val').textContent = this.value+'초';
     $('record').style.animation = `spinVinyl ${this.value}s linear infinite`;
-    $('cdDisc').style.animation = `spinVinyl ${this.value/2}s linear infinite`;
-    document.querySelectorAll('.cassette-reel').forEach(r => r.style.animationDuration = (this.value/4)+'s');
+    $('cdDisc').style.animation  = `spinVinyl ${this.value/2}s linear infinite`;
+    document.querySelectorAll('.cassette-reel').forEach(r => r.style.animationDuration=(this.value/4)+'s');
 });
 
 // ── VINYL COLOR ─────────────────────────────────────────
 document.querySelectorAll('[data-vinyl]').forEach(sw => {
     sw.addEventListener('click', () => {
-        document.querySelectorAll('[data-vinyl]').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('[data-vinyl]').forEach(s=>s.classList.remove('active'));
         sw.classList.add('active');
         S.vinylColor = sw.dataset.vinyl;
         const vd = $('vinylDisc');
@@ -1274,6 +1307,48 @@ document.querySelectorAll('[data-vinyl]').forEach(sw => {
         vd.style.backgroundImage = `repeating-radial-gradient(rgba(0,0,0,0) 0%, rgba(0,0,0,0) 3.5px, rgba(255,255,255,0.025) 4px, rgba(0,0,0,0) 4.5px)`;
     });
 });
+
+// ── GLOW COLOR ──────────────────────────────────────────
+document.querySelectorAll('[data-glow]').forEach(sw => {
+    sw.addEventListener('click', () => {
+        document.querySelectorAll('[data-glow]').forEach(s=>s.classList.remove('active'));
+        sw.classList.add('active');
+        S.glowColor = sw.dataset.glow;
+        if (S.glow) applyGlow();
+    });
+});
+
+$('glowColorCustom').addEventListener('input', e => {
+    document.querySelectorAll('[data-glow]').forEach(s=>s.classList.remove('active'));
+    S.glowColor = e.target.value;
+    if (S.glow) applyGlow();
+});
+
+// ── GLOW ────────────────────────────────────────────────
+const GLOW_IDS = ['glowHalo','glowHaloCd','glowHaloCassette','glowHaloCard'];
+const COVER_IDS_GLOW = ['cover','cdFront','cassettBody','streamCard'];
+
+function applyGlow() {
+    const bg = `radial-gradient(ellipse 75% 75% at 50% 50%, ${hex2rgba(S.glowColor, 0.55)} 0%, ${hex2rgba(S.glowColor, 0.22)} 38%, transparent 68%)`;
+    GLOW_IDS.forEach(id => {
+        const el = $(id);
+        if (el) { el.style.background = bg; el.style.opacity = '1'; }
+    });
+    // Also box-shadow for richness
+    const sh = `0 0 30px ${hex2rgba(S.glowColor, 0.7)}, 0 0 70px ${hex2rgba(S.glowColor, 0.35)}`;
+    $('cover').style.boxShadow      = sh + ', 30px 0 80px rgba(0,0,0,0.9)';
+    $('cdFront').style.boxShadow    = sh + ', 0 20px 60px rgba(0,0,0,0.8)';
+    $('cassettBody') && ($('cassettBody').style.boxShadow = sh + ', 0 20px 60px rgba(0,0,0,0.8)');
+    $('streamCard').style.boxShadow = sh + ', 0 30px 80px rgba(0,0,0,0.8)';
+}
+
+function clearGlow() {
+    GLOW_IDS.forEach(id => { const el=$(id); if(el) el.style.opacity='0'; });
+    $('cover').style.boxShadow      = '30px 0 80px rgba(0,0,0,0.9), 6px 0 20px rgba(0,0,0,0.6)';
+    $('cdFront').style.boxShadow    = '0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05)';
+    const cb = $('cassettBody'); if(cb) cb.style.boxShadow = '0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06)';
+    $('streamCard').style.boxShadow = '0 30px 80px rgba(0,0,0,0.8)';
+}
 
 // ── TOGGLES ─────────────────────────────────────────────
 document.querySelectorAll('.toggle-row').forEach(row => {
@@ -1286,55 +1361,37 @@ document.querySelectorAll('.toggle-row').forEach(row => {
 });
 
 function handleToggle(id, v) {
-    if (id === 'toggleGlow')    { S.glow = v; v ? applyGlow() : clearGlow(); }
-    else if (id === 'toggleSheen') { S.sheen = v; $('vinylDisc').classList.toggle('no-sheen', !v); }
-    else if (id === 'toggleTilt')  { S.tilt = v; if (!v) $('capture-area').style.transform = ''; }
-    else if (id === 'toggleBarcode') {
-        S.barcode = v;
-        document.querySelectorAll('.cover-barcode').forEach(b => b.classList.toggle('visible', v));
+    if      (id==='toggleGlow')    { S.glow=v; v ? applyGlow() : clearGlow(); }
+    else if (id==='toggleSheen')   { S.sheen=v; $('vinylDisc').classList.toggle('no-sheen',!v); }
+    else if (id==='toggleTilt')    { S.tilt=v; if(!v) $('capture-area').style.transform=''; }
+    else if (id==='toggleBarcode') {
+        S.barcode=v;
+        document.querySelectorAll('.cover-barcode').forEach(b=>b.classList.toggle('visible',v));
     }
-    else if (id === 'toggleText')   { S.showText = v; $('textOverlay').classList.toggle('visible', v); }
-    else if (id === 'toggleShadow') { S.shadow = v; applyShadow(); }
-    else if (id === 'toggleGradBg') {
-        S.gradBg = v;
+    else if (id==='toggleText')   { S.showText=v; $('textOverlay').classList.toggle('visible',v); }
+    else if (id==='toggleShadow') { S.shadow=v; applyShadow(); }
+    else if (id==='toggleGradBg') {
+        S.gradBg=v;
         $('textOverlay').style.background = v ? 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)' : '';
     }
 }
 
-function applyGlow() {
-    if (!S.imageUrl) return;
-    $('cover').style.boxShadow = [
-        '0 0 30px rgba(200,170,255,0.7)',
-        '0 0 70px rgba(200,150,255,0.4)',
-        '0 0 120px rgba(150,100,255,0.25)',
-        '30px 0 80px rgba(0,0,0,0.9)'
-    ].join(', ');
-}
-
-function clearGlow() {
-    $('cover').style.boxShadow = '30px 0 80px rgba(0,0,0,0.9), 6px 0 20px rgba(0,0,0,0.6)';
-}
-
 // ── TEXT SHADOW ─────────────────────────────────────────
-function hex2rgba(hex, a) {
-    const n = parseInt(hex.replace('#',''), 16);
-    return `rgba(${n>>16},${(n>>8)&0xff},${n&0xff},${a})`;
-}
-
 function applyShadow() {
     if (S.shadow) {
-        const c = hex2rgba(S.shadowColor, 0.88);
-        $('coverTitle').style.textShadow = `0 2px 20px ${c}, 0 1px 6px ${c}`;
+        const c  = hex2rgba(S.shadowColor, 0.88);
+        const c2 = hex2rgba(S.shadowColor, 0.5);
+        $('coverTitle').style.textShadow  = `0 2px 20px ${c}, 0 1px 6px ${c2}`;
         $('coverArtist').style.textShadow = `0 2px 12px ${c}`;
     } else {
-        $('coverTitle').style.textShadow = 'none';
+        $('coverTitle').style.textShadow  = 'none';
         $('coverArtist').style.textShadow = 'none';
     }
 }
 
 document.querySelectorAll('[data-sc]').forEach(sw => {
     sw.addEventListener('click', () => {
-        document.querySelectorAll('[data-sc]').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('[data-sc]').forEach(s=>s.classList.remove('active'));
         sw.classList.add('active');
         S.shadowColor = sw.dataset.sc;
         applyShadow();
@@ -1342,73 +1399,72 @@ document.querySelectorAll('[data-sc]').forEach(sw => {
 });
 
 $('scColorCustom').addEventListener('input', e => {
-    document.querySelectorAll('[data-sc]').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('[data-sc]').forEach(s=>s.classList.remove('active'));
     S.shadowColor = e.target.value;
     applyShadow();
 });
 
-// ── TEXT CONTENT ─────────────────────────────────────────
+// ── TEXT ────────────────────────────────────────────────
 $('artistInput').addEventListener('input', e => {
     S.artist = e.target.value;
     $('coverArtist').textContent = e.target.value;
-    $('scArtist').textContent = e.target.value || '아티스트';
+    $('scArtist').textContent    = e.target.value || '아티스트';
 });
 
 $('titleInput').addEventListener('input', e => {
     S.title = e.target.value;
     $('coverTitle').textContent = e.target.value;
-    $('scTitle').textContent = e.target.value || '앨범 제목';
+    $('scTitle').textContent    = e.target.value || '앨범 제목';
 });
 
 $('fontSelect').addEventListener('change', e => {
     S.font = e.target.value;
-    $('coverTitle').style.fontFamily = e.target.value;
+    $('coverTitle').style.fontFamily  = e.target.value;
     $('coverArtist').style.fontFamily = e.target.value;
 });
 
 $('titleSize').addEventListener('input', function() {
     S.titleSize = +this.value;
-    $('titleSize-val').textContent = this.value + 'px';
-    $('coverTitle').style.fontSize = this.value + 'px';
+    $('titleSize-val').textContent = this.value+'px';
+    $('coverTitle').style.fontSize = this.value+'px';
 });
 
 document.querySelectorAll('[data-pos]').forEach(el => {
     el.addEventListener('click', () => {
-        document.querySelectorAll('[data-pos]').forEach(e => e.classList.remove('active'));
+        document.querySelectorAll('[data-pos]').forEach(e=>e.classList.remove('active'));
         el.classList.add('active');
         S.textPos = el.dataset.pos;
         const ol = $('textOverlay');
-        ol.style.justifyContent = S.textPos==='bottom' ? 'flex-end' : S.textPos==='top' ? 'flex-start' : 'center';
-        ol.style.alignItems = S.textPos==='center' ? 'center' : 'flex-start';
+        ol.style.justifyContent = S.textPos==='bottom'?'flex-end':S.textPos==='top'?'flex-start':'center';
+        ol.style.alignItems     = S.textPos==='center'?'center':'flex-start';
     });
 });
 
 document.querySelectorAll('[data-tc]').forEach(sw => {
     sw.addEventListener('click', () => {
-        document.querySelectorAll('[data-tc]').forEach(s => s.classList.remove('active'));
-        sw.classList.add('active');
-        setTextColor(sw.dataset.tc);
+        document.querySelectorAll('[data-tc]').forEach(s=>s.classList.remove('active'));
+        sw.classList.add('active'); setTextColor(sw.dataset.tc);
     });
 });
 
 $('tcColorCustom').addEventListener('input', e => {
-    document.querySelectorAll('[data-tc]').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('[data-tc]').forEach(s=>s.classList.remove('active'));
     setTextColor(e.target.value);
 });
 
 function setTextColor(c) {
     S.textColor = c;
-    $('coverTitle').style.color = c;
+    $('coverTitle').style.color  = c;
     $('coverArtist').style.color = c;
 }
 
 // ── 3D TILT ─────────────────────────────────────────────
 $('mainView').addEventListener('mousemove', e => {
     if (!S.tilt) return;
-    const ca = $('capture-area');
+    const ca   = $('capture-area');
     const rect = ca.getBoundingClientRect();
-    const dx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-    const dy = ((e.clientY - rect.top)  / rect.height - 0.5) * 2;
+    const dx   = ((e.clientX - rect.left) / rect.width  - 0.5) * 2;
+    const dy   = ((e.clientY - rect.top)  / rect.height - 0.5) * 2;
     ca.style.transform = `perspective(1200px) rotateY(${dx*4}deg) rotateX(${-dy*3}deg)`;
 });
 
@@ -1416,68 +1472,71 @@ $('mainView').addEventListener('mouseleave', () => {
     $('capture-area').style.transform = 'perspective(1200px) rotateY(0deg) rotateX(0deg)';
 });
 
-// ── PARTICLES ───────────────────────────────────────────
+// ── PARTICLES ── (now inside capture-area so they appear in export) ──
 const canvas = $('particles');
-const pctx = canvas.getContext('2d');
+const pctx   = canvas.getContext('2d');
 let rafId = null;
 const pts = [];
 
 function startParticles() {
-    canvas.style.display = 'block';
     const ca = $('capture-area');
-    canvas.width = ca.offsetWidth;
+    canvas.width  = ca.offsetWidth;
     canvas.height = ca.offsetHeight;
-    const rect = ca.getBoundingClientRect();
-    const pr = $('mainView').getBoundingClientRect();
-    canvas.style.position = 'absolute';
-    canvas.style.top  = (rect.top  - pr.top)  + 'px';
-    canvas.style.left = (rect.left - pr.left) + 'px';
+    canvas.style.display = 'block';
     pts.length = 0;
-    for (let i = 0; i < 120; i++) {
-        pts.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            r: Math.random() * 2.5 + 0.5,
-            vx: (Math.random() - 0.5) * 0.3,
-            vy: -(Math.random() * 0.6 + 0.2),
-            a: Math.random() * 0.7 + 0.15,
-        });
-    }
+    for (let i=0; i<120; i++) pts.push({
+        x: Math.random()*canvas.width,
+        y: Math.random()*canvas.height,
+        r: Math.random()*2.5+0.5,
+        vx:(Math.random()-0.5)*0.3,
+        vy:-(Math.random()*0.6+0.2),
+        a: Math.random()*0.7+0.15,
+    });
     (function draw() {
-        pctx.clearRect(0, 0, canvas.width, canvas.height);
+        pctx.clearRect(0,0,canvas.width,canvas.height);
         pts.forEach(p => {
             pctx.beginPath();
-            pctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-            pctx.fillStyle = `rgba(255,255,255,${p.a})`;
+            pctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+            pctx.fillStyle=`rgba(255,255,255,${p.a})`;
             pctx.fill();
-            p.x += p.vx; p.y += p.vy;
-            if (p.y < -5) { p.y = canvas.height + 5; p.x = Math.random()*canvas.width; }
+            p.x+=p.vx; p.y+=p.vy;
+            if(p.y<-5){p.y=canvas.height+5;p.x=Math.random()*canvas.width;}
         });
         rafId = requestAnimationFrame(draw);
     })();
 }
 
 function stopParticles() {
-    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-    pctx.clearRect(0, 0, canvas.width, canvas.height);
-    pts.length = 0;
-    canvas.style.display = 'none';
+    if(rafId){cancelAnimationFrame(rafId);rafId=null;}
+    pctx.clearRect(0,0,canvas.width,canvas.height);
+    pts.length=0;
+    canvas.style.display='none';
 }
 
 // ── SAVE ────────────────────────────────────────────────
 $('saveBtn').addEventListener('click', async () => {
-    const ca = $('capture-area');
-    [$('record'), $('cdDisc')].forEach(el => el.style.animationPlayState = 'paused');
-    document.querySelectorAll('.cassette-reel').forEach(r => r.style.animationPlayState = 'paused');
+    const ca  = $('capture-area');
+
+    // Pause animations
+    [$('record'),$('cdDisc')].forEach(el=>el.style.animationPlayState='paused');
+    document.querySelectorAll('.cassette-reel').forEach(r=>r.style.animationPlayState='paused');
+    // Remove 3D transform so image is flat
     ca.style.transform = '';
 
     const btn = $('saveBtn');
     btn.textContent = '생성 중...';
     btn.disabled = true;
 
-    await new Promise(r => setTimeout(r, 80));
+    // Small delay to let DOM settle
+    await new Promise(r=>setTimeout(r,100));
 
-    html2canvas(ca, {scale:3, useCORS:true, allowTaint:true, backgroundColor:null}).then(c => {
+    html2canvas(ca, {
+        scale: 3,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null,
+        logging: false,
+    }).then(c => {
         const link = document.createElement('a');
         link.download = `album_mockup_${Date.now()}.png`;
         link.href = c.toDataURL('image/png');
@@ -1485,18 +1544,20 @@ $('saveBtn').addEventListener('click', async () => {
 
         btn.textContent = 'PNG로 저장';
         btn.disabled = false;
-        [$('record'), $('cdDisc')].forEach(el => el.style.animationPlayState = 'running');
-        document.querySelectorAll('.cassette-reel').forEach(r => r.style.animationPlayState = 'running');
+
+        [$('record'),$('cdDisc')].forEach(el=>el.style.animationPlayState='running');
+        document.querySelectorAll('.cassette-reel').forEach(r=>r.style.animationPlayState='running');
+
         showToast('저장되었습니다');
     });
 });
 
 // ── TOAST ───────────────────────────────────────────────
 function showToast(msg) {
-    const t = $('toast');
-    t.textContent = msg;
+    const t=$('toast');
+    t.textContent=msg;
     t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2400);
+    setTimeout(()=>t.classList.remove('show'),2400);
 }
 
 switchMode('vinyl');
