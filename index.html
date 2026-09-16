@@ -676,6 +676,10 @@ html,body{background:#fff;}
           <div class="swatches" data-key="bodyColor" data-colors="#181818,#f2f2f4,#f6c9d8,#cfc4f5,#bfdcf5,#c9e8d6,#f3dca5,#c43c3c"></div>
         </div>
         <div class="field" data-show="mode=cassette">
+          <div class="field-head"><span>테이프 창 색상</span></div>
+          <div class="swatches" data-key="windowColor" data-colors="#000000,#ffffff,#ff8fb8,#a58bff,#7cc4ff,#7ed9a8,#ffd166,#e04848"></div>
+        </div>
+        <div class="field" data-show="mode=cassette">
           <div class="field-head"><span>테이프 릴 색상</span></div>
           <div class="swatches" data-key="reelColor" data-colors="#2a2a2a,#ffffff,#ff8fb8,#a58bff,#7cc4ff,#7ed9a8,#ffd166,#e04848"></div>
         </div>
@@ -805,7 +809,7 @@ const DEFAULTS = {
   filter:'none', imgZoom:1, imgX:.5, imgY:.5,
   bg:'solid', bgColor:'#0d0d0d', grad1:'#ff69b4', grad2:'#0d0d0d', gradAngle:135, blurDim:.35,
   grain:false, vignette:false,
-  vinylStyle:'solid', vinylColor:'#0e0e0e', vinylAccent:'#ffffff', cdColor:'#d7dae2', cdCaseColor:'#f4f4f6', bodyColor:'#181818', reelColor:'#2a2a2a',
+  vinylStyle:'solid', vinylColor:'#0e0e0e', vinylAccent:'#ffffff', cdColor:'#d7dae2', cdCaseColor:'#f4f4f6', bodyColor:'#181818', windowColor:'#000000', reelColor:'#2a2a2a',
   tilt:true, tiltAmt:6,
   progress:.42, cardAnim:true, barColor:'#ffffff', playIconColor:'#000000', sheen:true, shadow:true, barcode:false,
   glow:false, glowPulse:false, glowColor:'#ffffff',
@@ -1251,8 +1255,8 @@ const MOCKUPS = {
     drawArt(ctx, 18, 18, 404, 130);
     drawCoverText(ctx, 18, 18, 404, 130);
     ctx.restore();
-    rr(ctx, 120, 180, 200, 68, 5); ctx.fillStyle = 'rgba(0,0,0,.55)'; ctx.fill();
-    ctx.strokeStyle = 'rgba(255,255,255,.07)'; ctx.lineWidth = 1; ctx.stroke();
+    rr(ctx, 120, 180, 200, 68, 5); ctx.fillStyle = rgba(S.windowColor, lum(S.windowColor) < .3 ? .55 : .75); ctx.fill();
+    ctx.strokeStyle = lum(S.windowColor) < .5 ? 'rgba(255,255,255,.08)' : 'rgba(0,0,0,.08)'; ctx.lineWidth = 1; ctx.stroke();
     const a = TAU * 4 * t / S.spin;
     [174, 266].forEach(x => {
       ctx.save(); ctx.translate(x, 214); ctx.rotate(a);
