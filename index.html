@@ -672,8 +672,12 @@ html,body{background:#fff;}
           <div class="swatches" data-key="vinylAccent" data-colors="#ffffff,#ffd060,#ff5b6e,#60c0ff,#60ffb0,#a080ff,#111111"></div>
         </div>
         <div class="field" data-show="mode=cassette">
-          <div class="field-head"><span>본체 색상</span></div>
-          <div class="swatches" data-key="bodyColor" data-colors="#181818,#e9e9ec,#6b4a2f,#2f4a6b,#c43c3c,#9fb8a8"></div>
+          <div class="field-head"><span>카세트 테이프 색상</span></div>
+          <div class="swatches" data-key="bodyColor" data-colors="#181818,#f2f2f4,#f6c9d8,#cfc4f5,#bfdcf5,#c9e8d6,#f3dca5,#c43c3c"></div>
+        </div>
+        <div class="field" data-show="mode=cassette">
+          <div class="field-head"><span>테이프 릴 색상</span></div>
+          <div class="swatches" data-key="reelColor" data-colors="#2a2a2a,#ffffff,#ff8fb8,#a58bff,#7cc4ff,#7ed9a8,#ffd166,#e04848"></div>
         </div>
         <div class="field" data-show="mode=cd">
           <div class="field-head"><span>CD 색상</span></div>
@@ -686,6 +690,14 @@ html,body{background:#fff;}
         <div class="field" data-show="mode=card">
           <div class="switches"><label class="switch">재생 바 움직이기<input type="checkbox" data-key="cardAnim"><i></i></label></div>
           <p class="hint" data-show="cardAnim=true">한 바퀴 도는 시간 동안 처음부터 끝까지 채워져요. 속도는 위의 시간으로 조절해요.</p>
+        </div>
+        <div class="field" data-show="mode=card">
+          <div class="field-head"><span>재생 바 색상</span></div>
+          <div class="swatches" data-key="barColor" data-colors="#ffffff,#ff8fb8,#a58bff,#7cc4ff,#7ed9a8,#ffd166,#ff6b6b,#1d1d20"></div>
+        </div>
+        <div class="field" data-show="mode=card">
+          <div class="field-head"><span>재생 버튼 세모 색상</span></div>
+          <div class="swatches" data-key="playIconColor" data-colors="#000000,#ffffff,#ff8fb8,#a58bff,#7cc4ff,#7ed9a8,#ffd166,#ff6b6b"></div>
         </div>
         <div class="field" data-show="mode=card">
           <div class="field-head"><span>그라디언트 색상</span></div>
@@ -793,9 +805,9 @@ const DEFAULTS = {
   filter:'none', imgZoom:1, imgX:.5, imgY:.5,
   bg:'solid', bgColor:'#0d0d0d', grad1:'#ff69b4', grad2:'#0d0d0d', gradAngle:135, blurDim:.35,
   grain:false, vignette:false,
-  vinylStyle:'solid', vinylColor:'#0e0e0e', vinylAccent:'#ffffff', cdColor:'#d7dae2', cdCaseColor:'#f4f4f6', bodyColor:'#181818',
+  vinylStyle:'solid', vinylColor:'#0e0e0e', vinylAccent:'#ffffff', cdColor:'#d7dae2', cdCaseColor:'#f4f4f6', bodyColor:'#181818', reelColor:'#2a2a2a',
   tilt:true, tiltAmt:6,
-  progress:.42, cardAnim:true, sheen:true, shadow:true, barcode:false,
+  progress:.42, cardAnim:true, barColor:'#ffffff', playIconColor:'#000000', sheen:true, shadow:true, barcode:false,
   glow:false, glowPulse:false, glowColor:'#ffffff',
   artist:'', title:'', font:"'Pretendard', sans-serif", textPos:'bottom', textAlign:'left',
   titleSize:24, textColor:'#ffffff', showText:true, upper:false, textShadow:true, scrim:false, scrimColor:'#000000', scrimAmt:.7, shadowColor:'#000000',
@@ -1245,7 +1257,7 @@ const MOCKUPS = {
     [174, 266].forEach(x => {
       ctx.save(); ctx.translate(x, 214); ctx.rotate(a);
       for (let i = 0; i < 6; i++) {
-        ctx.fillStyle = i % 2 ? '#181818' : '#2a2a2a';
+        ctx.fillStyle = i % 2 ? mix(S.reelColor, '#000000', .45) : S.reelColor;
         ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, 23, i / 6 * TAU, (i + 1) / 6 * TAU); ctx.closePath(); ctx.fill();
       }
       ctx.fillStyle = '#0d0d0d'; ctx.beginPath(); ctx.arc(0, 0, 7, 0, TAU); ctx.fill();
@@ -1279,15 +1291,15 @@ const MOCKUPS = {
     const ccx = X + W / 2, ccy = 302;
     const moving = S.cardAnim;
     const prog = moving ? ((t % S.spin) + S.spin) % S.spin / S.spin : S.progress;
-    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(ccx, ccy, 18, 0, TAU); ctx.fill();
-    ctx.fillStyle = '#000';
+    ctx.fillStyle = S.barColor; ctx.beginPath(); ctx.arc(ccx, ccy, 18, 0, TAU); ctx.fill();
+    ctx.fillStyle = S.playIconColor;
     if (moving) { rr(ctx, ccx - 5.5, ccy - 6.5, 3.8, 13, 1); ctx.fill(); rr(ctx, ccx + 1.7, ccy - 6.5, 3.8, 13, 1); ctx.fill(); }
     else { ctx.beginPath(); ctx.moveTo(ccx - 4, ccy - 6); ctx.lineTo(ccx - 4, ccy + 6); ctx.lineTo(ccx + 6, ccy); ctx.fill(); }
     ctx.fillStyle = 'rgba(255,255,255,.8)';
     const skip = (x, dir) => { ctx.beginPath(); ctx.moveTo(x, ccy - 5.5); ctx.lineTo(x, ccy + 5.5); ctx.lineTo(x + dir * 8, ccy); ctx.fill(); ctx.fillRect(dir > 0 ? x + 8 : x - 10, ccy - 5.5, 2, 11); };
     skip(ccx + 36, 1); skip(ccx - 36, -1);
     ctx.fillStyle = 'rgba(255,255,255,.15)'; rr(ctx, px, 334, pw, 3, 1.5); ctx.fill();
-    ctx.fillStyle = '#fff'; rr(ctx, px, 334, Math.max(3, pw * prog), 3, 1.5); ctx.fill();
+    ctx.fillStyle = S.barColor; rr(ctx, px, 334, Math.max(3, pw * prog), 3, 1.5); ctx.fill();
     ctx.beginPath(); ctx.arc(px + Math.max(1.5, pw * prog), 335.5, 4.2, 0, TAU); ctx.fill();
     ctx.restore();
     return {x:X, y:0, w:W, h:H};
